@@ -2,6 +2,7 @@
 PLANOWANE FUNCKJONALNOŚCI:
 
 -Liczenie czasu
+
 -"Stan" czasu (OK, DNF, +2)
 
 -(komentarz do czasu)
