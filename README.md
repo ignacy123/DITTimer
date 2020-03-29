@@ -9,6 +9,8 @@ PLANOWANE FUNCKJONALNOŚCI:
 
 -Wybór typu kostki
 
+-data ułożenia
+
 -Wrzucenie wyniku do bazy (czas, stan algorytm mieszający, data)
 
 -Usunięcie wyniku z bazy
@@ -20,8 +22,10 @@ PLANOWANE FUNCKJONALNOŚCI:
 -Rysowanie wykresów:
 
 -dzienne statystyki
+
 -ogólne statystyki
 (metronom)
+
 -powiadomienie przy pobiciu rekrodu (od 20 wyników w górę)
 
 Funkcjonalność online:
