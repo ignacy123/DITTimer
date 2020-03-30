@@ -21,14 +21,12 @@ public class Solve implements SolveInterface {
     }
 
     @Override
-    public Time extraxtTime(Solve solution) throws NullPointerException{
-        if(solution==null) throw new NullPointerException();
+    public Time extraxtTime() throws NullPointerException{
         return timeOfSolution;
     }
 
     @Override
-    public State extractState(Solve solution) throws NullPointerException{
-        if(solution==null) throw new NullPointerException();
+    public State extractState() throws NullPointerException{
         return whatState;
     }
 
