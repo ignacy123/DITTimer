@@ -13,3 +13,6 @@ enum Face{
 enum Direction{
     CLOCKWISE, ANTICLOCKWISE, DOUBLE;
 }
+enum State{
+    NONE,TWOSECPENALTY,CORRECT,DNF,REJ;
+}
