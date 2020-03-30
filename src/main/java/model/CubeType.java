@@ -16,3 +16,6 @@ enum Direction{
 enum State{
     NONE,TWOSECPENALTY,CORRECT,DNF,REJ;
 }
+enum Color{
+    WHITE, YELLOW, RED, ORANGE, GREEN, BLUE;
+}
