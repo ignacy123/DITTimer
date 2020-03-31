@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 
 public interface ScrambleGenerator {
-    ArrayList<MoveImplementation> generate();
+    ArrayList<Move> generate();
     void setCubeType(CubeType cubeType);
+    String  scrambleToString(ArrayList<Move> list);
 }

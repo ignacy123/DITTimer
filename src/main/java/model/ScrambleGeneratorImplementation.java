@@ -14,7 +14,20 @@ public class ScrambleGeneratorImplementation implements ScrambleGenerator {
     public void setCubeType(CubeType cubeType) {
         this.cubeType = cubeType;
     }
-    public ArrayList<MoveImplementation> generate() {
+
+    @Override
+    public String scrambleToString(ArrayList<Move> list) {
+        String string = "";
+        StringBuilder sb = new StringBuilder(string);
+        for(int i = 0; i<list.size();i++){
+            sb.append(list.get(i));
+            sb.append(" ");
+        }
+        sb.deleteCharAt(sb.lastIndexOf(" "));
+        return sb.toString();
+    }
+
+    public ArrayList<Move> generate() {
         switch (cubeType){
             case TWOBYTWO:
                 return generateTwoByTwo(8);
@@ -26,8 +39,8 @@ public class ScrambleGeneratorImplementation implements ScrambleGenerator {
         return null;
     }
 
-    private ArrayList<MoveImplementation> generateTwoByTwo(int length){
-        ArrayList<MoveImplementation> scramble = new ArrayList<>();
+    private ArrayList<Move> generateTwoByTwo(int length){
+        ArrayList<Move> scramble = new ArrayList<>();
         scramble.add(new MoveImplementation(nextAxis(), nextDirection()));
         MoveImplementation move;
         for(int i = 1; i<length; i++){
@@ -39,8 +52,8 @@ public class ScrambleGeneratorImplementation implements ScrambleGenerator {
         }
         return scramble;
     }
-    private ArrayList<MoveImplementation> generateElse(int length, int width){
-        ArrayList<MoveImplementation> scramble = new ArrayList<>();
+    private ArrayList<Move> generateElse(int length, int width){
+        ArrayList<Move> scramble = new ArrayList<>();
         scramble.add(new MoveImplementation(nextFace(), nextDirection(), random.nextInt(width)+1));
         MoveImplementation move = new MoveImplementation(nextFace(), nextDirection(), random.nextInt(width)+1);
         while(move.getFace()==scramble.get(0).getFace()){
@@ -98,4 +111,6 @@ public class ScrambleGeneratorImplementation implements ScrambleGenerator {
                 return Face.F;
         }
     }
+
+
 }
