@@ -1,6 +1,14 @@
 package model;
 
 
+import model.enums.Axis;
+import model.enums.CubeType;
+import model.enums.Direction;
+import model.enums.Face;
+import model.logic.Move;
+import model.logic.MoveImplementation;
+import model.logic.ScrambleGenerator;
+import model.logic.ScrambleGeneratorImplementation;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

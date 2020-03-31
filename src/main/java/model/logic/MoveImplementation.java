@@ -1,5 +1,9 @@
-package model;
+package model.logic;
 
+
+import model.enums.Axis;
+import model.enums.Direction;
+import model.enums.Face;
 
 public class MoveImplementation implements Move {
     private Axis axis;

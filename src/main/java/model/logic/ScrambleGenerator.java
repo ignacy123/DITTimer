@@ -1,4 +1,6 @@
-package model;
+package model.logic;
+
+import model.enums.CubeType;
 
 import java.util.ArrayList;
 

@@ -1,7 +1,9 @@
-package model;
+package model.logic;
+
+import model.enums.CubeType;
+import model.enums.State;
 
 import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SolveImplementation implements Solve {

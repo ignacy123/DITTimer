@@ -1,4 +1,9 @@
-package model;
+package model.logic;
+
+import model.enums.Axis;
+import model.enums.CubeType;
+import model.enums.Direction;
+import model.enums.Face;
 
 import java.util.ArrayList;
 import java.util.Random;

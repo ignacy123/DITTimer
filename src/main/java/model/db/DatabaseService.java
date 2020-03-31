@@ -1,4 +1,7 @@
-package model;
+package model.db;
+
+import model.enums.CubeType;
+import model.logic.Solve;
 
 import java.util.ArrayList;
 

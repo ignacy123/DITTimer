@@ -1,4 +1,7 @@
-package model;
+package model.logic;
+
+import model.enums.CubeType;
+import model.enums.State;
 
 import java.sql.Time;
 import java.util.Date;
