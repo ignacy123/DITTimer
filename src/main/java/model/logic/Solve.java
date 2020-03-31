@@ -13,6 +13,8 @@ public interface Solve {
     int getID();
     CubeType getType();
 
+
+
     void setTime(Time time);
     void setState(State state);
     void setDate(Date date);

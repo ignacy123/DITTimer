@@ -13,6 +13,8 @@ public class SolveImplementation implements Solve {
     Time timeOfSolution;
     State whatState;
     CubeType whatCube;
+    String comment;
+    String scramble;
     int ID;
     public SolveImplementation(){
         dateOfSolution=null;
