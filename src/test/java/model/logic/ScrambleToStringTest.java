@@ -1,4 +1,4 @@
-package model;
+package model.logic;
 
 
 import model.enums.Axis;

@@ -1,6 +1,7 @@
 package model.db;
 
 import model.enums.CubeType;
+import model.enums.State;
 import model.logic.ScrambleGeneratorImplementation;
 import model.logic.Solve;
 import model.logic.SolveImplementation;
@@ -152,9 +153,10 @@ public class DatabaseServiceImplementation implements DatabaseService {
                     pstmt.setInt(2, 3);
 
             }
-            pstmt.setString(4, "test comment");
-            pstmt.setString(5, new ScrambleGeneratorImplementation(CubeType.THREEBYTHREE).generate().toString());
-            pstmt.setDate(6, new java.sql.Date(solve.getDate().getTime()));
+            pstmt.setString(3, solve.getComment());
+            pstmt.setString(4, solve.getScramble());
+            java.sql.Timestamp ts = new java.sql.Timestamp(solve.getDate().getTime());
+            pstmt.setTimestamp(5, new java.sql.Timestamp(solve.getDate().getTime()));
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -177,24 +179,45 @@ public class DatabaseServiceImplementation implements DatabaseService {
 
     public ArrayList<Solve> pullAndParseAllSolves(CubeType cubeType) {
         ArrayList<Solve> solves = new ArrayList<>();
+        String sql = "";
+        String sql1 = "SELECT * FROM  ";
+        String sql2 = "";
+        switch (cubeType){
+            case TWOBYTWO:
+                sql2 = "TWOBYTWO";
+                break;
+            case THREEBYTHREE:
+                sql2 = "THREEBYTHREE";
+                break;
+            case FOURBYFOUR:
+                sql2 = "FOURBYFOUR";
+                break;
+        }
+        sql = sql1+sql2;
         try {
             stmt = c.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM THREEBYTHREE");
+            rs = stmt.executeQuery(sql);
             while(rs.next()){
                 Solve solve = new SolveImplementation();
                 solve.setID(rs.getInt(1));
                 solve.setTime(rs.getTime(2));
-                switch (rs.getInt(3)){
+                switch(rs.getInt(3)){
                     case 0:
-                        solve.setType(CubeType.TWOBYTWO);
+                        solve.setState(State.CORRECT);
                         break;
                     case 1:
-                        solve.setType(CubeType.THREEBYTHREE);
+                        solve.setState(State.TWOSECPENALTY);
+                        break;
+                    case 2:
+                        solve.setState(State.DNF);
                         break;
                     default:
-                        solve.setType(cubeType.FOURBYFOUR);
+                        solve.rejectSolution();
                 }
-                solve.setDate(rs.getDate(6));
+                solve.setComment(rs.getString(4).trim());
+                solve.setScramble(rs.getString(5).trim());
+                solve.setDate(new java.util.Date(rs.getTimestamp(6).getTime()));
+                solves.add(solve);
 
             }
         } catch (SQLException e) {
