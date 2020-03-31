@@ -56,6 +56,16 @@ public class SolveImplementation implements Solve {
     }
 
     @Override
+    public String getScramble() {
+        return scramble;
+    }
+
+    @Override
+    public String getComment() {
+        return comment;
+    }
+
+    @Override
     public void setTime(Time time) {
         this.timeOfSolution=time;
     }
@@ -78,6 +88,16 @@ public class SolveImplementation implements Solve {
     @Override
     public void setType(CubeType type) {
         this.whatCube=type;
+    }
+
+    @Override
+    public void setScramble(String scr) {
+        scramble=scr;
+    }
+
+    @Override
+    public void setComment(String com) {
+        comment=com;
     }
 
 

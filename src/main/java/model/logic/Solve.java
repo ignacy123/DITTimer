@@ -12,6 +12,8 @@ public interface Solve {
     Date getDate();
     int getID();
     CubeType getType();
+    String getScramble();
+    String getComment();
 
 
 
@@ -20,6 +22,8 @@ public interface Solve {
     void setDate(Date date);
     void setID(int id);
     void setType(CubeType type);
+    void setScramble(String scr);
+    void setComment(String com);
 
     void rejectSolution(); // changes stato to REJ
     void Penalty(); // modifies time of solution
