@@ -75,32 +75,7 @@ public class DrawScramble extends Stage {
         layout.setAlignment(Pos.CENTER);
         stage.setScene(new Scene(layout, 600, 470));
         populateStandard();
-        Rotations rotator = new Rotations(cube);
-        //rotator.rotateUpAC();
-        //rotator.rotateUpAC();
-        //rotator.rotateUpAC();
-        //R2 U' R' U' R U R U R U' R
 
-        rotator.rotateRightAC();
-        rotator.rotateRightAC();//R2
-        rotator.rotateUpAC();//U'
-
-        rotator.rotateRightAC();//R'
-        /*
-        rotator.rotateUpAC();//U'
-
-        rotator.rotateRightAC(); rotator.rotateRightAC(); rotator.rotateRightAC();//R
-        rotator.rotateUpAC(); rotator.rotateUpAC(); rotator.rotateUpAC(); // U
-        rotator.rotateRightAC(); rotator.rotateRightAC(); rotator.rotateRightAC();//R
-
-        rotator.rotateUpAC(); rotator.rotateUpAC(); rotator.rotateUpAC(); // U
-
-        rotator.rotateRightAC(); rotator.rotateRightAC(); rotator.rotateRightAC();//R
-
-        rotator.rotateUpAC();//U'
-
-        rotator.rotateRightAC();//R'
-        */
         layout.getChildren().add(draw(3));
 
         stage.show();

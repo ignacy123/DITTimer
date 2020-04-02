@@ -23,17 +23,22 @@ public class Rotations {
             }
         }
     }
+    public void rotateLeftAC() {
+        for(int i = 0; i < 3; i++) {
+            rotateLeftCW();
+        }
+    }
     public void rotateLeftCW() { //Clockwise
         ArrayList<Color> te3 = new ArrayList<>();
         for(int i = 6; i < 9; i++) {
-            te3.add(cube.get(i).get(3));
+            te3.add(0, cube.get(i).get(3));
         }
 
         for(int i = 8; i >= 3; i--) {
             cube.get(i).set(3, cube.get(i-3).get(3));
         }
         for(int i = 0; i < 3; i++) {
-            cube.get(i).set(3, cube.get(i+3).get(11));
+            cube.get(i).set(3, cube.get(5-i).get(11));
         }
         for(int i = 3; i < 6; i++) {
             cube.get(i).set(11, te3.get(i-3));
@@ -48,17 +53,21 @@ public class Rotations {
             cube.get((i-i%3)/3 + 3).set(i%3, leftSide.get((i-i%3)/3).get(i%3));
         }
     }
+    public void rotateRightCW() {
+        for(int i = 0; i < 3; i++) {
+            rotateRightAC();
+        }
+    }
     public void rotateRightAC() {//AntiClockWise
         ArrayList<Color> te3 = new ArrayList<>();
         for(int i = 6; i < 9; i++) {
-            te3.add(cube.get(i).get(5));
+            te3.add(0, cube.get(i).get(5));
         }
-
         for(int i = 8; i >= 3; i--) {
             cube.get(i).set(5, cube.get(i-3).get(5));
         }
         for(int i = 0; i < 3; i++) {
-            cube.get(i).set(5, cube.get(i+3).get(9));
+            cube.get(i).set(5, cube.get(5-i).get(9));
         }
         for(int i = 3; i < 6; i++) {
             cube.get(i).set(9, te3.get(i-3));
@@ -69,9 +78,14 @@ public class Rotations {
             rightSide.get((i - i%3)/3).add(cube.get((i - i%3)/3 + 3).get(i%3 + 6));
         }
         for(int i = 0; i < 3; i++)
-        rotateMatrix(rightSide);
+            rotateMatrix(rightSide);
         for(int i = 0; i < 9; i++) {
             cube.get((i-i%3)/3 + 3).set(i%3 + 6, rightSide.get((i-i%3)/3).get(i%3));
+        }
+    }
+    public void rotateUpCW() {
+        for(int i = 0; i < 3; i++) {
+            rotateUpAC();
         }
     }
     public void rotateUpAC() {
@@ -91,9 +105,14 @@ public class Rotations {
             upSide.get((i - i%3)/3).add(cube.get((i - i%3)/3).get(i%3 + 3));
         }
         for(int i = 0; i < 3; i++)
-        rotateMatrix(upSide);
+            rotateMatrix(upSide);
         for(int i = 0; i < 9; i++) {
             cube.get((i-i%3)/3).set(i%3 + 3, upSide.get((i-i%3)/3).get(i%3));
+        }
+    }
+    public void rotateDownAC() {
+        for(int i = 0; i < 3; i++) {
+            rotateDownCW();
         }
     }
     public void rotateDownCW() {
