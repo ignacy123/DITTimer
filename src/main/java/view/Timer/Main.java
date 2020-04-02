@@ -14,7 +14,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         FXMLLoader loader= new FXMLLoader();
-        loader.setLocation(this.getClass().getResource("sample.fxml"));
+        loader.setLocation(this.getClass().getClassLoader().getResource("timersample.fxml"));
         Pane pane =loader.load();
 
         Scene scene=new Scene(pane);

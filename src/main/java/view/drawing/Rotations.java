@@ -1,4 +1,4 @@
-package view;
+package view.drawing;
 
 import javafx.scene.paint.Color;
 import model.enums.Face;

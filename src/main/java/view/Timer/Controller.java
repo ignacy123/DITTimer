@@ -76,9 +76,9 @@ public class Controller {
 
     @FXML
     void initialize() {
-        assert LH1 != null : "fx:id=\"LH1\" was not injected: check your FXML file 'sample.fxml'.";
-        assert RH1 != null : "fx:id=\"RH1\" was not injected: check your FXML file 'sample.fxml'.";
-        assert timePassed != null : "fx:id=\"timePassed\" was not injected: check your FXML file 'sample.fxml'.";
+        assert LH1 != null : "fx:id=\"LH1\" was not injected: check your FXML file 'timersample.fxml'.";
+        assert RH1 != null : "fx:id=\"RH1\" was not injected: check your FXML file 'timersample.fxml'.";
+        assert timePassed != null : "fx:id=\"timePassed\" was not injected: check your FXML file 'timersample.fxml'.";
 
     }
 }
