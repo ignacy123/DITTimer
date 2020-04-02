@@ -17,7 +17,7 @@ public class Controller {
     @FXML
     void openStats(ActionEvent event) throws Exception{
         Stage stats = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("StatsWindow.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("main/view/StatsWindow.fxml"));
         stats.setTitle("statystyki");
         stats.initOwner(((Node)event.getTarget()).getScene().getWindow());
         stats.setResizable(false);

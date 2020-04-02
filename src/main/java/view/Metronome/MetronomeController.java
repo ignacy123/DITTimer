@@ -24,7 +24,7 @@ public class MetronomeController {
     }
     long BMP;
     POWER state= POWER.ON;
-    Media metronomeSound = new Media(new File("src/sample/metronome.wav").toURI().toURL().toString());
+    Media metronomeSound = new Media(new File("src/main/resources/metronome.wav").toURI().toURL().toString());
     MediaPlayer mediaPlayer = new MediaPlayer(metronomeSound);
     @FXML
     private Button OFFbutton;

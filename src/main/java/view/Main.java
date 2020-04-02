@@ -15,9 +15,7 @@ public class Main extends Application {
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(new StackPane(), 300, 275));
         primaryStage.show();
-
         DrawScramble.doMagic();
-
     }
 
 

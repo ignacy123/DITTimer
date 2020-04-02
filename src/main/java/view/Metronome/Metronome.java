@@ -11,9 +11,9 @@ public class Metronome extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        FXMLLoader loader= new FXMLLoader();
-        loader.setLocation(this.getClass().getResource("metronome.fxml"));
-        Pane pane =loader.load();
+        //FXMLLoader loader= new FXMLLoader();
+        //loader.setLocation(this.getClass().getResource("view/Metronome/metronome.fxml"));
+        Pane pane = FXMLLoader.load(getClass().getClassLoader().getResource("metronome.fxml"));;
 
         Scene scene=new Scene(pane);
 
