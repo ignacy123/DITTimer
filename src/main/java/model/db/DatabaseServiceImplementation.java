@@ -96,22 +96,6 @@ public class DatabaseServiceImplementation implements DatabaseService {
         }
     }
 
-    public void insertIntoThreeByThree(){
-        try {
-            String sql = "INSERT INTO THREEBYTHREE (ID, TIME, STATE, COMMENT, SCRAMBLE, DATE) " +
-                    " Values (?, ?, ?, ?, ?, ?)";
-            pstmt = c.prepareStatement(sql);
-            pstmt.setInt(1, 1);
-            pstmt.setTime(2, new Time(1000));
-            pstmt.setInt(3, 1);
-            pstmt.setString(4, "test comment");
-            pstmt.setString(5, new ScrambleGeneratorImplementation(CubeType.THREEBYTHREE).generate().toString());
-            pstmt.setDate(6, Date.valueOf(java.time.LocalDate.now()));
-            pstmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     //0 - OK
@@ -151,11 +135,9 @@ public class DatabaseServiceImplementation implements DatabaseService {
                     break;
                 default:
                     pstmt.setInt(2, 3);
-
             }
             pstmt.setString(3, solve.getComment());
             pstmt.setString(4, solve.getScramble());
-            java.sql.Timestamp ts = new java.sql.Timestamp(solve.getDate().getTime());
             pstmt.setTimestamp(5, new java.sql.Timestamp(solve.getDate().getTime()));
             pstmt.executeUpdate();
         } catch (SQLException e) {
@@ -201,7 +183,8 @@ public class DatabaseServiceImplementation implements DatabaseService {
                 Solve solve = new SolveImplementation();
                 solve.setID(rs.getInt(1));
                 solve.setTime(rs.getTime(2));
-                switch(rs.getInt(3)){
+                int a = rs.getInt(3);
+                switch(a){
                     case 0:
                         solve.setState(State.CORRECT);
                         break;
@@ -214,6 +197,7 @@ public class DatabaseServiceImplementation implements DatabaseService {
                     default:
                         solve.rejectSolution();
                 }
+                solve.setType(cubeType);
                 solve.setComment(rs.getString(4).trim());
                 solve.setScramble(rs.getString(5).trim());
                 solve.setDate(new java.util.Date(rs.getTimestamp(6).getTime()));
@@ -227,7 +211,99 @@ public class DatabaseServiceImplementation implements DatabaseService {
         return solves;
     }
 
+    //there's a chance this wont be needed
     public ArrayList<Solve> pullAndParseSolves(CubeType cubeType, int size) {
         return null;
+    }
+
+    @Override
+    public void deleteLast(CubeType cubeType) {
+        String sql = "";
+        String sql1 = "SELECT TOP 1 id FROM  ";
+        String sql2 = "";
+        switch (cubeType){
+            case TWOBYTWO:
+                sql2 = "TWOBYTWO";
+                break;
+            case THREEBYTHREE:
+                sql2 = "THREEBYTHREE";
+                break;
+            case FOURBYFOUR:
+                sql2 = "FOURBYFOUR";
+                break;
+        }
+        sql = sql1+sql2+" ORDER BY id DESC";
+        int i = 0;
+        try {
+            stmt = c.createStatement();
+            rs = stmt.executeQuery(sql);
+            if(rs.next()){
+                i = rs.getInt(1);
+            }else{
+                System.out.println("attempting to delete last from empty table");
+                return;
+            }
+            sql = "DELETE FROM "+sql2+" WHERE id="+i;
+            stmt = c.createStatement();
+            rs = stmt.executeQuery(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
+
+    @Override
+    public void updateLast(Solve solve) {
+        String sql = "";
+        String sql1 = "SELECT TOP 1 id FROM  ";
+        String sql2 = "";
+        switch (solve.getType()){
+            case TWOBYTWO:
+                sql2 = "TWOBYTWO";
+                break;
+            case THREEBYTHREE:
+                sql2 = "THREEBYTHREE";
+                break;
+            case FOURBYFOUR:
+                sql2 = "FOURBYFOUR";
+                break;
+        }
+        sql = sql1+sql2+" ORDER BY id DESC";
+        int i = 0;
+        try {
+            stmt = c.createStatement();
+            rs = stmt.executeQuery(sql);
+            if(rs.next()){
+                i = rs.getInt(1);
+            }else{
+                System.out.println("attempting to update last in empty table");
+                return;
+            }
+            sql = "UPDATE "+sql2+" SET TIME = ?, STATE = ?, COMMENT = ?, SCRAMBLE = ?, DATE = ? WHERE id="+i;
+            pstmt = c.prepareStatement(sql);
+            pstmt.setTime(1, solve.getTime());
+            switch(solve.getState()){
+                case CORRECT:
+                    pstmt.setInt(2, 0);
+                    break;
+                case TWOSECPENALTY:
+                    pstmt.setInt(2, 1);
+                    break;
+                case DNF:
+                    pstmt.setInt(2, 2);
+                    break;
+                default:
+                    pstmt.setInt(2, 3);
+            }
+            pstmt.setString(3, solve.getComment());
+            pstmt.setString(4, solve.getScramble());
+            pstmt.setTimestamp(5, new java.sql.Timestamp(solve.getDate().getTime()));
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }

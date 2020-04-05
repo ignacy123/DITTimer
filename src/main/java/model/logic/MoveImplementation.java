@@ -20,6 +20,11 @@ public class MoveImplementation implements Move {
         return face;
     }
 
+    @Override
+    public Direction getDirection() {
+        return direction;
+    }
+
     public MoveImplementation(Axis axis, Direction direction) {
         isTwoByTwo = true;
         this.axis = axis;

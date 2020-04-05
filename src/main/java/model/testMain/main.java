@@ -34,6 +34,11 @@ public class main {
         System.out.println(list.get(0).getState());
         System.out.println(list.get(0).getComment());
         System.out.println(list.get(0).getScramble());
-
+        solve.setComment("gywd");
+        solve.setTime(new Time(10000));
+        System.out.println(db.pullAndParseAllSolves(CubeType.THREEBYTHREE).get(0).getTime());
+        db.updateLast(solve);
+        System.out.println(db.pullAndParseAllSolves(CubeType.THREEBYTHREE).get(0).getTime());
+        System.out.println(db.pullAndParseAllSolves(CubeType.THREEBYTHREE).get(0).getComment());
     }
 }
