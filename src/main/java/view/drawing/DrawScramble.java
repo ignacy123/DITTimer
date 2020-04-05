@@ -7,15 +7,20 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import model.enums.CubeType;
+import model.logic.Move;
+import model.logic.MoveImplementation;
 
 import java.util.ArrayList;
 
 public class DrawScramble extends Stage {
-    static ArrayList<ArrayList<Color>> cube;
-    static CubeType type = CubeType.THREEBYTHREE;
+    ArrayList<ArrayList<Color>> cube;
+    CubeType type = CubeType.THREEBYTHREE;
 
-
-    private static GridPane draw(int hw) {
+    ArrayList<Move> moves;
+    DrawScramble(ArrayList<Move> moves) {
+        this.moves = moves;
+    }
+    private GridPane draw(int hw) {
         GridPane gridPane = new GridPane();
         gridPane.setVgap(15);
         gridPane.setHgap(15);
@@ -40,34 +45,9 @@ public class DrawScramble extends Stage {
         }
         return gridPane;
     }
-    private static GridPane drawThree() {
-        GridPane gridPane = new GridPane();
-        gridPane.setVgap(15);
-        gridPane.setHgap(15);
-        gridPane.setAlignment(Pos.CENTER);
-
-        ArrayList<GridPane> lay = new ArrayList<>();
-        for(int i = 0; i < 12; i++) {
-            GridPane curr = new GridPane();
-            if(i % 4 == 1 || (i- i%4)/ 4 == 1) {
-                curr.setStyle("-fx-background-color: black ; -fx-vgap: 1; -fx-hgap: 1; -fx-padding: 1;");
-                for(int j = 0; j < 9; j++) {
-                    Rectangle field = new Rectangle(40, 40);
-                    Color toFill = cube.get((j - j%3)/3 + (i - i%4)/4 * 3).get(j%3 + (i % 4)*3);
-                    field.setFill(toFill);
-                    curr.add(field, j%3, (j - j%3)/3);
-                }
-            }
-            lay.add(curr);
-        }
-        for(int i = 0; i < 12; i++) {
-            gridPane.add(lay.get(i), i % 4, (i- i%4)/ 4);
-        }
-        return gridPane;
-    }
 
 
-    public static void doMagic() {
+    public void doMagic() {
         cube = new ArrayList<>();
         Stage stage = new Stage();
         stage.setResizable(false);
@@ -75,12 +55,12 @@ public class DrawScramble extends Stage {
         layout.setAlignment(Pos.CENTER);
         stage.setScene(new Scene(layout, 600, 470));
         populateStandard();
-
+        Rotations a = new Rotations(cube);
+        a.executeMoves(moves);
         layout.getChildren().add(draw(3));
-
         stage.show();
     }
-    public static void populateStandard() {
+    public void populateStandard() {
         for(int i = 0; i < 3; i++) {
             ArrayList<Color> toAdd = new ArrayList<>();
             toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
@@ -105,63 +85,5 @@ public class DrawScramble extends Stage {
             toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
             cube.add(toAdd);
         }
-    }
-    public static void populateRandom() {
-        ArrayList<Color> toAdd = new ArrayList<>();
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        toAdd.add(Color.GREEN); toAdd.add(Color.RED); toAdd.add(Color.GREEN);
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        cube.add(toAdd);
-        toAdd = new ArrayList<>();
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        toAdd.add(Color.BLUE); toAdd.add(Color.WHITE); toAdd.add(Color.GREEN);
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        cube.add(toAdd);
-        toAdd = new ArrayList<>();
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        toAdd.add(Color.RED); toAdd.add(Color.BLUE); toAdd.add(Color.WHITE);
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        cube.add(toAdd);
-        //END 1 row
-        toAdd = new ArrayList<>();
-        toAdd.add(Color.RED); toAdd.add(Color.WHITE); toAdd.add(Color.YELLOW);
-        toAdd.add(Color.BLUE); toAdd.add(Color.YELLOW); toAdd.add(Color.ORANGE);
-        toAdd.add(Color.GREEN); toAdd.add(Color.ORANGE); toAdd.add(Color.ORANGE);
-        toAdd.add(Color.YELLOW); toAdd.add(Color.BLUE); toAdd.add(Color.YELLOW);
-        cube.add(toAdd);
-        toAdd = new ArrayList<>();
-        toAdd.add(Color.YELLOW); toAdd.add(Color.ORANGE); toAdd.add(Color.YELLOW);
-        toAdd.add(Color.RED); toAdd.add(Color.GREEN); toAdd.add(Color.GREEN);
-        toAdd.add(Color.RED); toAdd.add(Color.RED); toAdd.add(Color.ORANGE);
-        toAdd.add(Color.WHITE); toAdd.add(Color.BLUE); toAdd.add(Color.GREEN);
-        cube.add(toAdd);
-        toAdd = new ArrayList<>();
-        toAdd.add(Color.BLUE); toAdd.add(Color.ORANGE); toAdd.add(Color.ORANGE);
-        toAdd.add(Color.YELLOW); toAdd.add(Color.GREEN); toAdd.add(Color.ORANGE);
-        toAdd.add(Color.BLUE); toAdd.add(Color.ORANGE); toAdd.add(Color.WHITE);
-        toAdd.add(Color.RED); toAdd.add(Color.WHITE); toAdd.add(Color.WHITE);
-        cube.add(toAdd);
-        toAdd = new ArrayList<>();
-        //END second row
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        toAdd.add(Color.BLUE); toAdd.add(Color.WHITE); toAdd.add(Color.WHITE);
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        cube.add(toAdd);
-        toAdd = new ArrayList<>();
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        toAdd.add(Color.BLUE); toAdd.add(Color.YELLOW); toAdd.add(Color.YELLOW);
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        cube.add(toAdd);
-        toAdd = new ArrayList<>();
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        toAdd.add(Color.RED); toAdd.add(Color.RED); toAdd.add(Color.GREEN);
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        toAdd.add(Color.AZURE); toAdd.add(Color.AZURE); toAdd.add(Color.AZURE);
-        cube.add(toAdd);
     }
 }
