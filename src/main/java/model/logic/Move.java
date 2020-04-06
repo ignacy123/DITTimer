@@ -8,4 +8,5 @@ public interface Move {
     Axis getAxis();
     Face getFace();
     Direction getDirection();
+    int getWidth();
 }

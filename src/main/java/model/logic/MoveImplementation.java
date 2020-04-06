@@ -25,6 +25,11 @@ public class MoveImplementation implements Move {
         return direction;
     }
 
+    @Override
+    public int getWidth() {
+        return width;
+    }
+
     public MoveImplementation(Axis axis, Direction direction) {
         isTwoByTwo = true;
         this.axis = axis;
