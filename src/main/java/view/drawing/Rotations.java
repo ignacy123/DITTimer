@@ -1,12 +1,15 @@
 package view.drawing;
 
 import javafx.scene.paint.Color;
+import model.enums.Axis;
+import model.enums.Direction;
 import model.enums.Face;
+import model.logic.Move;
 
 import java.util.ArrayList;
 
 public class Rotations {
-    static ArrayList<ArrayList<Color>> cube;
+    ArrayList<ArrayList<Color>> cube;
 
     public void rotateMatrix(ArrayList<ArrayList<Color>> matrix) { //anticlockwise
         ArrayList<ArrayList<Color>> toRet = new ArrayList<>();
@@ -136,8 +139,144 @@ public class Rotations {
             cube.get((i-i%3)/3 + 6).set(i%3 + 3, downSide.get((i-i%3)/3).get(i%3));
         }
     }
-    public void rotate(Face face) {//control panel
-
+    public void rotateFrontAC() {
+        for(int i = 0; i < 3; i++) {
+            rotateFrontCW();
+        }
+    }
+    public void rotateFrontCW() {
+        ArrayList<Color> te3 = new ArrayList<>();//at the very right side
+        for(int i = 0; i < 3; i++) {
+            te3.add(cube.get(2).get(3 + i));
+        }
+        for(int i = 0; i < 3; i++) {
+            cube.get(2).set(3 + i, cube.get(5-i).get(2));
+        }
+        for(int i = 0; i < 3; i++) {
+            cube.get(5-i).set(2, cube.get(6).get(5-i));
+        }
+        for(int i = 0; i < 3; i++) {
+            cube.get(6).set(3+i, cube.get(5-i).get(6));
+        }
+        for(int i = 0; i < 3; i++) {
+            cube.get(3+i).set(6, te3.get(i));
+        }
+        ArrayList<ArrayList<Color>> frontSide = new ArrayList<>();
+        for(int i = 0; i < 9; i++) {
+            if(i % 3 == 0) frontSide.add(new ArrayList<>());
+            frontSide.get((i - i%3)/3).add(cube.get((i - i%3)/3 + 3).get(i%3 + 3));
+        }
+        rotateMatrix(frontSide);
+        for(int i = 0; i < 9; i++) {
+            cube.get((i-i%3)/3 + 3).set(i%3 + 3, frontSide.get((i-i%3)/3).get(i%3));
+        }
+    }
+    public void rotateBackAC() {
+        for(int i = 0; i < 3; i++) {
+            rotateBackCW();
+        }
+    }
+    public void rotateBackCW() {
+        ArrayList<Color> te3 = new ArrayList<>();//at the very right side
+        for(int i = 0; i < 3; i++) {
+            te3.add(cube.get(0).get(3 + i));
+        }
+        for(int i = 0; i < 3; i++) {
+            cube.get(0).set(3+i, cube.get(3+i).get(8));
+        }
+        for(int i = 0; i < 3; i++) {
+            cube.get(3 + i).set(8, cube.get(8).get(5-i));
+        }
+        for(int i = 0; i < 3; i++) {
+            cube.get(8).set(3+i, cube.get(3+i).get(0));
+        }
+        for(int i = 0; i < 3; i++) {
+            cube.get(5-i).set(0, te3.get(i));
+        }
+        ArrayList<ArrayList<Color>> backSide = new ArrayList<>();
+        for(int i = 0; i < 9; i++) {
+            if(i % 3 == 0) backSide.add(new ArrayList<>());
+            backSide.get((i - i%3)/3).add(cube.get((i - i%3)/3 + 3).get(i%3 + 9));
+        }
+        rotateMatrix(backSide);
+        for(int i = 0; i < 9; i++) {
+            cube.get((i-i%3)/3 + 3).set(i%3 + 9, backSide.get((i-i%3)/3).get(i%3));
+        }
+    }
+    public void move(Move move) {
+        Face face = move.getFace();
+        Direction dir = move.getDirection();
+        if(face == Face.U) {
+            if(dir == Direction.DOUBLE) {
+                rotateUpCW();
+                rotateUpCW();
+            }
+            else if(dir == Direction.CLOCKWISE) {
+                rotateUpCW();
+            }
+            else
+                rotateUpAC();
+        }
+        else if(face == Face.D) {
+            if(dir == Direction.DOUBLE) {
+                rotateDownCW();
+                rotateDownCW();
+            }
+            else if(dir == Direction.CLOCKWISE) {
+                rotateDownCW();
+            }
+            else
+                rotateDownAC();
+        }
+        else if(face == Face.F) {
+            if(dir == Direction.DOUBLE) {
+                rotateFrontCW();
+                rotateFrontCW();
+            }
+            else if(dir == Direction.CLOCKWISE) {
+                rotateFrontCW();
+            }
+            else
+                rotateFrontAC();
+        }
+        else if(face == Face.L) {
+            if(dir == Direction.DOUBLE) {
+                rotateLeftCW();
+                rotateLeftCW();
+            }
+            else if(dir == Direction.CLOCKWISE) {
+                rotateLeftCW();
+            }
+            else
+                rotateLeftAC();
+        }
+        else if(face == Face.R) {
+            if(dir == Direction.DOUBLE) {
+                rotateRightCW();
+                rotateRightCW();
+            }
+            else if(dir == Direction.CLOCKWISE) {
+                rotateRightCW();
+            }
+            else
+                rotateRightAC();
+        }
+        else if(face == Face.B) {
+            if(dir == Direction.DOUBLE) {
+                rotateBackCW();
+                rotateBackCW();
+            }
+            else if(dir == Direction.CLOCKWISE) {
+                rotateBackCW();
+            }
+            else
+                rotateBackAC();
+        }
+    }
+    public void executeMoves(ArrayList<Move> moves) {//control panel
+        for(Move kijanka: moves) {
+            move(kijanka);
+        }
     }
     Rotations(ArrayList<ArrayList<Color>> inp) {
         this.cube = inp;
