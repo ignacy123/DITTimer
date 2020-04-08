@@ -12,10 +12,6 @@ public class Rotations {
     ArrayList<ArrayList<Color>> cube;
 
     public void rotateMatrix(ArrayList<ArrayList<Color>> matrix) { //anticlockwise
-        ArrayList<ArrayList<Color>> toRet = new ArrayList<>();
-        for(ArrayList<Color> i: matrix) {
-            toRet.add((ArrayList<Color>) i.clone());
-        }
         for(int i = 0; i < matrix.size()/2; i++) {
             for(int j = 0; j < matrix.size() - i - 1; j++) {
                 Color tmp = matrix.get(i).get(j);

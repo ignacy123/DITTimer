@@ -19,7 +19,7 @@ public class Controller {
         Stage stats = new Stage();
         Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("StatsWindow.fxml"));
         stats.setTitle("statystyki");
-        stats.initOwner(((Node)event.getTarget()).getScene().getWindow());
+        //stats.initOwner(((Node)event.getTarget()).getScene().getWindow());
         stats.setResizable(false);
         stats.setScene(new Scene(root));
         stats.show();
