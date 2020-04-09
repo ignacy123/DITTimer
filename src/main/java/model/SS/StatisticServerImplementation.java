@@ -86,6 +86,17 @@ public class StatisticServerImplementation implements StatisticServer{
     }
 
     @Override
+    public void insertSolve(Solve solve) {
+        if (solve.getType()==CubeType.THREEBYTHREE){
+            TreeByTree.add(solve);
+        } else if (solve.getType()==CubeType.TWOBYTWO) {
+           TwoByTwo.add(solve);
+        } else {
+            FourByFour.add(solve);
+        }
+    }
+
+    @Override
     public Time GiveMeMax(CubeType WhatModel) {
         ArrayList<Solve> temp;
         Time max=new Time(0);
@@ -165,7 +176,7 @@ public class StatisticServerImplementation implements StatisticServer{
         // state
         //comment
         // scramble
-      //  myDataBase.insert(solve);
+        myDataBase.insert(solve);
         return solve;
     }
 

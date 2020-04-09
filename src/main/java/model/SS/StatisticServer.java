@@ -14,7 +14,7 @@ public interface StatisticServer {
 
     ArrayList<Time> GiveMeTimes(CubeType WhatModel); // returns all times of specific Cube // for now only good times
 
-
+    void insertSolve(Solve solve); // for tests
     Time GiveMeMax(CubeType WhatModel); // return Max Time != DNF or throw exception NoTimesFound
 
     Time GiveMeMin(CubeType WhatModel); // return Min Time != DNF or throw exception NoTimesFound
