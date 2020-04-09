@@ -8,7 +8,7 @@ import model.logic.Move;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-public class Rotator4 {
+public class Rotator4 implements Rotator {
 
     private void rotateMatrix(Color[][] matrix) {
         for(int i = 0; i < 2; i++) {

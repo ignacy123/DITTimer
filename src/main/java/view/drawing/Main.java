@@ -6,6 +6,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import model.enums.CubeType;
 import model.enums.Direction;
+import model.enums.Face;
 import model.logic.Move;
 import model.logic.MoveImplementation;
 import model.logic.ScrambleGenerator;
@@ -22,21 +23,21 @@ public class Main extends Application {
         ScrambleGenerator sg = new ScrambleGeneratorImplementation(CubeType.FOURBYFOUR);
         ArrayList<Move> l = sg.generate();
 
-        DrawScramble dr = new DrawScramble();
-        Rotator4 rotator = dr.getRotator();
+        DrawScramble dr = new DrawScramble(CubeType.FOURBYFOUR);
+        System.out.println(sg.scrambleToString(l));
+        Rotator rotator = dr.getRotator();
+        //Rw' U' D' B' R2
+        //rotator.move(new MoveImplementation(Face.R, Direction.ANTICLOCKWISE, 2));
+        //rotator.move(new MoveImplementation(Face.U, Direction.ANTICLOCKWISE, 2));
+        //rotator.move(new MoveImplementation(Face.D, Direction.ANTICLOCKWISE, 1));
+        //rotator.move(new MoveImplementation(Face.B, Direction.ANTICLOCKWISE, 1));
+
+        //rotator.move(new MoveImplementation(Face.R, Direction.DOUBLE, 1));
+        //rotator.move(new MoveImplementation(Face.D, Direction.CLOCKWISE, 2));
 
         rotator.executeMoves(l);
-        ArrayList<Move> toDo = new ArrayList<>();
-        for(Move move: l) {
-            Direction dir = move.getDirection();
-            if(dir == Direction.CLOCKWISE) dir = Direction.ANTICLOCKWISE;
-            else if(dir == Direction.ANTICLOCKWISE) dir = Direction.CLOCKWISE;
-            toDo.add(0, new MoveImplementation(move.getFace(), dir, move.getWidth()));
-        }
-        rotator.executeMoves(toDo);
-        dr.doMagic();
-        //TimeUnit.SECONDS.sleep(3);
 
+        dr.doMagic();
 
     }
 
