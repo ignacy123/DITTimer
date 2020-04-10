@@ -13,7 +13,7 @@ public class Metronome extends Application {
 
         //FXMLLoader loader= new FXMLLoader();
         //loader.setLocation(this.getClass().getResource("view/Metronome/metronome.fxml"));
-        Pane pane = FXMLLoader.load(getClass().getClassLoader().getResource("metronome.fxml"));;
+        Pane pane = FXMLLoader.load(getClass().getClassLoader().getResource("metronome.fxml"));
 
         Scene scene=new Scene(pane);
 
