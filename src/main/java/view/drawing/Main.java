@@ -20,25 +20,15 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 
-        ScrambleGenerator sg = new ScrambleGeneratorImplementation(CubeType.FOURBYFOUR);
+        ScrambleGenerator sg = new ScrambleGeneratorImplementation(CubeType.THREEBYTHREE);
         ArrayList<Move> l = sg.generate();
 
-        DrawScramble dr = new DrawScramble(CubeType.FOURBYFOUR);
+        ClickDrawer dr = new ClickDrawer();
         System.out.println(sg.scrambleToString(l));
-        Rotator rotator = dr.getRotator();
+        //Rotator rotator = dr.getRotator();
         //Rw' U' D' B' R2
-        //rotator.move(new MoveImplementation(Face.R, Direction.ANTICLOCKWISE, 2));
-        //rotator.move(new MoveImplementation(Face.U, Direction.ANTICLOCKWISE, 2));
-        //rotator.move(new MoveImplementation(Face.D, Direction.ANTICLOCKWISE, 1));
-        //rotator.move(new MoveImplementation(Face.B, Direction.ANTICLOCKWISE, 1));
-
-        //rotator.move(new MoveImplementation(Face.R, Direction.DOUBLE, 1));
-        //rotator.move(new MoveImplementation(Face.D, Direction.CLOCKWISE, 2));
-
-        rotator.executeMoves(l);
 
         dr.doMagic();
-
     }
 
 
