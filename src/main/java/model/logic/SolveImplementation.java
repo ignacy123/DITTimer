@@ -2,15 +2,13 @@ package model.logic;
 
 import model.enums.CubeType;
 import model.enums.State;
-
-import java.sql.Time;
+import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class SolveImplementation implements Solve {
-
-  //  SimpleDateFormat ft;
     Date dateOfSolution;
-    Time timeOfSolution;
+    Timestamp timeOfSolution;
     State whatState;
     CubeType whatCube;
     String comment;
@@ -23,15 +21,23 @@ public class SolveImplementation implements Solve {
         whatCube=CubeType.THREEBYTHREE;
     }
     public SolveImplementation(Date date,long time, State state,CubeType type){
-        timeOfSolution=new Time(time);
+        timeOfSolution=new Timestamp(time);
         whatState=state;
         dateOfSolution=new Date();
         dateOfSolution=date;
         whatCube=type;
     }
-
     @Override
-    public Time getTime() {
+    public String toString(){
+        String toStr = "";
+        toStr+="Time: "+ this.getTime().toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS"));
+        toStr+="\nScramble: "+this.getScramble();
+        toStr+="\nDate: "+this.getDate();
+        toStr+="\nComment: "+this.getComment();
+        return toStr;
+    }
+    @Override
+    public Timestamp getTime() {
         return timeOfSolution;
     }
 
@@ -66,7 +72,7 @@ public class SolveImplementation implements Solve {
     }
 
     @Override
-    public void setTime(Time time) {
+    public void setTime(Timestamp time) {
         this.timeOfSolution=time;
     }
 
