@@ -7,101 +7,131 @@ import model.enums.CubeType;
 import model.enums.State;
 import model.logic.Solve;
 import model.logic.SolveImplementation;
+import model.wrappers.AVGwrapper;
 
 import java.util.*;
 import java.sql.Timestamp;
 
-public class StatisticServerImplementation implements StatisticServer{
-    class AVGwrapper{
-        boolean isDNF;
-        int ID;
-        Timestamp average;
-        AVGwrapper(int i,Timestamp avg, boolean temp){
-            ID=i;
-            average=avg;
-            isDNF=temp;
-        }
-    }
+public class StatisticServerImplementation implements StatisticServer {
     DatabaseServiceImplementation myDataBase;
-    /*
-    ArrayList<Solve> TwoByTwo=new ArrayList<>();
-    ArrayList<Solve> TreeByTree=new ArrayList<>();
-    ArrayList<Solve> FourByFour=new ArrayList<>();
-    */
+
     ObservableList<Solve> TwoByTwo;
     ObservableList<Solve> TreeByTree;
     ObservableList<Solve> FourByFour;
-    ArrayList<AVGwrapper> A5Two=new ArrayList<>();
-    ArrayList<AVGwrapper> A12Two=new ArrayList<>();
-    ArrayList<AVGwrapper> A5Tree=new ArrayList<>();
-    ArrayList<AVGwrapper> A12Tree=new ArrayList<>();
-    ArrayList<AVGwrapper> A5Four=new ArrayList<>();
-    ArrayList<AVGwrapper> A12Four=new ArrayList<>(); // history
+    ObservableList<AVGwrapper> A5Two;
+    ObservableList<AVGwrapper> A12Two;
+    ObservableList<AVGwrapper> A5Tree;
+    ObservableList<AVGwrapper> A12Tree;
+    ObservableList<AVGwrapper> A5Four;
+    ObservableList<AVGwrapper> A12Four; // history
 
     Date CurrentDate;
-    public StatisticServerImplementation(DatabaseServiceImplementation db,ObservableList<Solve> TWO,ObservableList<Solve> TREE,ObservableList<Solve> FOUR){
-        myDataBase=db;
-        CurrentDate=new Date();
-        TwoByTwo=TWO;
-        TreeByTree=TREE;
-        FourByFour=FOUR; //taking lists from outside
+
+    public StatisticServerImplementation(DatabaseServiceImplementation db, ObservableList<Solve> TWO, ObservableList<Solve> TREE, ObservableList<Solve> FOUR,
+                                         ObservableList<AVGwrapper> A5TwoFromOut, ObservableList<AVGwrapper> A12TwoFromOut, ObservableList<AVGwrapper> A5TreeFromOut,
+                                         ObservableList<AVGwrapper> A12TreeFromOut, ObservableList<AVGwrapper> A5FourFromOut, ObservableList<AVGwrapper> A12FourFromOut) {
+        myDataBase = db; // taking db
+        CurrentDate = new Date();
+        TwoByTwo = TWO;
+        TreeByTree = TREE;
+        FourByFour = FOUR; //taking lists of solves from outside
         TwoByTwo.addAll(myDataBase.pullAndParseAllSolves(CubeType.TWOBYTWO));
         TreeByTree.addAll(myDataBase.pullAndParseAllSolves(CubeType.THREEBYTHREE));
-        FourByFour.addAll(myDataBase.pullAndParseAllSolves(CubeType.FOURBYFOUR)); //provides times to those lists
-        initializeHistory(A5Two,TwoByTwo,5);
-        initializeHistory(A12Two,TwoByTwo,12);
-        initializeHistory(A5Tree,TreeByTree,5);
-        initializeHistory(A12Tree,TreeByTree,12);
-        initializeHistory(A5Four,FourByFour,5);
-        initializeHistory(A12Four,FourByFour,12);
+        FourByFour.addAll(myDataBase.pullAndParseAllSolves(CubeType.FOURBYFOUR)); //provides times to those lists from db
+        A5Two = A5TwoFromOut;
+        A12Two = A12TwoFromOut;
+        A5Tree = A5TreeFromOut;
+        A12Tree = A12TreeFromOut;
+        A5Four = A5FourFromOut;
+        A12Four = A12FourFromOut; //taking lists of averages from outside
+        initializeHistory(A5Two, TwoByTwo, 5);
+        initializeHistory(A12Two, TwoByTwo, 12);
+        initializeHistory(A5Tree, TreeByTree, 5);
+        initializeHistory(A12Tree, TreeByTree, 12);
+        initializeHistory(A5Four, FourByFour, 5);
+        initializeHistory(A12Four, FourByFour, 12); // initialize those lists with data from db
     }
-    private void initializeHistory(ArrayList<AVGwrapper> ToFill, ObservableList<Solve> source, int k){
-        if(source.size()<k) return;
-        long value=0;
-        int ID=0;
+    /* private void initializeHistory(ObservableList<AVGwrapper> ToFill, ObservableList<Solve> source, int k){
+         if(source.size()<k) return;
+         long value=0;
+         int ID=0;
+         int i;
+         for(i=0;i<k;i++) value+=source.get(i).getTime().getTime();
+         value=value/k;
+         ToFill.add(new AVGwrapper(ID,new Timestamp(value),false));
+         ID++;
+         i++;
+         while (i<source.size()) {
+             value = value * k;
+             if (source.get(i).getState() == State.DNF)
+                 value += 0;
+             else value += source.get(i).getTime().getTime();
+             if (source.get(i-k).getState() == State.DNF)
+                 value -= 0;
+             else value -= source.get(i-k).getTime().getTime();
+             value = value / k;
+             ToFill.add(new AVGwrapper(ID, new Timestamp(value), false));
+             ID++;
+             i++;
+         }
+     } first version */
+    private void initializeHistory(ObservableList<AVGwrapper> ToFill, ObservableList<Solve> source, int k) {
+        if (source.size() < k) return;
+        int helper;
+        int DNFcounter;
+        long value;
+       // int ID = 0;
         int i;
-        for(i=0;i<k;i++) value+=source.get(i).getTime().getTime();
-        value=value/k;
-        ToFill.add(new AVGwrapper(ID,new Timestamp(value),false));
-        ID++;
-        i++;
-        while (i<source.size()) {
-            value = value * k;
-            if (source.get(i).getState() == State.DNF)
-                value += 0;
-            else value += source.get(i).getTime().getTime();
-            if (source.get(i-k).getState() == State.DNF)
-                value -= 0;
-            else value -= source.get(i-k).getTime().getTime();
+        for (i = k-1; i < source.size(); i++) {
+            helper=k;
+            value=0;
+            DNFcounter=0;
+            for(int j=i;helper>0;j--,helper--){
+                if (source.get(j).getState() == State.DNF){
+                    DNFcounter++;
+                }
+                else value += source.get(j).getTime().getTime();
+            }
             value = value / k;
-            ToFill.add(new AVGwrapper(ID, new Timestamp(value), false));
-            ID++;
-            i++;
+            if(DNFcounter<2)
+            ToFill.add(new AVGwrapper(i, new Timestamp(value), false));
+            else ToFill.add(new AVGwrapper(i, new Timestamp(value), true));
+          //  ID++;
         }
-    } // serve DNF to be add;
+    }
+
     @Override
     public Timestamp GiveMeAverage(int WhatAverage, CubeType WhatModel) throws DNF, NotEnoughTimes {
         Timestamp average;
-        ArrayList<AVGwrapper>temp;
-        if(WhatAverage==5 && WhatModel==CubeType.TWOBYTWO) temp=A5Two;
-        else if(WhatAverage==12 && WhatModel==CubeType.TWOBYTWO) temp=A12Two;
-        else if(WhatAverage==5 && WhatModel==CubeType.THREEBYTHREE) temp=A5Tree;
-        else if(WhatAverage==12 && WhatModel==CubeType.THREEBYTHREE) temp=A12Tree;
-        else if(WhatAverage==5 && WhatModel==CubeType.FOURBYFOUR) temp=A5Four;
-        else temp=A12Four;
+        ObservableList<AVGwrapper> temp;
+        if (WhatAverage == 5 && WhatModel == CubeType.TWOBYTWO) temp = A5Two;
+        else if (WhatAverage == 12 && WhatModel == CubeType.TWOBYTWO) temp = A12Two;
+        else if (WhatAverage == 5 && WhatModel == CubeType.THREEBYTHREE) temp = A5Tree;
+        else if (WhatAverage == 12 && WhatModel == CubeType.THREEBYTHREE) temp = A12Tree;
+        else if (WhatAverage == 5 && WhatModel == CubeType.FOURBYFOUR) temp = A5Four;
+        else temp = A12Four;
+        ObservableList<Solve> source;
+        if (WhatModel == CubeType.TWOBYTWO) {
+            source = TwoByTwo;
+        } else if (WhatModel == CubeType.THREEBYTHREE) {
+            source = TreeByTree;
+        } else {
+            source = FourByFour;
+        }
 
-            try {
-                average=CreateAverage(WhatAverage, WhatModel);
-            } catch (NotEnoughTimes notEnoughTimes) {
-                throw new NotEnoughTimes();
-            } catch (DNF dnf) {
-                temp.add(new AVGwrapper(temp.size(),new Timestamp(0),true));
-                throw new DNF();
-            }
-            temp.add(new AVGwrapper(temp.size(),average,false));
-            return average;
+        try {
+            average = CreateAverage(WhatAverage, WhatModel);
+        } catch (NotEnoughTimes notEnoughTimes) {
+            throw new NotEnoughTimes();
+        } catch (DNF dnf) {
+            temp.add(new AVGwrapper(source.size(), new Timestamp(0), true));
+            throw new DNF();
+        }
+        temp.add(new AVGwrapper(source.size(), average, false));
+        return average;
     }
-    private Timestamp CreateAverage(int WhatAverage,CubeType WhatModel) throws DNF, NotEnoughTimes {
+
+    private Timestamp CreateAverage(int WhatAverage, CubeType WhatModel) throws DNF, NotEnoughTimes {
         ObservableList<Solve> temp;
         if (WhatModel == CubeType.TWOBYTWO) {
             temp = TwoByTwo;
@@ -123,7 +153,7 @@ public class StatisticServerImplementation implements StatisticServer{
             }
             if (amountOfDNF >= 2) throw new DNF();
             else {
-               return new Timestamp(value / WhatAverage);
+                return new Timestamp(value / WhatAverage);
             }
         }
     }
@@ -132,15 +162,15 @@ public class StatisticServerImplementation implements StatisticServer{
     public ArrayList<Timestamp> GiveMeTimes(CubeType WhatModel) {
         ObservableList<Solve> temp;
         if (WhatModel == CubeType.TWOBYTWO) {
-           temp=TwoByTwo;
+            temp = TwoByTwo;
         } else if (WhatModel == CubeType.THREEBYTHREE) {
-           temp=TreeByTree;
+            temp = TreeByTree;
         } else {
-            temp=FourByFour;
+            temp = FourByFour;
         }
-        ArrayList<Timestamp> times =new ArrayList<>();
-        for(Solve a: temp){
-            if(a.getState()==State.DNF || a.getState()==State.REJ) continue;
+        ArrayList<Timestamp> times = new ArrayList<>();
+        for (Solve a : temp) {
+            if (a.getState() == State.DNF || a.getState() == State.REJ) continue;
             times.add(a.getTime());
         }
         return times;
@@ -148,10 +178,10 @@ public class StatisticServerImplementation implements StatisticServer{
 
     @Override
     public void insertSolve(Solve solve) {
-        if (solve.getType()==CubeType.THREEBYTHREE){
+        if (solve.getType() == CubeType.THREEBYTHREE) {
             TreeByTree.add(solve);
-        } else if (solve.getType()==CubeType.TWOBYTWO) {
-           TwoByTwo.add(solve);
+        } else if (solve.getType() == CubeType.TWOBYTWO) {
+            TwoByTwo.add(solve);
         } else {
             FourByFour.add(solve);
         }
@@ -160,17 +190,17 @@ public class StatisticServerImplementation implements StatisticServer{
     @Override
     public Timestamp GiveMeMax(CubeType WhatModel) {
         ObservableList<Solve> temp;
-        Timestamp max=new Timestamp(0);
+        Timestamp max = new Timestamp(0);
         if (WhatModel == CubeType.TWOBYTWO) {
-            temp=TwoByTwo;
+            temp = TwoByTwo;
         } else if (WhatModel == CubeType.THREEBYTHREE) {
-            temp=TreeByTree;
+            temp = TreeByTree;
         } else {
-            temp=FourByFour;
+            temp = FourByFour;
         }
-        for(Solve a : temp){
-            if(a.getTime().getTime()>max.getTime()) // unfortunate
-                max=a.getTime();
+        for (Solve a : temp) {
+            if (a.getTime().getTime() > max.getTime()) // unfortunate
+                max = a.getTime();
         }
         return max;
     }
@@ -178,17 +208,17 @@ public class StatisticServerImplementation implements StatisticServer{
     @Override
     public Timestamp GiveMeMin(CubeType WhatModel) {
         ObservableList<Solve> temp;
-        Timestamp min=new Timestamp(999999999);
+        Timestamp min = new Timestamp(999999999);
         if (WhatModel == CubeType.TWOBYTWO) {
-            temp=TwoByTwo;
+            temp = TwoByTwo;
         } else if (WhatModel == CubeType.THREEBYTHREE) {
-            temp=TreeByTree;
+            temp = TreeByTree;
         } else {
-            temp=FourByFour;
+            temp = FourByFour;
         }
-        for(Solve a : temp){
-            if(a.getTime().getTime()<min.getTime()) // unfortunate
-                min=a.getTime();
+        for (Solve a : temp) {
+            if (a.getTime().getTime() < min.getTime()) // unfortunate
+                min = a.getTime();
         }
         return min;
     }
@@ -197,47 +227,96 @@ public class StatisticServerImplementation implements StatisticServer{
     public void ChangeStateLast(CubeType WhatModel, State state) {
         ObservableList<Solve> temp;
         if (WhatModel == CubeType.TWOBYTWO) {
-            temp=TwoByTwo;
+            temp = TwoByTwo;
+            if(state==State.TWOSECPENALTY){
+                A5Two.get(A5Two.size()-1).TwoSecPenalty(5);
+                A12Two.get(A12Two.size()-1).TwoSecPenalty(12);
+            }else if(state==State.DNF) {
+                if (WhetherSetAVGtoDNF(TwoByTwo, 5) + 1 >= 2) {
+                    A5Two.get(A5Two.size() - 1).setDNF();
+                }
+                if (WhetherSetAVGtoDNF(TwoByTwo, 12) + 1 >= 2) {
+                    A12Two.get(A12Two.size() - 1).setDNF();
+                }
+            }
         } else if (WhatModel == CubeType.THREEBYTHREE) {
-            temp=TreeByTree;
+            temp = TreeByTree;
+            if(state==State.TWOSECPENALTY){
+                A5Tree.get(A5Tree.size()-1).TwoSecPenalty(5);
+                A12Tree.get(A12Tree.size()-1).TwoSecPenalty(12);
+            }else if(state==State.DNF) {
+                if (WhetherSetAVGtoDNF(TreeByTree, 5) + 1 >= 2) {
+                    A5Tree.get(A5Tree.size() - 1).setDNF();
+                }
+                if (WhetherSetAVGtoDNF(TreeByTree, 12) + 1 >= 2) {
+                    A12Tree.get(A12Tree.size() - 1).setDNF();
+                }
+            }
         } else {
-            temp=FourByFour;
+            temp = FourByFour;
+            if(state==State.TWOSECPENALTY){
+                A5Four.get(A5Four.size()-1).TwoSecPenalty(5);
+                A12Four.get(A12Four.size()-1).TwoSecPenalty(12);
+            }else if(state==State.DNF) {
+                if (WhetherSetAVGtoDNF(FourByFour, 5) + 1 >= 2) {
+                    A5Four.get(A5Four.size() - 1).setDNF();
+                }
+                if (WhetherSetAVGtoDNF(FourByFour, 12) + 1 >= 2) {
+                    A12Four.get(A12Four.size() - 1).setDNF();
+                }
+            }
         }
-        temp.get(temp.size()-1).setState(state);
-        myDataBase.updateLast(temp.get(temp.size()-1));
+        temp.get(temp.size() - 1).setState(state);
+        myDataBase.updateLast(temp.get(temp.size() - 1));
     }
-
+    private int WhetherSetAVGtoDNF(ObservableList<Solve>temp, int k){
+        int DNFcounter=0;
+        for(int i=temp.size()-1;k>0;i--,k--){
+            if(temp.get(i).getState()==State.DNF)
+                DNFcounter++;
+        }
+        return DNFcounter;
+    }
     @Override
     public void DeleteLast(CubeType WhatModel) {
         ObservableList<Solve> temp;
         if (WhatModel == CubeType.TWOBYTWO) {
-            temp=TwoByTwo;
+            temp = TwoByTwo;
+            A5Two.remove(A5Two.size()-1);
+            A12Two.remove(A12Two.size()-1);
         } else if (WhatModel == CubeType.THREEBYTHREE) {
-            temp=TreeByTree;
+            temp = TreeByTree;
+            A5Tree.remove(A5Tree.size()-1);
+            A12Tree.remove(A12Tree.size()-1);
         } else {
-            temp=FourByFour;
+            temp = FourByFour;
+            A5Four.remove(A5Four.size()-1);
+            A12Four.remove(A12Four.size()-1);
         }
-        temp.remove(temp.size()-1);
+        temp.remove(temp.size() - 1);
         //////////////////////////////////////////////
         myDataBase.deleteLast(WhatModel);
     }
 
     @Override
-    public void insertAndPackToSolve(Timestamp timeOfSolution, CubeType WhatModel) {
-        Solve solve=new SolveImplementation();
+    public void insertAndPackToSolve(Timestamp timeOfSolution, CubeType WhatModel) throws DNF,NotEnoughTimes {
+        Solve solve = new SolveImplementation();
         solve.setDate(CurrentDate);
         solve.setTime(timeOfSolution);
         solve.setType(WhatModel);
         if (WhatModel == CubeType.TWOBYTWO) {
             TwoByTwo.add(solve);
+            GiveMeAverage(5,CubeType.TWOBYTWO);
+            GiveMeAverage(12,CubeType.TWOBYTWO);
         } else if (WhatModel == CubeType.THREEBYTHREE) {
             TreeByTree.add(solve);
+            GiveMeAverage(5,CubeType.THREEBYTHREE);
+            GiveMeAverage(12,CubeType.THREEBYTHREE);
         } else {
             FourByFour.add(solve);
+            GiveMeAverage(5,CubeType.FOURBYFOUR);
+            GiveMeAverage(12,CubeType.FOURBYFOUR);
         }
-        // state
-        //comment
-        // scramble
         myDataBase.insert(solve);
     }
 
@@ -264,8 +343,9 @@ public class StatisticServerImplementation implements StatisticServer{
         }
     }*/
 
-    public static class DNF extends Exception{
+    public static class DNF extends Exception {
     }
-    public static class NotEnoughTimes extends Exception{
+
+    public static class NotEnoughTimes extends Exception {
     }
 }

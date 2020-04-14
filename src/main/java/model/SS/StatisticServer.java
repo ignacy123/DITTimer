@@ -22,6 +22,6 @@ public interface StatisticServer {
 
     void DeleteLast(CubeType WhatModel);       // changes in DB and in SS
 
-    void insertAndPackToSolve(Timestamp timeOfsolution, CubeType whatCube); // take Time from Timer returns Solve; // missing scramble and state
+    void insertAndPackToSolve(Timestamp timeOfsolution, CubeType whatCube) throws StatisticServerImplementation.DNF, StatisticServerImplementation.NotEnoughTimes; // take Time from Timer returns Solve; // missing scramble and state
 
 }
