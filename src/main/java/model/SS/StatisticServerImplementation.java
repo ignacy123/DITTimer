@@ -1,6 +1,6 @@
 package model.SS;
 
-
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.db.DatabaseServiceImplementation;
 import model.enums.CubeType;
@@ -27,10 +27,11 @@ public class StatisticServerImplementation implements StatisticServer {
 
     Date CurrentDate;
 
-    public StatisticServerImplementation(DatabaseServiceImplementation db, ObservableList<Solve> TWO, ObservableList<Solve> TREE, ObservableList<Solve> FOUR,
+    public StatisticServerImplementation(ObservableList<Solve> TWO, ObservableList<Solve> TREE, ObservableList<Solve> FOUR,
                                          ObservableList<AVGwrapper> A5TwoFromOut, ObservableList<AVGwrapper> A12TwoFromOut, ObservableList<AVGwrapper> A5TreeFromOut,
                                          ObservableList<AVGwrapper> A12TreeFromOut, ObservableList<AVGwrapper> A5FourFromOut, ObservableList<AVGwrapper> A12FourFromOut) {
-        myDataBase = db; // taking db
+        myDataBase = new DatabaseServiceImplementation();
+        myDataBase.start();
         CurrentDate = new Date();
         TwoByTwo = TWO;
         TreeByTree = TREE;
@@ -101,8 +102,9 @@ public class StatisticServerImplementation implements StatisticServer {
     }
 
     @Override
-    public Timestamp GiveMeAverage(int WhatAverage, CubeType WhatModel) throws DNF, NotEnoughTimes {
-        Timestamp average;
+    public Timestamp GiveMeAverage(int WhatAverage, CubeType WhatModel){
+        Timestamp average = null;
+        boolean somethingWrong=false;
         ObservableList<AVGwrapper> temp;
         if (WhatAverage == 5 && WhatModel == CubeType.TWOBYTWO) temp = A5Two;
         else if (WhatAverage == 12 && WhatModel == CubeType.TWOBYTWO) temp = A12Two;
@@ -122,11 +124,14 @@ public class StatisticServerImplementation implements StatisticServer {
         try {
             average = CreateAverage(WhatAverage, WhatModel);
         } catch (NotEnoughTimes notEnoughTimes) {
-            throw new NotEnoughTimes();
+            temp.add(new AVGwrapper(source.size(), new Timestamp(0), false));
+            temp.get(temp.size()-1).setNET();
+            somethingWrong=true;
         } catch (DNF dnf) {
             temp.add(new AVGwrapper(source.size(), new Timestamp(0), true));
-            throw new DNF();
+            somethingWrong=true;
         }
+        if(!somethingWrong)
         temp.add(new AVGwrapper(source.size(), average, false));
         return average;
     }
@@ -174,17 +179,6 @@ public class StatisticServerImplementation implements StatisticServer {
             times.add(a.getTime());
         }
         return times;
-    }
-
-    @Override
-    public void insertSolve(Solve solve) {
-        if (solve.getType() == CubeType.THREEBYTHREE) {
-            TreeByTree.add(solve);
-        } else if (solve.getType() == CubeType.TWOBYTWO) {
-            TwoByTwo.add(solve);
-        } else {
-            FourByFour.add(solve);
-        }
     }
 
     @Override
@@ -299,16 +293,13 @@ public class StatisticServerImplementation implements StatisticServer {
     }
 
     @Override
-    public void insertAndPackToSolve(Timestamp timeOfSolution, CubeType WhatModel) throws DNF,NotEnoughTimes {
-        Solve solve = new SolveImplementation();
-        solve.setDate(CurrentDate);
-        solve.setTime(timeOfSolution);
-        solve.setType(WhatModel);
-        if (WhatModel == CubeType.TWOBYTWO) {
+    public void insertSolve(Solve solve){
+
+        if (solve.getType() == CubeType.TWOBYTWO) {
             TwoByTwo.add(solve);
             GiveMeAverage(5,CubeType.TWOBYTWO);
             GiveMeAverage(12,CubeType.TWOBYTWO);
-        } else if (WhatModel == CubeType.THREEBYTHREE) {
+        } else if (solve.getType() == CubeType.THREEBYTHREE) {
             TreeByTree.add(solve);
             GiveMeAverage(5,CubeType.THREEBYTHREE);
             GiveMeAverage(12,CubeType.THREEBYTHREE);

@@ -1,33 +1,62 @@
 package model.SS;
 
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.db.DatabaseServiceImplementation;
 import model.enums.CubeType;
 import model.enums.State;
 import model.logic.Solve;
 import model.logic.SolveImplementation;
+import model.wrappers.AVGwrapper;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Random;
 
 import static org.junit.Assert.assertEquals;
 
 public class testSS {
+    DatabaseServiceImplementation db;
+    ObservableList<Solve> Two;
+    ObservableList<Solve> Tree;
+    ObservableList<Solve> Four;
+    ObservableList<AVGwrapper> A5Two;
+    ObservableList<AVGwrapper> A12Two;
+    ObservableList<AVGwrapper> A5Tree;
+    ObservableList<AVGwrapper> A12Tree;
+    ObservableList<AVGwrapper> A5Four;
+    ObservableList<AVGwrapper> A12Four;
+    StatisticServer SS;
+    @Before
+    public void intit(){
+        db = new DatabaseServiceImplementation();
+        Two= FXCollections.observableArrayList();
+        Tree= FXCollections.observableArrayList();
+        Four= FXCollections.observableArrayList();
+        A5Two= FXCollections.observableArrayList();
+        A12Two= FXCollections.observableArrayList();
+        A5Tree= FXCollections.observableArrayList();
+        A12Tree= FXCollections.observableArrayList();
+        A5Four= FXCollections.observableArrayList();
+        A12Four= FXCollections.observableArrayList();
+        SS=new StatisticServerImplementation(Two,Tree,Four,A5Two,A12Two,A5Tree,A12Tree,A5Four,A12Four);
 
-    DatabaseServiceImplementation db = new DatabaseServiceImplementation();
-
+    }
+/*
     @Test
     public void justComputingAVG() throws StatisticServerImplementation.NotEnoughTimes, StatisticServerImplementation.DNF {
         Random random=new Random();
         db.dropDatabase();
         db.start();
-        StatisticServer SS = new StatisticServerImplementation(db);
         System.out.println("TEST1 BEGINS=====================================");
-        Time[] times=new Time[20];
+        Timestamp[] times=new Timestamp[20];
         long value=0;
         for(int i=0;i<20;i++){
-            times[i]=new Time(random.nextInt(9999999));
+            times[i]=new Timestamp(random.nextInt(9999999));
             value+=times[i].getTime();
         }  // generates Times
 
@@ -52,13 +81,12 @@ public class testSS {
         Random random=new Random();
         db.dropDatabase();
         db.start();
-        StatisticServer SS = new StatisticServerImplementation(db);
         System.out.println("TEST2 BEGINS=====================================");
-        Time[] times=new Time[5];
+        Timestamp[] times=new Timestamp[5];
         long value=0;
 
         for(int i=0;i<3;i++){
-            times[i]=new Time(random.nextInt(99999));
+            times[i]=new Timestamp(random.nextInt(99999));
 
             value+=times[i].getTime();
         }  // generates Times
@@ -74,7 +102,7 @@ public class testSS {
         System.out.println("Computed static: " + average);
         System.out.println("Computed by SS: " + SS.GiveMeAverage(3,CubeType.THREEBYTHREE));
         System.out.println("Lets add one time, see if average refreshes");
-        Time addtime=new Time(random.nextInt(99999));
+        Timestamp addtime=new Timestamp(random.nextInt(99999));
         System.out.println("Added " + addtime);
         SS.insertAndPackToSolve(addtime,CubeType.THREEBYTHREE);
         System.out.println("Computed static: " + new Time((times[1].getTime()+times[2].getTime()+addtime.getTime())/3));
@@ -84,13 +112,12 @@ public class testSS {
     public void DNF_and_DEL(){
         db.dropDatabase();
         db.start();
-        StatisticServer SS = new StatisticServerImplementation(db);
         Random random=new Random();
-        Time[] times=new Time[5];
+        Timestamp[] times=new Timestamp[5];
         Solve[] solves=new SolveImplementation[5];
         long value=0;
         for(int i=0;i<5;i++){
-            times[i]=new Time(random.nextInt(99999));
+            times[i]=new Timestamp(random.nextInt(99999));
             solves[i]=new SolveImplementation();
             solves[i].setTime(times[i]);
             SS.insertSolve(solves[i]);
@@ -130,15 +157,14 @@ public class testSS {
         }
     }
     @Test
-    public void MAXandMIN() {
+    public void MAXandMIN() throws StatisticServerImplementation.NotEnoughTimes, StatisticServerImplementation.DNF {
         db.dropDatabase();
         db.start();
-        StatisticServer SS = new StatisticServerImplementation(db);
         Random random = new Random();
-        Time[] times = new Time[5];
+        Timestamp[] times = new Timestamp[5];
         long value = 0;
         for (int i = 0; i < 5; i++) {
-            times[i] = new Time(random.nextInt(999999));
+            times[i] = new Timestamp(random.nextInt(999999));
 
             value += times[i].getTime();
         }  // generates Times
@@ -152,15 +178,14 @@ public class testSS {
         System.out.println(SS.GiveMeMin(CubeType.THREEBYTHREE));
     }
     @Test
-    public void TimesToArray() {
+    public void TimesToArray() throws StatisticServerImplementation.NotEnoughTimes, StatisticServerImplementation.DNF {
         db.dropDatabase();
         db.start();
-        ArrayList<Time> timesStatic=new ArrayList<>();
-        StatisticServer SS = new StatisticServerImplementation(db);
+        ArrayList<Timestamp> timesStatic=new ArrayList<>();
         Random random = new Random();
-        Time[] times = new Time[5];
+        Timestamp[] times = new Timestamp[5];
         for (int i = 0; i < 5; i++) {
-            times[i] = new Time(random.nextInt(999999));
+            times[i] = new Timestamp(random.nextInt(999999));
             timesStatic.add(times[i]);
         }  // generates Times
         for (int i = 0; i < 5; i++)

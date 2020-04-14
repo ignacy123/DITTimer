@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 public class AVGwrapper {
 
     boolean isDNF;
+    boolean isNotEnoughTimes;
     int ID;
     Timestamp average;
 
@@ -17,6 +18,13 @@ public class AVGwrapper {
     public void setDNF(){
         isDNF=true;
     }
+
+    public void setNET(){
+        isNotEnoughTimes=true;
+    }
+    public boolean isNET(){
+        return isNotEnoughTimes;
+    }
     public void TwoSecPenalty(int k){
         long value=average.getTime();
         value=value*k;
@@ -27,5 +35,6 @@ public class AVGwrapper {
         ID = i;
         average = avg;
         isDNF = temp;
+        isNotEnoughTimes=false;
     }
 }
