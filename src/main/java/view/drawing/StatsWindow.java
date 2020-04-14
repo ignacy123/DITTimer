@@ -15,6 +15,7 @@ import model.logic.SolveImplementation;
 
 import java.net.URL;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -63,7 +64,7 @@ public class StatsWindow implements Initializable {
         for(int i = 0; i < 'z' - 'a'; i++) {
             Solve solve = new SolveImplementation();
             solve.setDate(new Date(2020+ i, Calendar.MARCH, i));
-            solve.setTime(Time.valueOf(LocalTime.of((int)(i * (Math.random() % 24)), (int) (i*(Math.random() % 24)), 23)));
+            solve.setTime(new Timestamp(1000));
             inp.add(solve);
         }
     }

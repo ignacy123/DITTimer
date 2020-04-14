@@ -8,6 +8,7 @@ import model.enums.CubeType;
 import model.enums.State;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -22,7 +23,7 @@ public class main {
         solve.setType(CubeType.THREEBYTHREE);
         solve.setState(State.CORRECT);
         solve.setDate(new Date());
-        solve.setTime(new Time(1000));
+        solve.setTime(new Timestamp(1000));
         solve.setComment("");
         solve.setScramble(scr.scrambleToString(scr.generate()));
         db.insert(solve);
@@ -35,7 +36,7 @@ public class main {
         System.out.println(list.get(0).getComment());
         System.out.println(list.get(0).getScramble());
         solve.setComment("gywd");
-        solve.setTime(new Time(10000));
+        solve.setTime(new Timestamp(10000));
         System.out.println(db.pullAndParseAllSolves(CubeType.THREEBYTHREE).get(0).getTime());
         db.updateLast(solve);
         System.out.println(db.pullAndParseAllSolves(CubeType.THREEBYTHREE).get(0).getTime());

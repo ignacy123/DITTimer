@@ -9,8 +9,7 @@ public class SolveConverter extends StringConverter<Solve> {
 
     @Override
     public String toString(Solve solve) {
-        //return solve.getTime().toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS"));
-        return "jak daniel zmienie date to bedzie zmieniona";
+        return solve.getTime().toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS"));
     }
 
     @Override

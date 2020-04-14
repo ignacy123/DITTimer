@@ -6,6 +6,7 @@ import model.logic.*;
 import org.junit.Test;
 
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -30,7 +31,7 @@ public class DbTest {
         solve.setType(CubeType.THREEBYTHREE);
         solve.setState(State.CORRECT);
         solve.setDate(date);
-        solve.setTime(new Time(1000));
+        solve.setTime(new Timestamp(1000));
         solve.setComment("test");
         solve.setScramble(scramble);
         db.insert(solve);
@@ -56,7 +57,7 @@ public class DbTest {
         solve.setType(CubeType.FOURBYFOUR);
         solve.setState(State.TWOSECPENALTY);
         solve.setDate(date);
-        solve.setTime(new Time(1000));
+        solve.setTime(new Timestamp(1000));
         solve.setComment("test");
         solve.setScramble(scramble);
         db.insert(solve);
@@ -82,7 +83,7 @@ public class DbTest {
         solve.setType(CubeType.TWOBYTWO);
         solve.setState(State.DNF);
         solve.setDate(date);
-        solve.setTime(new Time(1000));
+        solve.setTime(new Timestamp(1000));
         solve.setComment("test");
         solve.setScramble(scramble);
         db.insert(solve);
@@ -108,7 +109,7 @@ public class DbTest {
         solve.setType(CubeType.TWOBYTWO);
         solve.setState(State.DNF);
         solve.setDate(date);
-        solve.setTime(new Time(1000));
+        solve.setTime(new Timestamp(1000));
         solve.setComment("test");
         solve.setScramble(scramble);
         db.insert(solve);
@@ -155,7 +156,7 @@ public class DbTest {
         solve.setType(CubeType.TWOBYTWO);
         solve.setState(State.DNF);
         solve.setDate(date);
-        solve.setTime(new Time(1000));
+        solve.setTime(new Timestamp(1000));
         solve.setComment("test");
         solve.setScramble(scramble);
         db.insert(solve);
@@ -178,7 +179,7 @@ public class DbTest {
         solve.setType(CubeType.THREEBYTHREE);
         solve.setState(State.CORRECT);
         solve.setDate(date);
-        solve.setTime(new Time(10000));
+        solve.setTime(new Timestamp(10000));
         solve.setComment("test2");
         solve.setScramble(scramble);
 
@@ -208,7 +209,7 @@ public class DbTest {
         solve.setType(CubeType.FOURBYFOUR);
         solve.setState(State.TWOSECPENALTY);
         solve.setDate(date);
-        solve.setTime(new Time(100000));
+        solve.setTime(new Timestamp(100000));
         solve.setComment("test2");
         solve.setScramble(scramble);
         solve.setType(CubeType.FOURBYFOUR);
@@ -246,8 +247,8 @@ public class DbTest {
         Solve solve2 = new SolveImplementation();
         solve1.setType(CubeType.TWOBYTWO);
         solve2.setType(CubeType.TWOBYTWO);
-        solve1.setTime(new Time(1000));
-        solve2.setTime(new Time(10000));
+        solve1.setTime(new Timestamp(1000));
+        solve2.setTime(new Timestamp(10000));
         solve1.setDate(date);
         solve2.setDate(date2);
         solve1.setComment("test1");

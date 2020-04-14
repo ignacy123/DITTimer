@@ -122,7 +122,7 @@ public class DatabaseServiceImplementation implements DatabaseService {
             }
             String sql = sql1+sql2+sql3;
             pstmt = c.prepareStatement(sql);
-            pstmt.setTime(1, solve.getTime());
+            pstmt.setTimestamp(1, solve.getTime());
             switch(solve.getState()){
                 case CORRECT:
                     pstmt.setInt(2, 0);
@@ -182,7 +182,7 @@ public class DatabaseServiceImplementation implements DatabaseService {
             while(rs.next()){
                 Solve solve = new SolveImplementation();
                 solve.setID(rs.getInt(1));
-                solve.setTime(rs.getTime(2));
+                solve.setTime(rs.getTimestamp(2));
                 int a = rs.getInt(3);
                 switch(a){
                     case 0:
@@ -283,7 +283,7 @@ public class DatabaseServiceImplementation implements DatabaseService {
             }
             sql = "UPDATE "+sql2+" SET TIME = ?, STATE = ?, COMMENT = ?, SCRAMBLE = ?, DATE = ? WHERE id="+i;
             pstmt = c.prepareStatement(sql);
-            pstmt.setTime(1, solve.getTime());
+            pstmt.setTimestamp(1, solve.getTime());
             switch(solve.getState()){
                 case CORRECT:
                     pstmt.setInt(2, 0);
