@@ -19,6 +19,9 @@ public class AVGwrapper {
         isDNF=true;
     }
 
+    public int getID(){
+        return ID;
+    }
     public void setNET(){
         isNotEnoughTimes=true;
     }
@@ -37,4 +40,6 @@ public class AVGwrapper {
         isDNF = temp;
         isNotEnoughTimes=false;
     }
+
+
 }

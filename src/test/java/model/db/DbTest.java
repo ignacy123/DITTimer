@@ -3,10 +3,11 @@ package model.db;
 import model.enums.CubeType;
 import model.enums.State;
 import model.logic.*;
+import org.hsqldb.types.IntervalSecondData;
 import org.junit.Test;
 
-import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -39,7 +40,7 @@ public class DbTest {
         assertEquals(1, list.size());
         Solve pulledSolve = list.get(0);
         assertEquals(pulledSolve.getID(), 1);
-        assertEquals(pulledSolve.getTime(), new Time(1000));
+        assertEquals(pulledSolve.getTime(), new Timestamp(1000));
         assertEquals(pulledSolve.getState(), State.CORRECT);
         assertEquals("test", pulledSolve.getComment().trim());
         assertEquals(pulledSolve.getScramble(), scramble);
@@ -65,7 +66,7 @@ public class DbTest {
         assertEquals(1, list.size());
         Solve pulledSolve = list.get(0);
         assertEquals(pulledSolve.getID(), 1);
-        assertEquals(pulledSolve.getTime(), new Time(1000));
+        assertEquals(pulledSolve.getTime(), new Timestamp(1000));
         assertEquals(pulledSolve.getState(), State.TWOSECPENALTY);
         assertEquals("test", pulledSolve.getComment().trim());
         assertEquals(pulledSolve.getScramble(), scramble);
@@ -91,7 +92,7 @@ public class DbTest {
         assertEquals(1, list.size());
         Solve pulledSolve = list.get(0);
         assertEquals(pulledSolve.getID(), 1);
-        assertEquals(pulledSolve.getTime(), new Time(1000));
+        assertEquals(pulledSolve.getTime(), new Timestamp(1000));
         assertEquals(pulledSolve.getState(), State.DNF);
         assertEquals("test", pulledSolve.getComment().trim());
         assertEquals(pulledSolve.getScramble(), scramble);
@@ -248,7 +249,7 @@ public class DbTest {
         solve1.setType(CubeType.TWOBYTWO);
         solve2.setType(CubeType.TWOBYTWO);
         solve1.setTime(new Timestamp(1000));
-        solve2.setTime(new Timestamp(10000));
+        solve2.setTime(new Timestamp(10001));
         solve1.setDate(date);
         solve2.setDate(date2);
         solve1.setComment("test1");
@@ -261,7 +262,8 @@ public class DbTest {
         db.updateLast(solve2);
         Solve solve3 = db.pullAndParseAllSolves(CubeType.TWOBYTWO).get(0);
         assertEquals(1, solve3.getID());
-        assertEquals(new Time(10000), solve3.getTime());
+        System.out.println(solve3.getTime());
+        assertEquals(new Timestamp(10001), solve3.getTime());
         assertEquals(date2, solve3.getDate());
         assertEquals(scr2.toString(), solve3.getScramble());
         assertEquals(CubeType.TWOBYTWO, solve3.getType());
@@ -273,8 +275,7 @@ public class DbTest {
         db.insert(solve1);
         db.updateLast(solve2);
         solve3 = db.pullAndParseAllSolves(CubeType.THREEBYTHREE).get(0);
-        assertEquals(1, solve3.getID());
-        assertEquals(new Time(10000), solve3.getTime());
+        assertEquals(new Timestamp(10001).toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS")), solve3.getTime().toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS")));
         assertEquals(date2, solve3.getDate());
         assertEquals(scr2.toString(), solve3.getScramble());
         assertEquals(CubeType.THREEBYTHREE, solve3.getType());
@@ -287,7 +288,7 @@ public class DbTest {
         db.updateLast(solve2);
         solve3 = db.pullAndParseAllSolves(CubeType.FOURBYFOUR).get(0);
         assertEquals(1, solve3.getID());
-        assertEquals(new Time(10000), solve3.getTime());
+        assertEquals(new Timestamp(10001), solve3.getTime());
         assertEquals(date2, solve3.getDate());
         assertEquals(scr2.toString(), solve3.getScramble());
         assertEquals(CubeType.FOURBYFOUR, solve3.getType());

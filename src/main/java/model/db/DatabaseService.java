@@ -19,4 +19,6 @@ public interface DatabaseService {
 
     //only for tests, should be removed before release;
     void dropDatabase();
+
+    void insertIntervalAndTest();
 }

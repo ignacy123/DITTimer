@@ -11,9 +11,11 @@ public class AvgConverter extends StringConverter<AVGwrapper> {
     @Override
     public String toString(AVGwrapper avGwrapper) {
         String str = "";
-        if(avGwrapper.isDNF()){
+        if (avGwrapper.isDNF()) {
             str = "DNF";
-        }else{
+        } else if (avGwrapper.isNET()) {
+            str = "-";
+        } else {
             str = avGwrapper.getAVG().toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS"));
         }
         return str;

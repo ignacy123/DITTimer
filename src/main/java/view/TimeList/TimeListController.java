@@ -1,9 +1,11 @@
 package view.TimeList;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ListView;
 import javafx.scene.control.cell.TextFieldListCell;
@@ -15,16 +17,24 @@ import model.SS.StatisticServer;
 import model.SS.StatisticServerImplementation;
 import model.db.DatabaseService;
 import model.db.DatabaseServiceImplementation;
+import model.enums.AVG;
 import model.enums.CubeType;
+import model.enums.State;
+import model.logic.ScrambleGenerator;
+import model.logic.ScrambleGeneratorImplementation;
 import model.logic.Solve;
 import model.logic.SolveImplementation;
 import model.wrappers.AVGwrapper;
+import model.wrappers.ObservableWrapper;
 
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
+
+import static model.enums.AVG.Ao12;
+import static model.enums.AVG.Ao5;
 
 
 public class TimeListController extends Stage {
@@ -36,25 +46,40 @@ public class TimeListController extends Stage {
     private ListView listView3;
     @FXML
     private Button button;
-    private ObservableList<Solve> list1 = FXCollections.observableArrayList();
-    private ObservableList<Solve> list2 = FXCollections.observableArrayList();
-    private ObservableList<Solve> list3 = FXCollections.observableArrayList();
-    private ObservableList<AVGwrapper> list4 = FXCollections.observableArrayList();
-    private ObservableList<AVGwrapper> list5 = FXCollections.observableArrayList();
-    private ObservableList<AVGwrapper> list6 = FXCollections.observableArrayList();
-    private ObservableList<AVGwrapper> list7 = FXCollections.observableArrayList();
-    private ObservableList<AVGwrapper> list8 = FXCollections.observableArrayList();
-    private ObservableList<AVGwrapper> list9 = FXCollections.observableArrayList();
+    @FXML
+    private Button button2;
+    @FXML
+    private Button button3;
+    @FXML
+    private Button button4;
+    @FXML
+    private ChoiceBox<CubeType> choiceBox;
     StatisticServer ss;
+    ObservableWrapper ow = new ObservableWrapper();
+    private CubeType currentType;
 
     @FXML
     void initialize() {
-        DatabaseService db = new DatabaseServiceImplementation();
-        db.start();
-        ss = new StatisticServerImplementation((DatabaseServiceImplementation)db, list1, list2, list3, list4, list5, list6, list7, list8, list9);
-        listView.setItems(list2);
-        listView2.setItems(list6);
-        listView3.setItems(list7);
+        choiceBox.setItems(FXCollections.observableArrayList(CubeType.TWOBYTWO, CubeType.THREEBYTHREE, CubeType.FOURBYFOUR));
+        choiceBox.setValue(CubeType.THREEBYTHREE);
+        choiceBox.getSelectionModel().selectedIndexProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
+                currentType = choiceBox.getItems().get((Integer) number2);
+                listView.setItems(ow.getListOfSolves(currentType));
+                listView2.setItems(ow.getListAvg(currentType, Ao5));
+                listView3.setItems(ow.getListAvg(currentType, Ao12));
+            }
+        });
+        currentType = CubeType.THREEBYTHREE;
+//        DatabaseService db = new DatabaseServiceImplementation();
+//        db.dropDatabase();
+        ss = new StatisticServerImplementation(ow.getListOfSolves(CubeType.TWOBYTWO), ow.getListOfSolves(CubeType.THREEBYTHREE), ow.getListOfSolves(CubeType.FOURBYFOUR),
+                ow.getListAvg(CubeType.TWOBYTWO, Ao5), ow.getListAvg(CubeType.TWOBYTWO, Ao12), ow.getListAvg(CubeType.THREEBYTHREE, Ao5),
+                ow.getListAvg(CubeType.THREEBYTHREE, Ao12), ow.getListAvg(CubeType.FOURBYFOUR, Ao5), ow.getListAvg(CubeType.FOURBYFOUR, Ao12));
+        listView.setItems(ow.getListOfSolves(CubeType.THREEBYTHREE));
+        listView2.setItems(ow.getListAvg(CubeType.THREEBYTHREE, Ao5));
+        listView3.setItems(ow.getListAvg(CubeType.THREEBYTHREE, Ao12));
         listView.setCellFactory(listView1 -> {
             TextFieldListCell<Solve> cell = new TextFieldListCell<>();
             cell.setConverter(new SolveConverter());
@@ -75,24 +100,34 @@ public class TimeListController extends Stage {
 
     @FXML
     void buttonPressed() {
+        ScrambleGenerator scr = new ScrambleGeneratorImplementation(currentType);
         Random random = new Random();
         Solve solve = new SolveImplementation();
+        solve.setType(currentType);
         solve.setTime(new Timestamp(random.nextInt(100000)));
-        solve.setScramble("R U F2");
+        solve.setScramble(scr.scrambleToString(scr.generate()));
         solve.setComment("test");
         solve.setDate(new Date());
-        try {
-            ss.insertAndPackToSolve(new Timestamp(random.nextInt(100000)), CubeType.THREEBYTHREE);
-        } catch (StatisticServerImplementation.DNF dnf) {
-            dnf.printStackTrace();
-        } catch (StatisticServerImplementation.NotEnoughTimes notEnoughTimes) {
-            notEnoughTimes.printStackTrace();
-        }
+        ss.insertSolve(solve);
+        System.out.println("button pressed");
+    }
+
+    @FXML
+    void buttonPressed2() {
+        ScrambleGenerator scr = new ScrambleGeneratorImplementation(currentType);
+        Random random = new Random();
+        Solve solve = new SolveImplementation();
+        solve.setType(currentType);
+        solve.setTime(new Timestamp(random.nextInt(100000)));
+        solve.setScramble(scr.scrambleToString(scr.generate()));
+        solve.setComment("test");
+        solve.setDate(new Date());
+        solve.setState(State.DNF);
+        ss.insertSolve(solve);
         System.out.println("button pressed");
     }
 
     public void handle(MouseEvent event) {
-
         if (!event.getButton().equals(MouseButton.PRIMARY)) {
             return;
         }
@@ -101,11 +136,7 @@ public class TimeListController extends Stage {
             return;
         }
         Solve solve = (Solve) listView.getSelectionModel().getSelectedItem();
-        String toStr = "";
-        //toStr+="Time: "+ solve.getTime().toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS"));
-        toStr+="\nScramble: "+solve.getScramble();
-        toStr+="\nDate: "+solve.getDate();
-        toStr+="\nComment: "+solve.getComment();
+        String toStr = solve.toString();
         Dialog d = new Dialog();
         Window window = d.getDialogPane().getScene().getWindow();
         window.setOnCloseRequest(e -> window.hide());
@@ -115,7 +146,56 @@ public class TimeListController extends Stage {
         d.show();
     }
 
+    public void handle2(MouseEvent event) {
+        if (!event.getButton().equals(MouseButton.PRIMARY)) {
+            return;
+        }
+
+        if (event.getClickCount() != 2) {
+            return;
+        }
+        AVGwrapper avg = (AVGwrapper) listView2.getSelectionModel().getSelectedItem();
+        Dialog d = new Dialog();
+        Window window = d.getDialogPane().getScene().getWindow();
+        window.setOnCloseRequest(e -> window.hide());
+        d.setTitle("Solve Info");
+        d.setHeaderText("");
+        SolveConverter converter = new SolveConverter();
+        String str = "";
+        for (int i = 4; i >= 0; i--) {
+            str += 5 - i + ". " + converter.toString(ow.getListOfSolves(currentType).get(avg.getID() - i-1)) + '\n';
+            str += ow.getListOfSolves(currentType).get(avg.getID() - i-1).getScramble() + "\n";
+        }
+        d.setContentText(str);
+        d.show();
+    }
+
+    public void handle3(MouseEvent event) {
+        if (!event.getButton().equals(MouseButton.PRIMARY)) {
+            return;
+        }
+
+        if (event.getClickCount() != 2) {
+            return;
+        }
+        AVGwrapper avg = (AVGwrapper) listView3.getSelectionModel().getSelectedItem();
+        Dialog d = new Dialog();
+        Window window = d.getDialogPane().getScene().getWindow();
+        window.setOnCloseRequest(e -> window.hide());
+        d.setTitle("Solve Info");
+        d.setHeaderText("");
+        SolveConverter converter = new SolveConverter();
+        String str = "";
+        for (int i = 11; i >= 0; i--) {
+            str += 12 - i + ". " + converter.toString(ow.getListOfSolves(currentType).get(avg.getID() - i-1)) + '\n';
+            str += ow.getListOfSolves(currentType).get(avg.getID() - i-1).getScramble() + "\n";
+        }
+        d.setContentText(str);
+        d.show();
+    }
+
     public TimeListController() {
+
     }
 
 }
