@@ -13,7 +13,7 @@ public interface StatisticServer {
 
     ArrayList<Timestamp> GiveMeTimes(CubeType WhatModel); // returns all times of specific Cube // for now only good times
 
-    void insertSolve(Solve solve); // for tests
+    void insertSolve(Solve solve);
     Timestamp GiveMeMax(CubeType WhatModel); // return Max Time != DNF or throw exception NoTimesFound
 
     Timestamp GiveMeMin(CubeType WhatModel); // return Min Time != DNF or throw exception NoTimesFound
@@ -22,6 +22,6 @@ public interface StatisticServer {
 
     void DeleteLast(CubeType WhatModel);       // changes in DB and in SS
 
-    void insertAndPackToSolve(Timestamp timeOfsolution, CubeType whatCube) throws StatisticServerImplementation.DNF, StatisticServerImplementation.NotEnoughTimes; // take Time from Timer returns Solve; // missing scramble and state
+
 
 }
