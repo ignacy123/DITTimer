@@ -74,9 +74,7 @@ public class TimeListController extends Stage {
         currentType = CubeType.THREEBYTHREE;
 //        DatabaseService db = new DatabaseServiceImplementation();
 //        db.dropDatabase();
-        ss = new StatisticServerImplementation(ow.getListOfSolves(CubeType.TWOBYTWO), ow.getListOfSolves(CubeType.THREEBYTHREE), ow.getListOfSolves(CubeType.FOURBYFOUR),
-                ow.getListAvg(CubeType.TWOBYTWO, Ao5), ow.getListAvg(CubeType.TWOBYTWO, Ao12), ow.getListAvg(CubeType.THREEBYTHREE, Ao5),
-                ow.getListAvg(CubeType.THREEBYTHREE, Ao12), ow.getListAvg(CubeType.FOURBYFOUR, Ao5), ow.getListAvg(CubeType.FOURBYFOUR, Ao12));
+        ss = new StatisticServerImplementation(ow);
         listView.setItems(ow.getListOfSolves(CubeType.THREEBYTHREE));
         listView2.setItems(ow.getListAvg(CubeType.THREEBYTHREE, Ao5));
         listView3.setItems(ow.getListAvg(CubeType.THREEBYTHREE, Ao12));

@@ -3,11 +3,13 @@ package model.SS;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.db.DatabaseServiceImplementation;
+import model.enums.AVG;
 import model.enums.CubeType;
 import model.enums.State;
 import model.logic.Solve;
 import model.logic.SolveImplementation;
 import model.wrappers.AVGwrapper;
+import model.wrappers.ObservableWrapper;
 
 import java.util.*;
 import java.sql.Timestamp;
@@ -27,24 +29,22 @@ public class StatisticServerImplementation implements StatisticServer {
 
     Date CurrentDate;
 
-    public StatisticServerImplementation(ObservableList<Solve> TWO, ObservableList<Solve> TREE, ObservableList<Solve> FOUR,
-                                         ObservableList<AVGwrapper> A5TwoFromOut, ObservableList<AVGwrapper> A12TwoFromOut, ObservableList<AVGwrapper> A5TreeFromOut,
-                                         ObservableList<AVGwrapper> A12TreeFromOut, ObservableList<AVGwrapper> A5FourFromOut, ObservableList<AVGwrapper> A12FourFromOut) {
+    public StatisticServerImplementation(ObservableWrapper OW) {
         myDataBase = new DatabaseServiceImplementation();
         myDataBase.start();
         CurrentDate = new Date();
-        TwoByTwo = TWO;
-        TreeByTree = TREE;
-        FourByFour = FOUR; //taking lists of solves from outside
+        TwoByTwo = OW.getListOfSolves(CubeType.TWOBYTWO);
+        TreeByTree = OW.getListOfSolves(CubeType.THREEBYTHREE);
+        FourByFour = OW.getListOfSolves(CubeType.FOURBYFOUR); //taking lists of solves from outside
         TwoByTwo.addAll(myDataBase.pullAndParseAllSolves(CubeType.TWOBYTWO));
         TreeByTree.addAll(myDataBase.pullAndParseAllSolves(CubeType.THREEBYTHREE));
         FourByFour.addAll(myDataBase.pullAndParseAllSolves(CubeType.FOURBYFOUR)); //provides times to those lists from db
-        A5Two = A5TwoFromOut;
-        A12Two = A12TwoFromOut;
-        A5Tree = A5TreeFromOut;
-        A12Tree = A12TreeFromOut;
-        A5Four = A5FourFromOut;
-        A12Four = A12FourFromOut; //taking lists of averages from outside
+        A5Two = OW.getListAvg(CubeType.TWOBYTWO, AVG.Ao5);
+        A12Two =  OW.getListAvg(CubeType.TWOBYTWO, AVG.Ao12);
+        A5Tree =  OW.getListAvg(CubeType.THREEBYTHREE, AVG.Ao5);
+        A12Tree =  OW.getListAvg(CubeType.THREEBYTHREE, AVG.Ao12);
+        A5Four =  OW.getListAvg(CubeType.FOURBYFOUR, AVG.Ao5);
+        A12Four =  OW.getListAvg(CubeType.FOURBYFOUR, AVG.Ao12); //taking lists of averages from outside
         initializeHistory(A5Two, TwoByTwo, 5);
         initializeHistory(A12Two, TwoByTwo, 12);
         initializeHistory(A5Tree, TreeByTree, 5);
