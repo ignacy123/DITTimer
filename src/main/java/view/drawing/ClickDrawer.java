@@ -22,11 +22,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class ClickDrawer {
+public class ClickDrawer extends DrawScramble {
     Color[][] cube;
     GridPane rubics;
     ChoiceBox<String> curCol;
-    private GridPane draw() {
+    @Override
+    public GridPane draw() {
         int hw = 3;
         GridPane gridPane = new GridPane();
         gridPane.setVgap(15);
@@ -64,15 +65,7 @@ public class ClickDrawer {
         }
         return gridPane;
     }
-    public void update() {
-        int size = 3;
-        for(int i = 0; i < rubics.getChildren().size(); i++) {
-            if(!(i%4 == 1 || (i-i%4)/4 == 1)) continue;
-            for(int j = 0; j < size*size; j++) {
-                ((Rectangle)((GridPane)rubics.getChildren().get(i)).getChildren().get(j)).setFill(cube[((j-j%size)/size + (i-i%4)/4 * size)][j%size + (i%4)*size]);
-            }
-        }
-    }
+   @Override
     public void doMagic() {
         Stage stage = new Stage();
         stage.setResizable(false);
@@ -85,7 +78,7 @@ public class ClickDrawer {
         ArrayList<String> colorNames = new ArrayList<>(Arrays.asList("Blue", "Green", "Red", "Orange", "White", "Yellow"));
         colorNames.sort(Comparator.comparing(String::toString));
         curCol.getItems().addAll(colorNames);
-
+        curCol.setValue(colorNames.get(0));
         layout.setTop(curCol);
         stage.show();
     }

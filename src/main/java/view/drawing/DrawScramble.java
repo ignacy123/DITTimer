@@ -22,7 +22,7 @@ public class DrawScramble extends Stage {
     CubeType type;
     Rotator rotator;
     GridPane rubics;
-    private GridPane draw() {
+    public GridPane draw() {
         int hw = 4;
         if(type == CubeType.THREEBYTHREE) hw = 3;
         if(type == CubeType.TWOBYTWO) hw = 2;
@@ -69,6 +69,9 @@ public class DrawScramble extends Stage {
         else if(type == CubeType.FOURBYFOUR)
             rotator = new Rotator4(cube);
         else rotator = new Rotator2(cube);
+    }
+    DrawScramble() {
+        this(CubeType.THREEBYTHREE);
     }
     public Rotator getRotator() {
         return rotator;
