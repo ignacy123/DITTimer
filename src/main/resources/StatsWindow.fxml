@@ -9,9 +9,9 @@
 <?import javafx.scene.effect.SepiaTone?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="579.0" prefWidth="890.0" stylesheets="StatsWindow.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.drawing.StatsWindow">
+<AnchorPane prefHeight="464.0" prefWidth="775.0" stylesheets="StatsWindow.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.drawing.StatsWindow">
    <children>
-      <LineChart id="lkk" fx:id="chart" layoutX="51.0" layoutY="57.0" prefHeight="476.0" prefWidth="775.0" styleClass="chart-series-line" stylesheets="@StatsWindow.css">
+      <LineChart id="lkk" fx:id="chart" layoutX="51.0" layoutY="57.0" prefHeight="400.0" prefWidth="700.0" styleClass="chart-series-line" stylesheets="@StatsWindow.css">
         <xAxis>
           <CategoryAxis side="BOTTOM" fx:id="xAxis" />
         </xAxis>

@@ -43,7 +43,7 @@ public class testSS {
         A12Tree= FXCollections.observableArrayList();
         A5Four= FXCollections.observableArrayList();
         A12Four= FXCollections.observableArrayList();
-        SS=new StatisticServerImplementation(Two,Tree,Four,A5Two,A12Two,A5Tree,A12Tree,A5Four,A12Four);
+        //SS=new StatisticServerImplementation(Two,Tree,Four,A5Two,A12Two,A5Tree,A12Tree,A5Four,A12Four);
 
     }
 /*

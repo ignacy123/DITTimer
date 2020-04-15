@@ -94,13 +94,15 @@ public class StatsWindow implements Initializable {
         chart.getData().addAll(data, data2, data3);
     }
 
+    public void setOw(ObservableWrapper ow){
+        morszczuk = ow;
+        load();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         chart.setAnimated(false);
         chart.setCreateSymbols(false);
-        morszczuk = new ObservableWrapper();
-        new StatisticServerImplementation(morszczuk);
         cubeBox.getItems().addAll("TWOBYTWO", "THREEBYTHREE", "FOURBYFOUR");
         cubeBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -110,10 +112,11 @@ public class StatsWindow implements Initializable {
                 } catch (NoSuchFieldException | IllegalAccessException e) {
                     e.printStackTrace();
                 }
-                load();
+                if(morszczuk!=null){
+                    load();
+                }
             }
         });
         cubeBox.setValue("THREEBYTHREE");
-        load();
     }
 }

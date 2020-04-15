@@ -4,6 +4,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Dialog;
@@ -11,6 +13,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.SS.StatisticServer;
@@ -27,11 +30,10 @@ import model.logic.SolveImplementation;
 import model.wrappers.AVGwrapper;
 import model.wrappers.ObservableWrapper;
 
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 
 import static model.enums.AVG.Ao12;
 import static model.enums.AVG.Ao5;
@@ -54,9 +56,18 @@ public class TimeListController extends Stage {
     private Button button4;
     @FXML
     private ChoiceBox<CubeType> choiceBox;
-    StatisticServer ss;
-    ObservableWrapper ow = new ObservableWrapper();
+    private StatisticServer ss;
+    private ObservableWrapper ow;
     private CubeType currentType;
+
+
+    public void setSSAndOw(StatisticServer ss, ObservableWrapper ow){
+        this.ss = ss;
+        this.ow = ow;
+        listView.setItems(ow.getListOfSolves(currentType));
+        listView2.setItems(ow.getListAvg(currentType, Ao5));
+        listView3.setItems(ow.getListAvg(currentType, Ao12));
+    }
 
     @FXML
     void initialize() {
@@ -74,10 +85,6 @@ public class TimeListController extends Stage {
         currentType = CubeType.THREEBYTHREE;
 //        DatabaseService db = new DatabaseServiceImplementation();
 //        db.dropDatabase();
-        ss = new StatisticServerImplementation(ow);
-        listView.setItems(ow.getListOfSolves(CubeType.THREEBYTHREE));
-        listView2.setItems(ow.getListAvg(CubeType.THREEBYTHREE, Ao5));
-        listView3.setItems(ow.getListAvg(CubeType.THREEBYTHREE, Ao12));
         listView.setCellFactory(listView1 -> {
             TextFieldListCell<Solve> cell = new TextFieldListCell<>();
             cell.setConverter(new SolveConverter());
@@ -185,7 +192,7 @@ public class TimeListController extends Stage {
         SolveConverter converter = new SolveConverter();
         String str = "";
         for (int i = 11; i >= 0; i--) {
-            str += 12 - i + ". " + converter.toString(ow.getListOfSolves(currentType).get(avg.getID() - i-1)) + '\n';
+            str += 12 - i + ". " + converter.toString(ow.getListOfSolves(currentType).get(avg.getID() - i)) + '\n';
             str += ow.getListOfSolves(currentType).get(avg.getID() - i-1).getScramble() + "\n";
         }
         d.setContentText(str);
