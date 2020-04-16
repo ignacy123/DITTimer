@@ -198,7 +198,7 @@ public class DatabaseServiceImplementation implements DatabaseService {
                         solve.rejectSolution();
                 }
                 solve.setType(cubeType);
-                solve.setComment(rs.getString(4).trim());
+//                solve.setComment(rs.getString(4).trim());
                 solve.setScramble(rs.getString(5).trim());
                 solve.setDate(new java.util.Date(rs.getTimestamp(6).getTime()));
                 solves.add(solve);

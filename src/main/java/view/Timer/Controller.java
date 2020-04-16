@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import model.SS.StatisticServer;
 import model.enums.CubeType;
+import model.enums.Running;
 import model.enums.State;
 import model.logic.ScrambleGenerator;
 import model.logic.ScrambleGeneratorImplementation;
@@ -61,6 +62,7 @@ public class Controller {
             timePassed.setText("00:00:000");
         else{
             timeline.stop(); // tutaj zczytywanie do Solve
+            ow.setRunning(Running.NO);
             long value=0;
             if(ss!=null){
                 value+=millis+secs*1000+mins*60*60*1000-1;
@@ -83,6 +85,7 @@ public class Controller {
             timeline.setCycleCount(Timeline.INDEFINITE);
             timeline.setAutoReverse(false);
             timeline.play();
+            ow.setRunning(Running.YES);
             whatToDo = StartOrStop.STOP;
         }
     }
