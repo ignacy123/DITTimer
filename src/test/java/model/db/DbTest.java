@@ -297,4 +297,63 @@ public class DbTest {
 
 
     }
+
+    @Test
+    public void clearsTable(){
+        db.dropDatabase();
+        db.start();
+        Date date = new Date();
+        Date date2 = new Date();
+        ScrambleGenerator scr = new ScrambleGeneratorImplementation(CubeType.TWOBYTWO);
+        ArrayList<Move> scr1 = scr.generate();
+        ArrayList<Move> scr2 = scr.generate();
+        date2.setTime(1000);
+        Solve solve1 = new SolveImplementation();
+        Solve solve2 = new SolveImplementation();
+        solve1.setType(CubeType.TWOBYTWO);
+        solve2.setType(CubeType.TWOBYTWO);
+        solve1.setTime(new Timestamp(1000));
+        solve2.setTime(new Timestamp(10001));
+        solve1.setDate(date);
+        solve2.setDate(date2);
+        solve1.setComment("test1");
+        solve2.setComment("test2");
+        solve1.setScramble(scr1.toString());
+        solve2.setScramble(scr2.toString());
+        solve1.setState(State.DNF);
+        solve2.setState(State.CORRECT);
+        db.insert(solve1);
+        db.insert(solve2);
+        db.clearTable(CubeType.TWOBYTWO);
+        ArrayList<Solve> solves = db.pullAndParseAllSolves(CubeType.TWOBYTWO);
+        assertEquals(0, solves.size());
+        solve1.setType(CubeType.THREEBYTHREE);
+        solve2.setType(CubeType.THREEBYTHREE);
+        db.insert(solve1);
+        db.insert(solve2);
+        db.clearTable(CubeType.THREEBYTHREE);
+        solves = db.pullAndParseAllSolves(CubeType.THREEBYTHREE);
+        assertEquals(0, solves.size());
+        solve1.setType(CubeType.FOURBYFOUR);
+        solve2.setType(CubeType.FOURBYFOUR);
+        db.insert(solve1);
+        db.insert(solve2);
+        db.clearTable(CubeType.FOURBYFOUR);
+        solves = db.pullAndParseAllSolves(CubeType.FOURBYFOUR);
+        assertEquals(0, solves.size());
+    }
+
+    @Test
+    public void dealsWithEmptyComment(){
+        Solve solve = new SolveImplementation();
+        solve.setTime(new Timestamp(1000));
+        solve.setScramble("R U F");
+        solve.setState(State.NONE);
+        solve.setType(CubeType.THREEBYTHREE);
+        solve.setDate(new Date());
+        db.dropDatabase();
+        db.start();
+        db.insert(solve);
+        db.pullAndParseAllSolves(CubeType.THREEBYTHREE);
+    }
 }

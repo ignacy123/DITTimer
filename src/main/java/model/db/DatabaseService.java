@@ -10,7 +10,6 @@ public interface DatabaseService {
 
     ArrayList<Solve> pullAndParseAllSolves(CubeType cubeType);
 
-    ArrayList<Solve> pullAndParseSolves(CubeType cubeType, int size);
 
     void deleteLast(CubeType cubeType);
     void updateLast(Solve solve);
@@ -20,5 +19,5 @@ public interface DatabaseService {
     //only for tests, should be removed before release;
     void dropDatabase();
 
-    void insertIntervalAndTest();
+    void clearTable(CubeType cubeType);
 }

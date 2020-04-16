@@ -47,13 +47,7 @@ public class TimeListController extends Stage {
     @FXML
     private ListView listView3;
     @FXML
-    private Button button;
-    @FXML
-    private Button button2;
-    @FXML
-    private Button button3;
-    @FXML
-    private Button button4;
+    private Button deleteButton;
     @FXML
     private ChoiceBox<CubeType> choiceBox;
     private StatisticServer ss;
@@ -104,34 +98,6 @@ public class TimeListController extends Stage {
 
     }
 
-    @FXML
-    void buttonPressed() {
-        ScrambleGenerator scr = new ScrambleGeneratorImplementation(currentType);
-        Random random = new Random();
-        Solve solve = new SolveImplementation();
-        solve.setType(currentType);
-        solve.setTime(new Timestamp(random.nextInt(100000)));
-        solve.setScramble(scr.scrambleToString(scr.generate()));
-        solve.setComment("test");
-        solve.setDate(new Date());
-        ss.insertSolve(solve);
-        System.out.println("button pressed");
-    }
-
-    @FXML
-    void buttonPressed2() {
-        ScrambleGenerator scr = new ScrambleGeneratorImplementation(currentType);
-        Random random = new Random();
-        Solve solve = new SolveImplementation();
-        solve.setType(currentType);
-        solve.setTime(new Timestamp(random.nextInt(100000)));
-        solve.setScramble(scr.scrambleToString(scr.generate()));
-        solve.setComment("test");
-        solve.setDate(new Date());
-        solve.setState(State.DNF);
-        ss.insertSolve(solve);
-        System.out.println("button pressed");
-    }
 
     public void handle(MouseEvent event) {
         if (!event.getButton().equals(MouseButton.PRIMARY)) {
@@ -174,6 +140,11 @@ public class TimeListController extends Stage {
         }
         d.setContentText(str);
         d.show();
+    }
+
+    public void deleteSession(){
+        //ss.delete(type);
+        System.out.println("calling ss to clear: "+currentType);
     }
 
     public void handle3(MouseEvent event) {

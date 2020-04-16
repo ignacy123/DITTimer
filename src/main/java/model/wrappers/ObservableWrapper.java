@@ -22,6 +22,8 @@ public class ObservableWrapper {
     private ObservableList<CubeType> currCubeType;
     private ObservableList<Running> isRunning;
     public ObservableWrapper(){
+        isRunning = FXCollections.observableArrayList();
+        isRunning.addAll(Running.NO);
         currCubeType = FXCollections.observableArrayList();
         currCubeType.add(0, CubeType.THREEBYTHREE);
         listsOfSolves = new HashMap<>();
