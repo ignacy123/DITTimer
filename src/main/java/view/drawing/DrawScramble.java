@@ -18,10 +18,12 @@ import model.logic.Move;
 import java.util.ArrayList;
 
 public class DrawScramble extends Stage {
-    Color[][] cube;
+    Color[][] cube = new Color[12][16];
     CubeType type;
-    Rotator rotator;
     GridPane rubics;
+    Rotator2 rotator2 = new Rotator2(cube);
+    Rotator3 rotator3 = new Rotator3(cube);
+    Rotator4 rotator4 = new Rotator4(cube);
     public GridPane draw() {
         int hw = 4;
         if(type == CubeType.THREEBYTHREE) hw = 3;
@@ -60,40 +62,16 @@ public class DrawScramble extends Stage {
             }
         }
     }
-    DrawScramble(CubeType type) {
+    public GridPane doMagic(ArrayList<Move> moves, CubeType type) {
         this.type = type;
-        cube = new Color[4*3][4*4];
         populateStandard();
-        if(type == CubeType.THREEBYTHREE)
-        rotator = new Rotator3(cube);
-        else if(type == CubeType.FOURBYFOUR)
-            rotator = new Rotator4(cube);
-        else rotator = new Rotator2(cube);
-    }
-    DrawScramble() {
-        this(CubeType.THREEBYTHREE);
-    }
-    public Rotator getRotator() {
-        return rotator;
-    }
-    public void doMagic() {
-        Stage stage = new Stage();
-        stage.setResizable(false);
-        BorderPane layout = new BorderPane();
-        stage.setScene(new Scene(layout, 1000, 800));
-
-        //Rotations a = new Rotations(cube);
-        //a.executeMoves(moves);
-        Text text = new Text();
-        //text.setText(new ScrambleGeneratorImplementation(CubeType.FOURBYFOUR).scrambleToString(moves));
+        Rotator rotator = rotator4;
+        if(type==CubeType.THREEBYTHREE) rotator = rotator3;
+        else if(type == CubeType.TWOBYTWO) rotator = rotator2;
+        rotator.executeMoves(moves);
         GridPane rubics = draw();
         this.rubics = rubics;
-        layout.setCenter(rubics);
-        layout.setBottom(text);
-        layout.setAlignment(text, Pos.TOP_CENTER);
-        text.setTextAlignment(TextAlignment.JUSTIFY);
-        text.setFont(new Font(15));
-        stage.show();
+        return rubics;
     }
     public void populateStandard() {
         int n = 4;
