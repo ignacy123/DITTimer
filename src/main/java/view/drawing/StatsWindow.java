@@ -2,6 +2,7 @@ package view.drawing;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
 import model.SS.StatisticServer;
@@ -67,28 +69,23 @@ public class StatsWindow implements Initializable {
         XYChart.Series<String, Integer> data = new XYChart.Series<>();
         yAxis.setLabel("time");
         xAxis.setLabel("id");
-        int i = 0;
-        for(Solve a: morszczuk.getListOfSolves(type)) {
-            if(i >= count) break;
+        //size - how much-1 (max with 0) up to size -1
+        for(int j = Math.max(morszczuk.getListOfSolves(type).size() - count, 0),i=0; j < morszczuk.getListOfSolves(type).size(); j++,i++) {
+            Solve a = morszczuk.getListOfSolves(type).get(j);
             data.getData().add(new XYChart.Data<>(Integer.toString(i+1), (int) a.getTime().getTime()));
-            i++;
         }
         data.setName("all");
-
-        i=0;
+        //data.getData().addAll(morszczuk.getListOfSolves(type).subList(2,3));
         XYChart.Series<String, Integer> data2 = new XYChart.Series<>();
-        for(AVGwrapper avg:morszczuk.getListAvg(type, AVG.Ao5)) {
-            if(i >= count) break;
+        for(int j = Math.max(morszczuk.getListAvg(type, AVG.Ao5).size() - count, 0), i=0; j < morszczuk.getListAvg(type, AVG.Ao5).size(); j++,i++) {
+            AVGwrapper avg = morszczuk.getListAvg(type, AVG.Ao5).get(j);
             data2.getData().add(new XYChart.Data<>(Integer.toString(i+1),(int)avg.getAVG().getTime()));
-            i++;
         }
         data2.setName("Ao5");
-        i=0;
         XYChart.Series<String, Integer> data3 = new XYChart.Series<>();
-        for(AVGwrapper avg:morszczuk.getListAvg(type, AVG.Ao12)) {
-            if (i >= count) break;
-            data3.getData().add(new XYChart.Data<>(Integer.toString(i + 1), (int) avg.getAVG().getTime()));
-            i++;
+        for(int j = Math.max(morszczuk.getListAvg(type, AVG.Ao12).size() - count, 0), i=0; j < morszczuk.getListAvg(type, AVG.Ao12).size(); j++,i++) {
+            AVGwrapper avg = morszczuk.getListAvg(type, AVG.Ao12).get(j);
+            data3.getData().add(new XYChart.Data<>(Integer.toString(i+1),(int)avg.getAVG().getTime()));
         }
         data3.setName("Ao12");
         chart.getData().addAll(data, data2, data3);
@@ -96,6 +93,35 @@ public class StatsWindow implements Initializable {
 
     public void setOw(ObservableWrapper ow){
         morszczuk = ow;
+        //create listeners on obs lists
+        ArrayList<CubeType> types = new ArrayList<CubeType>();
+        types.add(CubeType.THREEBYTHREE);
+        types.add(CubeType.FOURBYFOUR);
+        types.add(CubeType.TWOBYTWO);
+        for(CubeType type: types) {
+            morszczuk.getListOfSolves(type).addListener(new ListChangeListener<Solve>() {
+                @Override
+                public void onChanged(Change<? extends Solve> change) {
+                    load();
+                }
+            });
+        }
+        for(CubeType type: types) {
+            morszczuk.getListAvg(type, AVG.Ao12).addListener(new ListChangeListener<AVGwrapper>() {
+                @Override
+                public void onChanged(Change<? extends AVGwrapper> change) {
+                    load();
+                }
+            });
+        }
+        for(CubeType type: types) {
+            morszczuk.getListAvg(type, AVG.Ao5).addListener(new ListChangeListener<AVGwrapper>() {
+                @Override
+                public void onChanged(Change<? extends AVGwrapper> change) {
+                    load();
+                }
+            });
+        }
         load();
     }
 
