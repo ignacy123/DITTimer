@@ -1,5 +1,6 @@
 package view.mainScreen;
 
+import javafx.collections.ListChangeListener;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,6 +12,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.SS.StatisticServer;
+import model.enums.CubeType;
+import model.enums.Running;
 import model.wrappers.ObservableWrapper;
 import view.TimeList.TimeListController;
 import view.Timer.Controller;
@@ -46,8 +49,6 @@ public class MainScreen extends Stage {
         timerLoader = new FXMLLoader(getClass().getClassLoader().getResource("timersample.fxml"));
         Node node4 = timerLoader.load();
         pane4.getChildren().setAll(node4);
-
-
         EventHandler handler = new EventHandler<InputEvent>() {
             public void handle (InputEvent event){
                 Event.fireEvent(node4, event);
@@ -66,6 +67,24 @@ public class MainScreen extends Stage {
         controller2.setOw(ow);
         Controller controller3 = timerLoader.getController();
         controller3.setSSAndOw(ss, ow);
+
+
+
+
+        ow.getRunning().addListener(new ListChangeListener<Running>() {
+            @Override
+            public void onChanged(Change<? extends Running> change) {
+                if(ow.getRunning().get(0)==Running.YES){
+                    pane.setVisible(false);
+                    pane2.setVisible(false);
+                    pane3.setVisible(false);
+                }else{
+                    pane.setVisible(true);
+                    pane2.setVisible(true);
+                    pane3.setVisible(true);
+                }
+            }
+        });
     }
     public MainScreen() {
 

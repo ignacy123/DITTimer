@@ -198,7 +198,11 @@ public class DatabaseServiceImplementation implements DatabaseService {
                         solve.rejectSolution();
                 }
                 solve.setType(cubeType);
-//                solve.setComment(rs.getString(4).trim());
+                try{
+                    solve.setComment(rs.getString(4).trim());
+                }catch(NullPointerException e){
+                    solve.setComment("");
+                }
                 solve.setScramble(rs.getString(5).trim());
                 solve.setDate(new java.util.Date(rs.getTimestamp(6).getTime()));
                 solves.add(solve);
@@ -211,10 +215,6 @@ public class DatabaseServiceImplementation implements DatabaseService {
         return solves;
     }
 
-    //there's a chance this wont be needed
-    public ArrayList<Solve> pullAndParseSolves(CubeType cubeType, int size) {
-        return null;
-    }
 
     @Override
     public void deleteLast(CubeType cubeType) {
@@ -307,7 +307,29 @@ public class DatabaseServiceImplementation implements DatabaseService {
     }
 
     @Override
-    public void insertIntervalAndTest() {
+    public void clearTable(CubeType cubeType) {
+        String sql = "";
+        String sql1 = "DELETE FROM  ";
+        String sql2 = "";
+        switch (cubeType) {
+            case TWOBYTWO:
+                sql2 = "TWOBYTWO";
+                break;
+            case THREEBYTHREE:
+                sql2 = "THREEBYTHREE";
+                break;
+            case FOURBYFOUR:
+                sql2 = "FOURBYFOUR";
+                break;
+        }
+        sql = sql1+sql2;
+
+        try {
+            stmt = c.createStatement();
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
     }
 }
