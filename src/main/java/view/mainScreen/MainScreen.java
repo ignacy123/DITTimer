@@ -1,18 +1,24 @@
 package view.mainScreen;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.SS.StatisticServer;
 import model.wrappers.ObservableWrapper;
 import view.TimeList.TimeListController;
+import view.Timer.Controller;
 import view.drawing.StatsWindow;
 
 import java.io.IOException;
 
 public class MainScreen extends Stage {
+    @FXML
+    Pane mainPane;
     @FXML
     Pane pane;
     @FXML
@@ -23,6 +29,7 @@ public class MainScreen extends Stage {
     Pane pane4;
     FXMLLoader listLoader = null;
     FXMLLoader statsLoader = null;
+    FXMLLoader timerLoader = null;
 
     @FXML
     void initialize() throws IOException {
@@ -34,8 +41,16 @@ public class MainScreen extends Stage {
         pane2.getChildren().setAll(node2);
         Node node3 = FXMLLoader.load(getClass().getClassLoader().getResource("metronome.fxml"));
         pane3.getChildren().setAll(node3);
-        Node node4 = FXMLLoader.load(getClass().getClassLoader().getResource("timersample.fxml"));
+        timerLoader = new FXMLLoader(getClass().getClassLoader().getResource("timersample.fxml"));
+        Node node4 = timerLoader.load();
         pane4.getChildren().setAll(node4);
+        EventHandler handler = new EventHandler<InputEvent>() {
+            public void handle (InputEvent event){
+                System.out.println("Handling event " + event.getEventType()+ ((KeyEvent)event).getCode());
+                event.consume();
+            }
+        };
+        mainPane.setOnKeyPressed(handler);
 
     }
 
@@ -44,6 +59,8 @@ public class MainScreen extends Stage {
         controller.setSSAndOw(ss, ow);
         StatsWindow controller2 = statsLoader.getController();
         controller2.setOw(ow);
+        Controller controller3 = timerLoader.getController();
+        controller3.setSSAndOw(ss, ow);
     }
     public MainScreen() {
 

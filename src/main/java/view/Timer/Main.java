@@ -6,6 +6,9 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -38,11 +41,19 @@ public class Main extends Application {
     }
     @Override
     public void start(Stage primaryStage) throws Exception{
+        primaryStage.addEventFilter(KeyEvent.KEY_PRESSED, k -> {
+            if ( k.getCode() == KeyCode.SPACE){
+                k.consume();
+                KeyEvent k2 = new KeyEvent(null, null, null, KeyCode.K, false, false, false, false);
+                k2.consume();
+            }
+        });
 
 
         Text text= new Text(10, 50, "00:00:000");
         Pane pane =new Pane();
         pane.getChildren().add(text);
+        pane.getChildren().add(new Button("buttonwdwdwdwdwdwd"));
         pane.setPrefSize(500,400);
         Scene scene=new Scene(pane);
 

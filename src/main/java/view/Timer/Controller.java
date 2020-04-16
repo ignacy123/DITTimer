@@ -6,8 +6,15 @@ import javafx.fxml.FXML;
 
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import model.SS.StatisticServer;
+import model.wrappers.ObservableWrapper;
+
+import static model.enums.AVG.Ao12;
+import static model.enums.AVG.Ao5;
 
 public class Controller {
+    private StatisticServer ss = null;
+    private ObservableWrapper ow = null;
     enum StartOrStop{
         START,STOP;
     }
@@ -59,5 +66,10 @@ public class Controller {
     void initialize() {
         assert timePassed != null : "fx:id=\"timePassed\" was not injected: check your FXML file 'timersample.fxml'.";
 
+    }
+
+    public void setSSAndOw(StatisticServer ss, ObservableWrapper ow){
+        this.ss = ss;
+        this.ow = ow;
     }
 }

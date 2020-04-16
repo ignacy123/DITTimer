@@ -15,14 +15,19 @@ import view.mainScreen.MainScreen;
 public class  test extends Application {
     @Override
     public void start(Stage stage) throws Exception {
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, k -> {
+            if ( k.getCode() == KeyCode.SPACE){
+                k.consume();
+            }
+        });
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("timer.fxml"));
         ObservableWrapper ow = new ObservableWrapper();
         StatisticServer ss = new StatisticServerImplementation(ow);
         Pane pane = loader.load();
         MainScreen controller = loader.getController();
-        controller.setSSAndOw(ss, ow);
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         stage.show();
+        controller.setSSAndOw(ss, ow);
     }
 }
