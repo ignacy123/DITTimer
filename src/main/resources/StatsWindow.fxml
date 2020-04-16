@@ -4,14 +4,13 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.SepiaTone?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="464.0" prefWidth="775.0" stylesheets="StatsWindow.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.drawing.StatsWindow">
+<AnchorPane prefHeight="393.0" prefWidth="680.0" stylesheets="StatsWindow.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.drawing.StatsWindow">
    <children>
-      <LineChart id="lkk" fx:id="chart" layoutX="51.0" layoutY="57.0" prefHeight="400.0" prefWidth="700.0" styleClass="chart-series-line" stylesheets="@StatsWindow.css">
+      <LineChart id="lkk" fx:id="chart" layoutX="26.0" layoutY="29.0" prefHeight="379.0" prefWidth="675.0" styleClass="chart-series-line" stylesheets="@StatsWindow.css">
         <xAxis>
           <CategoryAxis side="BOTTOM" fx:id="xAxis" />
         </xAxis>
@@ -22,8 +21,7 @@
             <SepiaTone />
          </effect>
       </LineChart>
-      <TextField fx:id="countField" layoutX="415.0" layoutY="32.0" prefHeight="16.0" prefWidth="29.0" promptText="set count" style="-fx-background-color: aqua;" text="30" />
-      <Button fx:id="updateButton" layoutX="444.0" layoutY="32.0" mnemonicParsing="false" onAction="#updateCount" prefHeight="16.0" prefWidth="48.0" text="count" />
-      <ChoiceBox fx:id="cubeBox" layoutX="33.0" layoutY="24.0" prefWidth="150.0" />
+      <TextField fx:id="countField" layoutX="304.0" layoutY="32.0" prefHeight="16.0" prefWidth="29.0" promptText="set count" style="-fx-background-color: aqua;" text="30" />
+      <Button fx:id="updateButton" layoutX="327.0" layoutY="32.0" mnemonicParsing="false" onAction="#updateCount" prefHeight="16.0" prefWidth="48.0" text="count" />
    </children>
 </AnchorPane>

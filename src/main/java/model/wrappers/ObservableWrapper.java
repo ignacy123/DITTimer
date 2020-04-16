@@ -1,11 +1,15 @@
 package model.wrappers;
 
+import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.util.Pair;
 import model.enums.AVG;
 import model.enums.CubeType;
+import model.enums.Running;
 import model.logic.Solve;
 
 import java.util.HashMap;
@@ -15,7 +19,11 @@ import java.util.Map;
 public class ObservableWrapper {
     private Map<CubeType, ObservableList<Solve>> listsOfSolves;
     private Map<Pair<CubeType, AVG>, ObservableList<AVGwrapper>> listsOfAvgs;
+    private ObservableList<CubeType> currCubeType;
+    private ObservableList<Running> isRunning;
     public ObservableWrapper(){
+        currCubeType = FXCollections.observableArrayList();
+        currCubeType.add(0, CubeType.THREEBYTHREE);
         listsOfSolves = new HashMap<>();
         listsOfAvgs = new HashMap<>();
         listsOfSolves.put(CubeType.TWOBYTWO, FXCollections.observableArrayList());
@@ -34,5 +42,17 @@ public class ObservableWrapper {
     }
     public ObservableList<AVGwrapper> getListAvg(CubeType type, AVG avg){
         return listsOfAvgs.get(new Pair<>(type, avg));
+    }
+    public void setCubeCurrType(CubeType type){
+        currCubeType.set(0, type);
+    }
+    public void setRunning(Running running){
+        isRunning.set(0, running);
+    }
+    public ObservableList<CubeType> getCubeCurrType(){
+        return currCubeType;
+    }
+    public ObservableList<Running> getRunning(){
+        return isRunning;
     }
 }

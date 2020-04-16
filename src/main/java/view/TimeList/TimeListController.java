@@ -77,6 +77,7 @@ public class TimeListController extends Stage {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number number2) {
                 currentType = choiceBox.getItems().get((Integer) number2);
+                ow.setCubeCurrType(currentType);
                 listView.setItems(ow.getListOfSolves(currentType));
                 listView2.setItems(ow.getListAvg(currentType, Ao5));
                 listView3.setItems(ow.getListAvg(currentType, Ao12));

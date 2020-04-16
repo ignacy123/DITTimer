@@ -1,10 +1,12 @@
 package view.mainScreen;
 
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -44,13 +46,16 @@ public class MainScreen extends Stage {
         timerLoader = new FXMLLoader(getClass().getClassLoader().getResource("timersample.fxml"));
         Node node4 = timerLoader.load();
         pane4.getChildren().setAll(node4);
+
+
         EventHandler handler = new EventHandler<InputEvent>() {
             public void handle (InputEvent event){
-                System.out.println("Handling event " + event.getEventType()+ ((KeyEvent)event).getCode());
+                Event.fireEvent(node4, event);
                 event.consume();
             }
         };
         mainPane.setOnKeyPressed(handler);
+        mainPane.setOnKeyReleased(handler);
 
     }
 
