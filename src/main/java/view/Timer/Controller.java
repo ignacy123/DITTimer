@@ -3,13 +3,9 @@ package view.Timer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.input.KeyEvent;
+
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class Controller {
     enum StartOrStop{
@@ -32,29 +28,14 @@ public class Controller {
                 + (((millis/10) == 0) ? "00" : (((millis/100) == 0) ? "0" : "")) + millis++);
     }
     @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
-    @FXML
-    private Button LH1;
-
-    @FXML
-    private Button RH1;
-
-    @FXML
     private Text timePassed;
 
     @FXML
-    void ResetAndGetReady(KeyEvent event) {
+    public void ResetAndGetReady() {
         if(whatToDo== StartOrStop.START)
              timePassed.setText("00:00:000");
         else{
             timeline.stop(); // tutaj zczytywanie do Solve
-
-
-
 
             mins=secs=millis=0;
             whatToDo= StartOrStop.STOP;
@@ -62,7 +43,7 @@ public class Controller {
     }
 
     @FXML
-    void StartTimer(KeyEvent event) {
+    public void StartTimer() {
         if(whatToDo== StartOrStop.STOP){
             whatToDo= StartOrStop.START;
         }else{
@@ -76,8 +57,6 @@ public class Controller {
 
     @FXML
     void initialize() {
-        assert LH1 != null : "fx:id=\"LH1\" was not injected: check your FXML file 'timersample.fxml'.";
-        assert RH1 != null : "fx:id=\"RH1\" was not injected: check your FXML file 'timersample.fxml'.";
         assert timePassed != null : "fx:id=\"timePassed\" was not injected: check your FXML file 'timersample.fxml'.";
 
     }

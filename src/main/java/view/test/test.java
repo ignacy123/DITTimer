@@ -12,7 +12,7 @@ import model.SS.StatisticServerImplementation;
 import model.wrappers.ObservableWrapper;
 import view.mainScreen.MainScreen;
 
-public class test extends Application {
+public class  test extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("timer.fxml"));
