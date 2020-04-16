@@ -76,28 +76,37 @@ public class StatisticServerImplementation implements StatisticServer {
              i++;
          }
      } first version */
+
     private void initializeHistory(ObservableList<AVGwrapper> ToFill, ObservableList<Solve> source, int k) {
-        if (source.size() < k) return;
         int helper;
         int DNFcounter;
         long value;
-       // int ID = 0;
         int i;
-        for (i = k-1; i < source.size(); i++) {
-            helper=k;
-            value=0;
-            DNFcounter=0;
-            for(int j=i;helper>0;j--,helper--){
-                if (source.get(j).getState() == State.DNF){
-                    DNFcounter++;
-                }
-                else value += source.get(j).getTime().getTime();
+        if (source.size() < k){
+            for(int j=0;j<source.size();j++){
+                ToFill.add(new AVGwrapper(j+1, new Timestamp(0), false));
+                ToFill.get(ToFill.size()-1).setNET();
             }
-            value = value / k;
-            if(DNFcounter<2)
-            ToFill.add(new AVGwrapper(i, new Timestamp(value), false));
-            else ToFill.add(new AVGwrapper(i, new Timestamp(value), true));
-          //  ID++;
+        }else{
+            for(int j=k-1;j>0;j--){
+                ToFill.add(new AVGwrapper(j+1, new Timestamp(0), false));
+                ToFill.get(ToFill.size()-1).setNET();
+            }
+            for (i = k-1; i < source.size(); i++) {
+                helper=k;
+                value=0;
+                DNFcounter=0;
+                for(int j=i;helper>0;j--,helper--){
+                    if (source.get(j).getState() == State.DNF){
+                        DNFcounter++;
+                    }
+                    else value += source.get(j).getTime().getTime();
+                }
+                value = value / k;
+                if(DNFcounter<2)
+                    ToFill.add(new AVGwrapper(i+1, new Timestamp(value), false));
+                else ToFill.add(new AVGwrapper(i+1, new Timestamp(value), true));
+            }
         }
     }
 

@@ -6,21 +6,28 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
 import javafx.scene.input.InputEvent;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import model.SS.StatisticServer;
+import model.enums.CubeType;
+import model.enums.State;
+import model.logic.ScrambleGenerator;
+import model.logic.ScrambleGeneratorImplementation;
+import model.logic.Solve;
+import model.logic.SolveImplementation;
 import model.wrappers.ObservableWrapper;
 
-import static model.enums.AVG.Ao12;
-import static model.enums.AVG.Ao5;
+
+import java.util.Date;
+
 
 public class Controller {
     @FXML
     Pane mainPane;
     private StatisticServer ss = null;
     private ObservableWrapper ow = null;
+    private ScrambleGenerator Generator=new ScrambleGeneratorImplementation(CubeType.THREEBYTHREE);
 
     enum StartOrStop {
         START, STOP;
@@ -46,16 +53,24 @@ public class Controller {
 
     @FXML
     private Text timePassed;
-
     @FXML
-    public void ResetAndGetReady() {
-        if (whatToDo == StartOrStop.START)
+    private Text Scramble;
+    @FXML
+    void ResetAndGetReady() {
+        if(whatToDo== StartOrStop.START)
             timePassed.setText("00:00:000");
-        else {
+        else{
             timeline.stop(); // tutaj zczytywanie do Solve
-
-            mins = secs = millis = 0;
-            whatToDo = StartOrStop.STOP;
+            long value=0;
+            if(ss!=null){
+                value+=millis+secs*1000+mins*60*60*1000-1;
+                Solve solve=new SolveImplementation(new Date(),value, State.CORRECT, CubeType.THREEBYTHREE);
+                solve.setScramble(Scramble.getText());
+                ss.insertSolve(solve);
+            }
+            Scramble.setText(Generator.scrambleToString(Generator.generate()));
+            mins=secs=millis=0;
+            whatToDo= StartOrStop.STOP;
         }
     }
 
@@ -77,18 +92,19 @@ public class Controller {
         assert timePassed != null : "fx:id=\"timePassed\" was not injected: check your FXML file 'timersample.fxml'.";
         EventHandler handler = new EventHandler<InputEvent>() {
             public void handle(InputEvent event) {
-                System.out.println("Timer Handling event " + event.getEventType() + ((KeyEvent) event).getCode());
+                ResetAndGetReady();
                 event.consume();
             }
 
         };
         EventHandler handler2 = new EventHandler<InputEvent>() {
             public void handle(InputEvent event) {
-                System.out.println("Timer Handling event " + event.getEventType() + ((KeyEvent) event).getCode());
+                StartTimer();
                 event.consume();
             }
 
         };
+        Scramble.setText(Generator.scrambleToString(Generator.generate()));
         mainPane.setOnKeyPressed(handler);
         mainPane.setOnKeyReleased(handler2);
     }
