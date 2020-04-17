@@ -75,7 +75,6 @@ public class StatsWindow implements Initializable {
             data.getData().add(new XYChart.Data<>(Integer.toString(i + 1), (int) a.getTime().getTime()));
         }
         data.setName("all");
-        //data.getData().addAll(morszczuk.getListOfSolves(type).subList(2,3));
         XYChart.Series<String, Integer> data2 = new XYChart.Series<>();
         for (int j = Math.max(morszczuk.getListAvg(type, AVG.Ao5).size() - count, 0), i = 0; j < morszczuk.getListAvg(type, AVG.Ao5).size(); j++, i++) {
             AVGwrapper avg = morszczuk.getListAvg(type, AVG.Ao5).get(j);

@@ -1,10 +1,12 @@
 package view.drawing;
 
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -14,16 +16,21 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import model.enums.CubeType;
 import model.logic.Move;
+import model.wrappers.ObservableWrapper;
 
 import java.util.ArrayList;
 
 public class DrawScramble extends Stage {
     Color[][] cube = new Color[12][16];
-    CubeType type;
-    GridPane rubics;
+    CubeType type = CubeType.THREEBYTHREE;;
+    public GridPane rubics;
+    Pane outSide;
     Rotator2 rotator2 = new Rotator2(cube);
     Rotator3 rotator3 = new Rotator3(cube);
     Rotator4 rotator4 = new Rotator4(cube);
+
+    ObservableWrapper plaszczka;
+
     public GridPane draw() {
         int hw = 4;
         if(type == CubeType.THREEBYTHREE) hw = 3;
@@ -32,14 +39,16 @@ public class DrawScramble extends Stage {
         gridPane.setVgap(15);
         gridPane.setHgap(15);
         gridPane.setAlignment(Pos.CENTER);
-
+        int size = 40;
+        if(type == CubeType.FOURBYFOUR) size = 30;
+        else if(type == CubeType.TWOBYTWO) size = 60;
         ArrayList<GridPane> lay = new ArrayList<>();
         for(int i = 0; i < 12; i++) {
             GridPane curr = new GridPane();
             if(i % 4 == 1 || (i- i%4)/ 4 == 1) {
                 curr.setStyle("-fx-background-color: black ; -fx-vgap: 1; -fx-hgap: 1; -fx-padding: 1;");
                 for(int j = 0; j < hw*hw; j++) {
-                    Rectangle field = new Rectangle(40, 40);
+                    Rectangle field = new Rectangle(size, size);
                     field.setFill(cube[((j - j%hw)/hw + (i - i%4)/4 * hw)][j%hw + (i % 4)*hw]);
                     curr.add(field, j%hw, (j - j%hw)/hw);
                 }
@@ -62,16 +71,41 @@ public class DrawScramble extends Stage {
             }
         }
     }
-    public GridPane doMagic(ArrayList<Move> moves, CubeType type) {
-        this.type = type;
+    public Pane getPane() {
+        //
         populateStandard();
-        Rotator rotator = rotator4;
-        if(type==CubeType.THREEBYTHREE) rotator = rotator3;
-        else if(type == CubeType.TWOBYTWO) rotator = rotator2;
-        rotator.executeMoves(moves);
         GridPane rubics = draw();
         this.rubics = rubics;
-        return rubics;
+        outSide = new Pane();
+        outSide.getChildren().add(this.rubics);
+        return outSide;
+    }
+    public void setOw(ObservableWrapper ow) {
+        plaszczka = ow;
+        ow.getCurrentScramble().addListener(new ListChangeListener<Move>() {
+            @Override
+            public void onChanged(Change<? extends Move> change) {
+                boolean draw = false;
+                if(type != ow.getCubeCurrType().get(0)) {
+                    draw = true;
+                }
+                type = ow.getCubeCurrType().get(0);
+                populateStandard();
+                Rotator rotator = rotator4;
+                if(type==CubeType.THREEBYTHREE) rotator = rotator3;
+                else if(type == CubeType.TWOBYTWO) rotator = rotator2;
+                rotator.executeMoves(new ArrayList<>(ow.getCurrentScramble()));
+                if(draw) rubics = draw(); else update();
+                outSide.getChildren().setAll(rubics);
+            }
+        });
+        ow.getCubeCurrType().addListener(new ListChangeListener<CubeType>() {
+            @Override
+            public void onChanged(Change<? extends CubeType> change) {
+                type=ow.getCubeCurrType().get(0);
+            }
+        });
+
     }
     public void populateStandard() {
         int n = 4;

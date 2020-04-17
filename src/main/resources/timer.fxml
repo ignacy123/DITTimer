@@ -9,5 +9,6 @@
       <Pane fx:id="pane3" layoutX="567.0" layoutY="932.0" prefHeight="128.0" prefWidth="600.0" />
       <Pane fx:id="pane2" layoutX="1174.0" layoutY="642.0" prefHeight="464.0" prefWidth="775.0" />
       <Pane fx:id="pane5" layoutX="779.0" layoutY="642.0" prefHeight="51.0" prefWidth="362.0" />
+      <Pane fx:id="pane6" layoutX="1341.0" layoutY="45.0" prefHeight="295.0" prefWidth="417.0" />
    </children>
 </Pane>

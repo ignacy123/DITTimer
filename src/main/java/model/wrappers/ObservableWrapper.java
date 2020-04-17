@@ -65,4 +65,7 @@ public class ObservableWrapper {
         currentScramble.clear();
         currentScramble.addAll(newScramble);
     }
+    public ObservableList<Move> getCurrentScramble() {
+        return currentScramble;
+    }
 }
