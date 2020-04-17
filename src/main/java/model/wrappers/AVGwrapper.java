@@ -1,6 +1,7 @@
 package model.wrappers;
 
 import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 
 public class AVGwrapper {
 
@@ -25,14 +26,19 @@ public class AVGwrapper {
     public void setNET(){
         isNotEnoughTimes=true;
     }
+    public boolean getState(){
+        return isDNF;
+    }
     public boolean isNET(){
         return isNotEnoughTimes;
     }
     public void TwoSecPenalty(int k){
+        System.out.println(this.getAVG());
         long value=average.getTime();
         value=value*k;
         value+=2000;
         average.setTime(value/k);
+        System.out.println(this.getAVG());
     }
     public AVGwrapper(int i, Timestamp avg, boolean temp) {
         ID = i;
@@ -40,6 +46,11 @@ public class AVGwrapper {
         isDNF = temp;
         isNotEnoughTimes=false;
     }
-
+    public String toString(){
+        String toStr = "";
+        toStr+="Time: "+ this.getAVG().toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS"));
+        toStr+="\nState: "+this.getState();
+        return toStr;
+    }
 
 }

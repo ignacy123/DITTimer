@@ -34,6 +34,7 @@ public class SolveImplementation implements Solve {
         toStr+="\nScramble: "+this.getScramble();
         toStr+="\nDate: "+this.getDate();
         toStr+="\nComment: "+this.getComment();
+        toStr+="\nState: "+this.getState();
         return toStr;
     }
     @Override

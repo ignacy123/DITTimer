@@ -11,6 +11,7 @@ import model.logic.SolveImplementation;
 import model.wrappers.AVGwrapper;
 import model.wrappers.ObservableWrapper;
 
+
 import java.util.*;
 import java.sql.Timestamp;
 
@@ -232,49 +233,92 @@ public class StatisticServerImplementation implements StatisticServer {
         if (WhatModel == CubeType.TWOBYTWO) {
             temp = TwoByTwo;
             if(state==State.TWOSECPENALTY){
-                A5Two.get(A5Two.size()-1).TwoSecPenalty(5);
-                A12Two.get(A12Two.size()-1).TwoSecPenalty(12);
+                Solve solve=temp.get(temp.size()-1);
+                solve.getTime().setTime(solve.getTime().getTime()+2000);
+                solve.setState(State.TWOSECPENALTY);
+                DeleteLast(WhatModel);
+                insertSolve(solve);
             }else if(state==State.DNF) {
-                if (WhetherSetAVGtoDNF(TwoByTwo, 5) + 1 >= 2) {
-                    A5Two.get(A5Two.size() - 1).setDNF();
-                }
-                if (WhetherSetAVGtoDNF(TwoByTwo, 12) + 1 >= 2) {
-                    A12Two.get(A12Two.size() - 1).setDNF();
+                Solve solve=temp.get(temp.size()-1);
+                solve.setState(State.DNF);
+                DeleteLast(WhatModel);
+                insertSolve(solve);
+            }else {
+                Solve solve=temp.get(temp.size()-1);
+                DeleteLast(WhatModel);
+                if(solve.getState()==State.DNF){
+                    solve.setState(State.CORRECT);
+                    insertSolve(solve);
+                } else if(solve.getState()==State.TWOSECPENALTY){
+                    solve.setState(State.CORRECT);
+                    solve.getTime().setTime(solve.getTime().getTime()-2000);
+                    insertSolve(solve);
+                } else{
+                    insertSolve(solve);
                 }
             }
         } else if (WhatModel == CubeType.THREEBYTHREE) {
             temp = TreeByTree;
             if(state==State.TWOSECPENALTY){
-                A5Tree.get(A5Tree.size()-1).TwoSecPenalty(5);
-                A12Tree.get(A12Tree.size()-1).TwoSecPenalty(12);
+                Solve solve=temp.get(temp.size()-1);
+                solve.getTime().setTime(solve.getTime().getTime()+2000);
+                solve.setState(State.TWOSECPENALTY);
+                DeleteLast(WhatModel);
+                insertSolve(solve);
             }else if(state==State.DNF) {
-                if (WhetherSetAVGtoDNF(TreeByTree, 5) + 1 >= 2) {
-                    A5Tree.get(A5Tree.size() - 1).setDNF();
+                Solve solve=temp.get(temp.size()-1);
+                solve.setState(State.DNF);
+                DeleteLast(WhatModel);
+                insertSolve(solve);
+            }else {
+                Solve solve=temp.get(temp.size()-1);
+                DeleteLast(WhatModel);
+                if(solve.getState()==State.DNF){
+                    solve.setState(State.CORRECT);
+                    insertSolve(solve);
+                } else if(solve.getState()==State.TWOSECPENALTY){
+                    solve.setState(State.CORRECT);
+                    solve.getTime().setTime(solve.getTime().getTime()-2000);
+                    insertSolve(solve);
                 }
-                if (WhetherSetAVGtoDNF(TreeByTree, 12) + 1 >= 2) {
-                    A12Tree.get(A12Tree.size() - 1).setDNF();
+                else {
+                    insertSolve(solve);
                 }
             }
         } else {
             temp = FourByFour;
             if(state==State.TWOSECPENALTY){
-                A5Four.get(A5Four.size()-1).TwoSecPenalty(5);
-                A12Four.get(A12Four.size()-1).TwoSecPenalty(12);
+                Solve solve=temp.get(temp.size()-1);
+                solve.getTime().setTime(solve.getTime().getTime()+2000);
+                solve.setState(State.TWOSECPENALTY);
+                DeleteLast(WhatModel);
+                insertSolve(solve);
             }else if(state==State.DNF) {
-                if (WhetherSetAVGtoDNF(FourByFour, 5) + 1 >= 2) {
-                    A5Four.get(A5Four.size() - 1).setDNF();
+                Solve solve=temp.get(temp.size()-1);
+                solve.setState(State.DNF);
+                DeleteLast(WhatModel);
+                insertSolve(solve);
+            }else {
+                Solve solve=temp.get(temp.size()-1);
+                DeleteLast(WhatModel);
+                if(solve.getState()==State.DNF){
+                    solve.setState(State.CORRECT);
+                    insertSolve(solve);
                 }
-                if (WhetherSetAVGtoDNF(FourByFour, 12) + 1 >= 2) {
-                    A12Four.get(A12Four.size() - 1).setDNF();
+                else if(solve.getState()==State.TWOSECPENALTY){
+                    solve.setState(State.CORRECT);
+                    solve.getTime().setTime(solve.getTime().getTime()-2000);
+                    insertSolve(solve);
+                } else{
+                    insertSolve(solve);
                 }
             }
         }
-        temp.get(temp.size() - 1).setState(state);
         myDataBase.updateLast(temp.get(temp.size() - 1));
     }
     private int WhetherSetAVGtoDNF(ObservableList<Solve>temp, int k){
         int DNFcounter=0;
-        for(int i=temp.size()-1;k>0;i--,k--){
+        for(int i=temp.size()-1;i+1>0 && k>0;i--,k--){
             if(temp.get(i).getState()==State.DNF)
                 DNFcounter++;
         }
@@ -283,22 +327,53 @@ public class StatisticServerImplementation implements StatisticServer {
     @Override
     public void DeleteLast(CubeType WhatModel) {
         ObservableList<Solve> temp;
+
         if (WhatModel == CubeType.TWOBYTWO) {
             temp = TwoByTwo;
-            A5Two.remove(A5Two.size()-1);
-            A12Two.remove(A12Two.size()-1);
+            if(!temp.isEmpty()){
+                temp.remove(temp.size()-1);
+                A5Two.remove(A5Two.size()-1);
+                A12Two.remove(A12Two.size()-1);
+                myDataBase.deleteLast(WhatModel);
+            }
         } else if (WhatModel == CubeType.THREEBYTHREE) {
             temp = TreeByTree;
-            A5Tree.remove(A5Tree.size()-1);
-            A12Tree.remove(A12Tree.size()-1);
+            if(!temp.isEmpty()) {
+                temp.remove(temp.size()-1);
+                A5Tree.remove(A5Tree.size() - 1);
+                A12Tree.remove(A12Tree.size() - 1);
+                myDataBase.deleteLast(WhatModel);
+            }
         } else {
             temp = FourByFour;
-            A5Four.remove(A5Four.size()-1);
-            A12Four.remove(A12Four.size()-1);
+            if(!temp.isEmpty()) {
+                temp.remove(temp.size()-1);
+                A5Four.remove(A5Four.size() - 1);
+                A12Four.remove(A12Four.size() - 1);
+                myDataBase.deleteLast(WhatModel);
+            }
         }
-        temp.remove(temp.size() - 1);
-        //////////////////////////////////////////////
-        myDataBase.deleteLast(WhatModel);
+
+
+    }
+
+    @Override
+    public void delete(CubeType type) {
+        myDataBase.clearTable(type);
+        if(type==CubeType.TWOBYTWO){
+            TwoByTwo.clear();
+            A5Two.clear();
+            A12Two.clear();
+        }else if(type==CubeType.THREEBYTHREE){
+            TreeByTree.clear();
+            A5Tree.clear();
+            A12Tree.clear();
+        }else{
+            FourByFour.clear();
+            A5Four.clear();
+            A12Four.clear();
+        }
+
     }
 
     @Override

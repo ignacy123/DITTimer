@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.StateSetter.StateSetterController">
+   <children>
+      <GridPane layoutX="186.0" layoutY="150.0" prefHeight="50.0" prefWidth="361.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button fx:id="TwoSecbutton" mnemonicParsing="false" onAction="#MakeLastTwoSec" prefHeight="100.0" prefWidth="127.0" text="+2" />
+            <Button fx:id="DELETEbutton" mnemonicParsing="false" onAction="#MakeLastDelete" prefHeight="100.0" prefWidth="138.0" text="DELETE" GridPane.columnIndex="1" />
+            <Button fx:id="DNFbutton" mnemonicParsing="false" onAction="#MakeLastDNF" prefHeight="100.0" prefWidth="125.0" text="DNF" GridPane.columnIndex="2" />
+            <Button fx:id="CorrectButton" mnemonicParsing="false" onAction="#Correction" prefHeight="60.0" prefWidth="91.0" text="OK" GridPane.columnIndex="3" />
+         </children>
+      </GridPane>
+   </children>
+</Pane>

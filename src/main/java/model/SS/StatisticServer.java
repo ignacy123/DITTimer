@@ -21,7 +21,6 @@ public interface StatisticServer {
     void ChangeStateLast(CubeType WhatModel, State state);
 
     void DeleteLast(CubeType WhatModel);       // changes in DB and in SS
-
-
+    void delete(CubeType type);  // cleans everything including db
 
 }

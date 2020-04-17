@@ -1,0 +1,28 @@
+/*C2*/SET SCHEMA PUBLIC
+INSERT INTO THREEBYTHREE VALUES(147,'1970-01-01 01:00:01.304000',0,NULL,'F2 R'' D2 U'' B'' R'' D'' B L2 D2 F B'' D'' R F B2 U'' L B2 U''                                                                                                                                                  ','2020-04-17 15:40:27.374000')
+COMMIT
+DELETE FROM THREEBYTHREE WHERE ID=147
+COMMIT
+INSERT INTO THREEBYTHREE VALUES(148,'1970-01-01 01:00:03.304000',1,NULL,'F2 R'' D2 U'' B'' R'' D'' B L2 D2 F B'' D'' R F B2 U'' L B2 U''                                                                                                                                                  ','2020-04-17 15:40:27.374000')
+COMMIT
+DELETE FROM THREEBYTHREE WHERE ID=148
+INSERT INTO THREEBYTHREE VALUES(148,'1970-01-01 01:00:03.304000',1,NULL,'F2 R'' D2 U'' B'' R'' D'' B L2 D2 F B'' D'' R F B2 U'' L B2 U''                                                                                                                                                  ','2020-04-17 15:40:27.374000')
+COMMIT
+DELETE FROM THREEBYTHREE WHERE ID=148
+COMMIT
+INSERT INTO THREEBYTHREE VALUES(149,'1970-01-01 01:00:01.304000',0,NULL,'F2 R'' D2 U'' B'' R'' D'' B L2 D2 F B'' D'' R F B2 U'' L B2 U''                                                                                                                                                  ','2020-04-17 15:40:27.374000')
+COMMIT
+DELETE FROM THREEBYTHREE WHERE ID=149
+INSERT INTO THREEBYTHREE VALUES(149,'1970-01-01 01:00:01.304000',0,NULL,'F2 R'' D2 U'' B'' R'' D'' B L2 D2 F B'' D'' R F B2 U'' L B2 U''                                                                                                                                                  ','2020-04-17 15:40:27.374000')
+COMMIT
+DELETE FROM THREEBYTHREE WHERE ID=149
+COMMIT
+INSERT INTO THREEBYTHREE VALUES(150,'1970-01-01 01:00:00.781000',0,NULL,'L'' R B U2 D'' F L'' D2 F R'' U D2 B2 F'' L'' U2 F B'' R'' D''                                                                                                                                                   ','2020-04-17 15:40:37.178000')
+COMMIT
+DELETE FROM THREEBYTHREE WHERE ID=150
+COMMIT
+INSERT INTO THREEBYTHREE VALUES(151,'1970-01-01 01:00:00.781000',2,NULL,'L'' R B U2 D'' F L'' D2 F R'' U D2 B2 F'' L'' U2 F B'' R'' D''                                                                                                                                                   ','2020-04-17 15:40:37.178000')
+COMMIT
+DELETE FROM THREEBYTHREE WHERE ID=151
+INSERT INTO THREEBYTHREE VALUES(151,'1970-01-01 01:00:00.781000',2,NULL,'L'' R B U2 D'' F L'' D2 F R'' U D2 B2 F'' L'' U2 F B'' R'' D''                                                                                                                                                   ','2020-04-17 15:40:37.178000')
+COMMIT

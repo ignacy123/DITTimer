@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class ClickDrawer extends DrawScramble {
+
     Color[][] cube;
     GridPane rubics;
     ChoiceBox<String> curCol;
@@ -65,6 +66,7 @@ public class ClickDrawer extends DrawScramble {
         }
         return gridPane;
     }
+
     public void doMagic() {
         Stage stage = new Stage();
         stage.setResizable(false);

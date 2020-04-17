@@ -2,6 +2,7 @@ package view.Timer;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
@@ -10,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import model.SS.StatisticServer;
+import model.enums.AVG;
 import model.enums.CubeType;
 import model.enums.Running;
 import model.enums.State;
@@ -17,9 +19,11 @@ import model.logic.ScrambleGenerator;
 import model.logic.ScrambleGeneratorImplementation;
 import model.logic.Solve;
 import model.logic.SolveImplementation;
+import model.wrappers.AVGwrapper;
 import model.wrappers.ObservableWrapper;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -28,7 +32,8 @@ public class Controller {
     Pane mainPane;
     private StatisticServer ss = null;
     private ObservableWrapper ow = null;
-    private ScrambleGenerator Generator=new ScrambleGeneratorImplementation(CubeType.THREEBYTHREE);
+    CubeType type = CubeType.THREEBYTHREE;
+    private ScrambleGenerator Generator=new ScrambleGeneratorImplementation(type);
 
     enum StartOrStop {
         START, STOP;
@@ -37,7 +42,6 @@ public class Controller {
     StartOrStop whatToDo = StartOrStop.START;
     int mins = 0, secs = 0, millis = 0;
     Timeline timeline = new Timeline();
-
     void change(Text text) {
         if (millis == 1000) {
             secs++;
@@ -51,7 +55,14 @@ public class Controller {
                 + (((secs / 10) == 0) ? "0" : "") + secs + ":"
                 + (((millis / 10) == 0) ? "00" : (((millis / 100) == 0) ? "0" : "")) + millis++);
     }
-
+    void reset(){
+        mins=secs=millis=0;
+       // timePassed.setText("00:00:000");
+        whatToDo=StartOrStop.START;
+        ow.setRunning(Running.NO);
+        Generator=new ScrambleGeneratorImplementation(type);
+        Scramble.setText(Generator.scrambleToString(Generator.generate()));
+    }
     @FXML
     private Text timePassed;
     @FXML
@@ -66,7 +77,7 @@ public class Controller {
             long value=0;
             if(ss!=null){
                 value+=millis+secs*1000+mins*60*60*1000-1;
-                Solve solve=new SolveImplementation(new Date(),value, State.CORRECT, CubeType.THREEBYTHREE);
+                Solve solve=new SolveImplementation(new Date(),value, State.CORRECT, type);
                 solve.setScramble(Scramble.getText());
                 ss.insertSolve(solve);
             }
@@ -115,5 +126,9 @@ public class Controller {
     public void setSSAndOw(StatisticServer ss, ObservableWrapper ow) {
         this.ss = ss;
         this.ow = ow;
+        ow.getCubeCurrType().addListener((ListChangeListener<CubeType>) change -> {
+            type = ow.getCubeCurrType().get(0);
+            reset();
+        });
     }
 }

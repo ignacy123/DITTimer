@@ -10,18 +10,24 @@ import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import model.SS.StatisticServer;
+import model.enums.Running;
+import model.wrappers.ObservableWrapper;
 
 import java.io.File;
 import java.net.MalformedURLException;
 
 
 public class MetronomeController {
+    private StatisticServer ss = null;
+    private ObservableWrapper ow = null;
     public MetronomeController() throws MalformedURLException {
     }
 
     enum POWER{
         ON,OFF;
     }
+
     long BMP;
     POWER state= POWER.ON;
     Media metronomeSound = new Media(new File("src/main/resources/metronome.wav").toURI().toURL().toString());
@@ -55,6 +61,8 @@ public class MetronomeController {
         state= POWER.ON;
         Thread thread= new Thread( ()-> {
             while (state == POWER.ON) {
+                System.out.println(ow.getRunning().get(0));
+                if(ow.getRunning().get(0)==Running.YES)
                 mediaPlayer.play();
                 try {
                     Thread.sleep((long) BMPline.getValue());
@@ -75,5 +83,9 @@ public class MetronomeController {
     @FXML
     void initialize() {
         bmpChooser.setItems(list);
+    }
+    public void setSSAndOw(StatisticServer ss, ObservableWrapper ow) {
+        this.ss = ss;
+        this.ow = ow;
     }
 }

@@ -150,8 +150,7 @@ public class TimeListController extends Stage {
     }
 
     public void deleteSession(){
-        //ss.delete(type);
-        System.out.println("calling ss to clear: "+currentType);
+        ss.delete(currentType);
     }
 
     public void handle3(MouseEvent event) {
