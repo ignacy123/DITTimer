@@ -65,7 +65,6 @@ public class ClickDrawer extends DrawScramble {
         }
         return gridPane;
     }
-   @Override
     public void doMagic() {
         Stage stage = new Stage();
         stage.setResizable(false);

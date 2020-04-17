@@ -5,6 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -78,23 +79,25 @@ public class TimeListController extends Stage {
             }
         });
         currentType = CubeType.THREEBYTHREE;
-//        DatabaseService db = new DatabaseServiceImplementation();
-//        db.dropDatabase();
+
         listView.setCellFactory(listView1 -> {
             TextFieldListCell<Solve> cell = new TextFieldListCell<>();
             cell.setConverter(new SolveConverter());
             return cell;
         });
+        listView.scrollTo(Integer.MAX_VALUE);
         listView2.setCellFactory(listView1 -> {
             TextFieldListCell<AVGwrapper> cell = new TextFieldListCell<>();
             cell.setConverter(new AvgConverter());
             return cell;
         });
+        listView2.scrollTo(Integer.MAX_VALUE);
         listView3.setCellFactory(listView1 -> {
             TextFieldListCell<AVGwrapper> cell = new TextFieldListCell<>();
             cell.setConverter(new AvgConverter());
             return cell;
         });
+        listView3.scrollTo(Integer.MAX_VALUE);
 
     }
 
@@ -127,10 +130,14 @@ public class TimeListController extends Stage {
             return;
         }
         AVGwrapper avg = (AVGwrapper) listView2.getSelectionModel().getSelectedItem();
+        if(avg.isNET()){
+            event.consume();
+            return;
+        }
         Dialog d = new Dialog();
         Window window = d.getDialogPane().getScene().getWindow();
         window.setOnCloseRequest(e -> window.hide());
-        d.setTitle("Solve Info");
+        d.setTitle("Average Info");
         d.setHeaderText("");
         SolveConverter converter = new SolveConverter();
         String str = "";
