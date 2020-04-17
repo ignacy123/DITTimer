@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.SS.StatisticServer;
@@ -19,6 +20,7 @@ import view.Metronome.MetronomeController;
 import view.StateSetter.StateSetterController;
 import view.TimeList.TimeListController;
 import view.Timer.Controller;
+import view.drawing.DrawScramble;
 import view.drawing.StatsWindow;
 
 import java.io.IOException;
@@ -36,6 +38,11 @@ public class MainScreen extends Stage {
     Pane pane4;
     @FXML
     Pane pane5;
+
+    @FXML
+    Pane pane6;
+
+    DrawScramble drawer;
 
     FXMLLoader listLoader = null;
     FXMLLoader statsLoader = null;
@@ -64,6 +71,10 @@ public class MainScreen extends Stage {
         Node node5 = StateSetterLoader.load();
         pane5.getChildren().setAll(node5);
 
+        drawer=new DrawScramble();
+
+        pane6.getChildren().add(drawer.getPane());
+        //pane6.setMaxSize(600, 300);
         EventHandler handler = new EventHandler<InputEvent>() {
             public void handle (InputEvent event){
                 Event.fireEvent(node4, event);
@@ -85,6 +96,10 @@ public class MainScreen extends Stage {
         controllerMet.setSSAndOw(ss,ow);
         StateSetterController controllerSet = StateSetterLoader.getController();
         controllerSet.setSSAndOw(ss,ow);
+
+        drawer.setOw(ow);
+
+
 
         ow.getRunning().addListener(new ListChangeListener<Running>() {
             @Override
