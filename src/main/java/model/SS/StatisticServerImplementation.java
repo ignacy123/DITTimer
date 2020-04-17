@@ -269,7 +269,7 @@ public class StatisticServerImplementation implements StatisticServer {
             else temp = A12Four;
         }
         for (AVGwrapper a : temp) {
-            if (a.getAVG().getTime() < min.getAVG().getTime() && !a.isDNF()) // unfortunate
+            if (a.getAVG().getTime() < min.getAVG().getTime() && !a.isDNF() && !a.isNET()) // unfortunate
                 min = a;
         }
         return min;
