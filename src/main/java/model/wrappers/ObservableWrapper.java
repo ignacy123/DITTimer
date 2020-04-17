@@ -10,8 +10,10 @@ import javafx.util.Pair;
 import model.enums.AVG;
 import model.enums.CubeType;
 import model.enums.Running;
+import model.logic.Move;
 import model.logic.Solve;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +23,9 @@ public class ObservableWrapper {
     private Map<Pair<CubeType, AVG>, ObservableList<AVGwrapper>> listsOfAvgs;
     private ObservableList<CubeType> currCubeType;
     private ObservableList<Running> isRunning;
+    private ObservableList<Move> currentScramble;
     public ObservableWrapper(){
+        currentScramble = FXCollections.observableArrayList();
         isRunning = FXCollections.observableArrayList();
         isRunning.addAll(Running.NO);
         currCubeType = FXCollections.observableArrayList();
@@ -56,5 +60,9 @@ public class ObservableWrapper {
     }
     public ObservableList<Running> getRunning(){
         return isRunning;
+    }
+    public void setCurrentScramble(ArrayList<Move> newScramble){
+        currentScramble.clear();
+        currentScramble.addAll(newScramble);
     }
 }

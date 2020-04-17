@@ -1,28 +1,7 @@
 /*C2*/SET SCHEMA PUBLIC
-INSERT INTO THREEBYTHREE VALUES(147,'1970-01-01 01:00:01.304000',0,NULL,'F2 R'' D2 U'' B'' R'' D'' B L2 D2 F B'' D'' R F B2 U'' L B2 U''                                                                                                                                                  ','2020-04-17 15:40:27.374000')
+INSERT INTO THREEBYTHREE VALUES(187,'1970-01-01 01:00:03.732000',0,NULL,'F U'' L2 B2 U'' R'' B D R B2 U'' D'' F2 R2 D2 F2 L'' D2 F2 R2                                                                                                                                                 ','2020-04-17 16:12:24.189000')
 COMMIT
-DELETE FROM THREEBYTHREE WHERE ID=147
+INSERT INTO THREEBYTHREE VALUES(188,'1970-01-01 01:00:10.243000',0,NULL,'B2 U R'' B2 U2 L'' R2 F U D2 R'' L'' U F B'' R'' L'' F2 U'' L2                                                                                                                                                  ','2020-04-17 16:12:59.235000')
 COMMIT
-INSERT INTO THREEBYTHREE VALUES(148,'1970-01-01 01:00:03.304000',1,NULL,'F2 R'' D2 U'' B'' R'' D'' B L2 D2 F B'' D'' R F B2 U'' L B2 U''                                                                                                                                                  ','2020-04-17 15:40:27.374000')
-COMMIT
-DELETE FROM THREEBYTHREE WHERE ID=148
-INSERT INTO THREEBYTHREE VALUES(148,'1970-01-01 01:00:03.304000',1,NULL,'F2 R'' D2 U'' B'' R'' D'' B L2 D2 F B'' D'' R F B2 U'' L B2 U''                                                                                                                                                  ','2020-04-17 15:40:27.374000')
-COMMIT
-DELETE FROM THREEBYTHREE WHERE ID=148
-COMMIT
-INSERT INTO THREEBYTHREE VALUES(149,'1970-01-01 01:00:01.304000',0,NULL,'F2 R'' D2 U'' B'' R'' D'' B L2 D2 F B'' D'' R F B2 U'' L B2 U''                                                                                                                                                  ','2020-04-17 15:40:27.374000')
-COMMIT
-DELETE FROM THREEBYTHREE WHERE ID=149
-INSERT INTO THREEBYTHREE VALUES(149,'1970-01-01 01:00:01.304000',0,NULL,'F2 R'' D2 U'' B'' R'' D'' B L2 D2 F B'' D'' R F B2 U'' L B2 U''                                                                                                                                                  ','2020-04-17 15:40:27.374000')
-COMMIT
-DELETE FROM THREEBYTHREE WHERE ID=149
-COMMIT
-INSERT INTO THREEBYTHREE VALUES(150,'1970-01-01 01:00:00.781000',0,NULL,'L'' R B U2 D'' F L'' D2 F R'' U D2 B2 F'' L'' U2 F B'' R'' D''                                                                                                                                                   ','2020-04-17 15:40:37.178000')
-COMMIT
-DELETE FROM THREEBYTHREE WHERE ID=150
-COMMIT
-INSERT INTO THREEBYTHREE VALUES(151,'1970-01-01 01:00:00.781000',2,NULL,'L'' R B U2 D'' F L'' D2 F R'' U D2 B2 F'' L'' U2 F B'' R'' D''                                                                                                                                                   ','2020-04-17 15:40:37.178000')
-COMMIT
-DELETE FROM THREEBYTHREE WHERE ID=151
-INSERT INTO THREEBYTHREE VALUES(151,'1970-01-01 01:00:00.781000',2,NULL,'L'' R B U2 D'' F L'' D2 F R'' U D2 B2 F'' L'' U2 F B'' R'' D''                                                                                                                                                   ','2020-04-17 15:40:37.178000')
+INSERT INTO THREEBYTHREE VALUES(189,'1970-01-01 01:00:23.531000',0,NULL,'F'' R2 D F2 B'' R L'' F2 B2 U2 D'' B2 F2 L R2 U2 D F2 B'' R2                                                                                                                                                 ','2020-04-17 16:13:45.035000')
 COMMIT

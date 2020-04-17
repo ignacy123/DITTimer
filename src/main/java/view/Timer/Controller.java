@@ -15,10 +15,7 @@ import model.enums.AVG;
 import model.enums.CubeType;
 import model.enums.Running;
 import model.enums.State;
-import model.logic.ScrambleGenerator;
-import model.logic.ScrambleGeneratorImplementation;
-import model.logic.Solve;
-import model.logic.SolveImplementation;
+import model.logic.*;
 import model.wrappers.AVGwrapper;
 import model.wrappers.ObservableWrapper;
 
@@ -61,7 +58,9 @@ public class Controller {
         whatToDo=StartOrStop.START;
         ow.setRunning(Running.NO);
         Generator=new ScrambleGeneratorImplementation(type);
-        Scramble.setText(Generator.scrambleToString(Generator.generate()));
+        ArrayList<Move> scramble = Generator.generate();
+        Scramble.setText(Generator.scrambleToString(scramble));
+        ow.setCurrentScramble(scramble);
     }
     @FXML
     private Text timePassed;
@@ -81,7 +80,9 @@ public class Controller {
                 solve.setScramble(Scramble.getText());
                 ss.insertSolve(solve);
             }
-            Scramble.setText(Generator.scrambleToString(Generator.generate()));
+            ArrayList<Move> scramble = Generator.generate();
+            Scramble.setText(Generator.scrambleToString(scramble));
+            ow.setCurrentScramble(scramble);
             mins=secs=millis=0;
             whatToDo= StartOrStop.STOP;
         }
