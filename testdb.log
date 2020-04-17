@@ -1,7 +1,0 @@
-/*C2*/SET SCHEMA PUBLIC
-INSERT INTO THREEBYTHREE VALUES(187,'1970-01-01 01:00:03.732000',0,NULL,'F U'' L2 B2 U'' R'' B D R B2 U'' D'' F2 R2 D2 F2 L'' D2 F2 R2                                                                                                                                                 ','2020-04-17 16:12:24.189000')
-COMMIT
-INSERT INTO THREEBYTHREE VALUES(188,'1970-01-01 01:00:10.243000',0,NULL,'B2 U R'' B2 U2 L'' R2 F U D2 R'' L'' U F B'' R'' L'' F2 U'' L2                                                                                                                                                  ','2020-04-17 16:12:59.235000')
-COMMIT
-INSERT INTO THREEBYTHREE VALUES(189,'1970-01-01 01:00:23.531000',0,NULL,'F'' R2 D F2 B'' R L'' F2 B2 U2 D'' B2 F2 L R2 U2 D F2 B'' R2                                                                                                                                                 ','2020-04-17 16:13:45.035000')
-COMMIT

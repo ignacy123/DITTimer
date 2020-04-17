@@ -1,2 +1,5 @@
 /.idea/
 
+/testdb.script
+/testdb.properties
+/testdb.log

@@ -169,6 +169,10 @@ public class TimeListController extends Stage {
         d.setHeaderText("");
         SolveConverter converter = new SolveConverter();
         String str = "";
+        if(avg.isNET()){
+            event.consume();
+            return;
+        }
         for (int i = 11; i >= 0; i--) {
             str += 12 - i + ". " + converter.toString(ow.getListOfSolves(currentType).get(avg.getID() - i)) + '\n';
             str += ow.getListOfSolves(currentType).get(avg.getID() - i-1).getScramble() + "\n";

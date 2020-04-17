@@ -59,15 +59,18 @@ public class ScrambleGeneratorImplementation implements ScrambleGenerator {
     }
     private ArrayList<Move> generateElse(int length, int width){
         ArrayList<Move> scramble = new ArrayList<>();
-        scramble.add(new MoveImplementation(nextFace(), nextDirection(), random.nextInt(width)+1));
         MoveImplementation move = new MoveImplementation(nextFace(), nextDirection(), random.nextInt(width)+1);
-        while(move.getFace()==scramble.get(0).getFace()){
+        while((width>1 && move.getWidth()==width && move.getFace()==Face.L) || (width>1 && move.getWidth()==width && move.getFace()==Face.B) || (width>1 && move.getWidth()==width && move.getFace()==Face.D)){
+            move = new MoveImplementation(nextFace(), nextDirection(), random.nextInt(width)+1);
+        }
+        scramble.add(move);
+        while(move.getFace()==scramble.get(0).getFace() || (width>1 && move.getWidth()==width && move.getFace()==Face.L) || (width>1 && move.getWidth()==width && move.getFace()==Face.B) || (width>1 && move.getWidth()==width && move.getFace()==Face.D)){
             move = new MoveImplementation(nextFace(), nextDirection(), random.nextInt(width)+1);
         }
         scramble.add(move);
         for(int i = 2; i<length;i++){
             move = new MoveImplementation(nextFace(), nextDirection(), random.nextInt(width)+1);
-            while(move.getFace()==scramble.get(i-1).getFace() || move.getAxis()==scramble.get(i-2).getAxis()){
+            while(move.getFace()==scramble.get(i-1).getFace() || move.getAxis()==scramble.get(i-2).getAxis() || (width>1 && move.getWidth()==width && move.getFace()==Face.L) || (width>1 && move.getWidth()==width && move.getFace()==Face.B) || (width>1 && move.getWidth()==width && move.getFace()==Face.D)){
                 move = new MoveImplementation(nextFace(), nextDirection(), random.nextInt(width)+1);
             }
             scramble.add(move);
