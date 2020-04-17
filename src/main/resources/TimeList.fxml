@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" stylesheets="TimeList.css" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="806.0" prefWidth="277.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.TimeList.TimeListController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="806.0" prefWidth="277.0" stylesheets="TimeList.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.TimeList.TimeListController">
    <children>
       <ListView fx:id="listView" layoutY="42.0" onMouseClicked="#handle" prefHeight="666.0" prefWidth="95.0" />
       <ListView fx:id="listView2" layoutX="89.0" layoutY="42.0" onMouseClicked="#handle2" prefHeight="666.0" prefWidth="95.0" />
@@ -17,7 +17,7 @@
       <Button fx:id="deleteButton" layoutX="222.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteSession" text="X" />
       <Label fx:id="bestSingle" layoutX="14.0" layoutY="735.0" text="Best" />
       <Label fx:id="bestAo5" layoutX="113.0" layoutY="735.0" text="Best" />
-      <Label fx:id="BestAo12" layoutX="209.0" layoutY="735.0" text="Best" />
+      <Label fx:id="bestAo12" layoutX="209.0" layoutY="735.0" text="Best" />
       <Label fx:id="count" layoutX="115.0" layoutY="758.0" text="Label">
          <font>
             <Font size="17.0" />

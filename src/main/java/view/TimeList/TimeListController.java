@@ -248,6 +248,16 @@ public class TimeListController extends Stage {
 
             bestSingle.setText(ss.GiveMeMin(currentType).toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS")));
         }
+        if(ss.GiveMeMinAVG(currentType, Ao5).getID()==-1){
+            bestAo5.setText("-");
+        }else{
+            bestAo5.setText(ss.GiveMeMinAVG(currentType, Ao5).getAVG().toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS")));
+        }
+        if(ss.GiveMeMinAVG(currentType, Ao12).getID()==-1){
+            bestAo12.setText("-");
+        }else{
+            bestAo12.setText(ss.GiveMeMinAVG(currentType, Ao12).getAVG().toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS")));
+        }
         count.setText(String.valueOf(ow.getListOfSolves(currentType).size()));
     }
 
