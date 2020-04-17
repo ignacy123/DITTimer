@@ -99,12 +99,18 @@ public class DrawScramble extends Stage {
                 outSide.getChildren().setAll(rubics);
             }
         });
-        ow.getCubeCurrType().addListener(new ListChangeListener<CubeType>() {
-            @Override
-            public void onChanged(Change<? extends CubeType> change) {
-                type=ow.getCubeCurrType().get(0);
-            }
-        });
+        boolean draw = false;
+        if(type != ow.getCubeCurrType().get(0)) {
+            draw = true;
+        }
+        type = ow.getCubeCurrType().get(0);
+        populateStandard();
+        Rotator rotator = rotator4;
+        if(type==CubeType.THREEBYTHREE) rotator = rotator3;
+        else if(type == CubeType.TWOBYTWO) rotator = rotator2;
+        rotator.executeMoves(new ArrayList<>(ow.getCurrentScramble()));
+        if(draw) rubics = draw(); else update();
+        outSide.getChildren().setAll(rubics);
 
     }
     public void populateStandard() {

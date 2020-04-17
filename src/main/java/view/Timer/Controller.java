@@ -119,7 +119,6 @@ public class Controller {
             }
 
         };
-        Scramble.setText(Generator.scrambleToString(Generator.generate()));
         mainPane.setOnKeyPressed(handler);
         mainPane.setOnKeyReleased(handler2);
     }
@@ -131,5 +130,8 @@ public class Controller {
             type = ow.getCubeCurrType().get(0);
             reset();
         });
+        ArrayList<Move> scramble = Generator.generate();
+        Scramble.setText(Generator.scrambleToString(scramble));
+        ow.setCurrentScramble(scramble);
     }
 }

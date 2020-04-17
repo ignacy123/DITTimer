@@ -3,38 +3,22 @@ package view.TimeList;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Orientation;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import model.SS.StatisticServer;
-import model.SS.StatisticServerImplementation;
-import model.db.DatabaseService;
-import model.db.DatabaseServiceImplementation;
-import model.enums.AVG;
 import model.enums.CubeType;
-import model.enums.State;
-import model.logic.ScrambleGenerator;
-import model.logic.ScrambleGeneratorImplementation;
 import model.logic.Solve;
-import model.logic.SolveImplementation;
 import model.wrappers.AVGwrapper;
 import model.wrappers.ObservableWrapper;
 
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
 
 import static model.enums.AVG.Ao12;
 import static model.enums.AVG.Ao5;
@@ -54,14 +38,52 @@ public class TimeListController extends Stage {
     private StatisticServer ss;
     private ObservableWrapper ow;
     private CubeType currentType;
+    @FXML
+    private Label bestSingle;
+    @FXML
+    private Label bestAo5;
+    @FXML
+    private Label bestAo12;
+    @FXML
+    private Label count;
+
 
 
     public void setSSAndOw(StatisticServer ss, ObservableWrapper ow){
         this.ss = ss;
         this.ow = ow;
+        currentType = ow.getCubeCurrType().get(0);
+        ow.getListOfSolves(CubeType.TWOBYTWO).addListener(new ListChangeListener<Solve>() {
+            @Override
+            public void onChanged(Change<? extends Solve> change) {
+                listView.scrollTo(Integer.MAX_VALUE);
+                listView2.scrollTo(Integer.MAX_VALUE);
+                listView3.scrollTo(Integer.MAX_VALUE);
+                setBestAndCount();
+            }
+        });
+        ow.getListOfSolves(CubeType.THREEBYTHREE).addListener(new ListChangeListener<Solve>() {
+            @Override
+            public void onChanged(Change<? extends Solve> change) {
+                listView.scrollTo(Integer.MAX_VALUE);
+                listView2.scrollTo(Integer.MAX_VALUE);
+                listView3.scrollTo(Integer.MAX_VALUE);
+                setBestAndCount();
+            }
+        });
+        ow.getListOfSolves(CubeType.FOURBYFOUR).addListener(new ListChangeListener<Solve>() {
+            @Override
+            public void onChanged(Change<? extends Solve> change) {
+                listView.scrollTo(Integer.MAX_VALUE);
+                listView2.scrollTo(Integer.MAX_VALUE);
+                listView3.scrollTo(Integer.MAX_VALUE);
+            }
+        });
         listView.setItems(ow.getListOfSolves(currentType));
         listView2.setItems(ow.getListAvg(currentType, Ao5));
         listView3.setItems(ow.getListAvg(currentType, Ao12));
+
+        setBestAndCount();
     }
 
     @FXML
@@ -76,6 +98,10 @@ public class TimeListController extends Stage {
                 listView.setItems(ow.getListOfSolves(currentType));
                 listView2.setItems(ow.getListAvg(currentType, Ao5));
                 listView3.setItems(ow.getListAvg(currentType, Ao12));
+                listView.scrollTo(Integer.MAX_VALUE);
+                listView2.scrollTo(Integer.MAX_VALUE);
+                listView3.scrollTo(Integer.MAX_VALUE);
+                setBestAndCount();
             }
         });
         currentType = CubeType.THREEBYTHREE;
@@ -97,6 +123,8 @@ public class TimeListController extends Stage {
             cell.setConverter(new AvgConverter());
             return cell;
         });
+        listView.scrollTo(Integer.MAX_VALUE);
+        listView2.scrollTo(Integer.MAX_VALUE);
         listView3.scrollTo(Integer.MAX_VALUE);
 
     }
@@ -113,10 +141,18 @@ public class TimeListController extends Stage {
         Solve solve = (Solve) listView.getSelectionModel().getSelectedItem();
         String toStr = solve.toString();
         Dialog d = new Dialog();
+        d.setResizable(true);
         Window window = d.getDialogPane().getScene().getWindow();
         window.setOnCloseRequest(e -> window.hide());
+        Stage stage = (Stage) window;
+        if(currentType==CubeType.FOURBYFOUR){
+            stage.setMinHeight(200);
+        }else if(currentType==CubeType.THREEBYTHREE){
+            stage.setMinHeight(170);
+        }
         d.setTitle("Solve Info");
         d.setHeaderText("");
+        d.setResizable(true);
         d.setContentText(toStr);
         d.show();
     }
@@ -135,8 +171,18 @@ public class TimeListController extends Stage {
             return;
         }
         Dialog d = new Dialog();
+        d.setResizable(true);
         Window window = d.getDialogPane().getScene().getWindow();
         window.setOnCloseRequest(e -> window.hide());
+        Stage stage = (Stage) window;
+        if(currentType==CubeType.FOURBYFOUR){
+            stage.setMinHeight(400);
+        }else if(currentType==CubeType.THREEBYTHREE){
+            stage.setMinHeight(250);
+
+        }else{
+            stage.setMinHeight(200);
+        }
         d.setTitle("Average Info");
         d.setHeaderText("");
         SolveConverter converter = new SolveConverter();
@@ -163,8 +209,22 @@ public class TimeListController extends Stage {
         }
         AVGwrapper avg = (AVGwrapper) listView3.getSelectionModel().getSelectedItem();
         Dialog d = new Dialog();
+        d.setResizable(true);
         Window window = d.getDialogPane().getScene().getWindow();
         window.setOnCloseRequest(e -> window.hide());
+        Stage stage = (Stage) window;
+        if(currentType==CubeType.FOURBYFOUR){
+            stage.setMinHeight(730);
+            stage.setMinWidth(600);
+        }else if(currentType==CubeType.THREEBYTHREE){
+            stage.setMinHeight(500);
+            stage.setMinWidth(400);
+
+        }else{
+            stage.setMinHeight(400);
+            stage.setMinWidth(250);
+
+        }
         d.setTitle("Solve Info");
         d.setHeaderText("");
         SolveConverter converter = new SolveConverter();
@@ -174,12 +234,23 @@ public class TimeListController extends Stage {
             return;
         }
         for (int i = 11; i >= 0; i--) {
-            str += 12 - i + ". " + converter.toString(ow.getListOfSolves(currentType).get(avg.getID() - i)) + '\n';
+            str += 12 - i + ". " + converter.toString(ow.getListOfSolves(currentType).get(avg.getID() - i-1)) + '\n';
             str += ow.getListOfSolves(currentType).get(avg.getID() - i-1).getScramble() + "\n";
         }
         d.setContentText(str);
         d.show();
     }
+
+    public void setBestAndCount(){
+        if(ss.GiveMeMin(currentType).equals(new Timestamp(999999999))){
+            bestSingle.setText("-");
+        }else{
+
+            bestSingle.setText(ss.GiveMeMin(currentType).toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS")));
+        }
+        count.setText(String.valueOf(ow.getListOfSolves(currentType).size()));
+    }
+
 
     public TimeListController() {
 

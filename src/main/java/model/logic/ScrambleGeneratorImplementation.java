@@ -35,7 +35,7 @@ public class ScrambleGeneratorImplementation implements ScrambleGenerator {
     public ArrayList<Move> generate() {
         switch (cubeType){
             case TWOBYTWO:
-                return generateTwoByTwo(8);
+                return generateTwoByTwo(11);
             case THREEBYTHREE:
                 return generateElse(20, 1);
             case FOURBYFOUR:

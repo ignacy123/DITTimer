@@ -1,6 +1,7 @@
 package view.mainScreen;
 
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.SS.StatisticServer;
 import model.enums.CubeType;
@@ -42,6 +44,8 @@ public class MainScreen extends Stage {
     @FXML
     Pane pane6;
 
+    private Text scramble;
+
     DrawScramble drawer;
 
     FXMLLoader listLoader = null;
@@ -66,6 +70,8 @@ public class MainScreen extends Stage {
         timerLoader = new FXMLLoader(getClass().getClassLoader().getResource("timersample.fxml"));
         Node node4 = timerLoader.load();
         pane4.getChildren().setAll(node4);
+        Pane child = (Pane) node4;
+        scramble = (Text) child.getChildren().get(1);
 
         StateSetterLoader=new FXMLLoader(getClass().getClassLoader().getResource("StateSetter.fxml"));
         Node node5 = StateSetterLoader.load();
@@ -96,11 +102,7 @@ public class MainScreen extends Stage {
         controllerMet.setSSAndOw(ss,ow);
         StateSetterController controllerSet = StateSetterLoader.getController();
         controllerSet.setSSAndOw(ss,ow);
-
         drawer.setOw(ow);
-
-
-
         ow.getRunning().addListener(new ListChangeListener<Running>() {
             @Override
             public void onChanged(Change<? extends Running> change) {
@@ -109,11 +111,16 @@ public class MainScreen extends Stage {
                     pane2.setVisible(false);
                     pane3.setVisible(false);
                     pane5.setVisible(false);
+                    pane6.setVisible(false);
+                    scramble.setVisible(false);
+
                 }else{
                     pane.setVisible(true);
                     pane2.setVisible(true);
                     pane3.setVisible(true);
                     pane5.setVisible(true);
+                    pane6.setVisible(true);
+                    scramble.setVisible(true);
                 }
             }
         });
