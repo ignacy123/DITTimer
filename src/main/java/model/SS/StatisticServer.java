@@ -1,8 +1,11 @@
 package model.SS;
 
+import model.enums.AVG;
 import model.enums.CubeType;
 import model.enums.State;
 import model.logic.Solve;
+import model.wrappers.AVGwrapper;
+
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -17,7 +20,8 @@ public interface StatisticServer {
     Timestamp GiveMeMax(CubeType WhatModel); // return Max Time != DNF or throw exception NoTimesFound
 
     Timestamp GiveMeMin(CubeType WhatModel); // return Min Time != DNF or throw exception NoTimesFound
-
+    AVGwrapper GiveMeMaxAVG(CubeType Whatmodel, AVG whatAvg);
+    AVGwrapper GiveMeMinAVG(CubeType Whatmodel, AVG whatAvg);
     void ChangeStateLast(CubeType WhatModel, State state);
 
     void DeleteLast(CubeType WhatModel);       // changes in DB and in SS

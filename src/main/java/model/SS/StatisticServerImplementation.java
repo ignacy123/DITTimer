@@ -41,11 +41,11 @@ public class StatisticServerImplementation implements StatisticServer {
         TreeByTree.addAll(myDataBase.pullAndParseAllSolves(CubeType.THREEBYTHREE));
         FourByFour.addAll(myDataBase.pullAndParseAllSolves(CubeType.FOURBYFOUR)); //provides times to those lists from db
         A5Two = OW.getListAvg(CubeType.TWOBYTWO, AVG.Ao5);
-        A12Two =  OW.getListAvg(CubeType.TWOBYTWO, AVG.Ao12);
-        A5Tree =  OW.getListAvg(CubeType.THREEBYTHREE, AVG.Ao5);
-        A12Tree =  OW.getListAvg(CubeType.THREEBYTHREE, AVG.Ao12);
-        A5Four =  OW.getListAvg(CubeType.FOURBYFOUR, AVG.Ao5);
-        A12Four =  OW.getListAvg(CubeType.FOURBYFOUR, AVG.Ao12); //taking lists of averages from outside
+        A12Two = OW.getListAvg(CubeType.TWOBYTWO, AVG.Ao12);
+        A5Tree = OW.getListAvg(CubeType.THREEBYTHREE, AVG.Ao5);
+        A12Tree = OW.getListAvg(CubeType.THREEBYTHREE, AVG.Ao12);
+        A5Four = OW.getListAvg(CubeType.FOURBYFOUR, AVG.Ao5);
+        A12Four = OW.getListAvg(CubeType.FOURBYFOUR, AVG.Ao12); //taking lists of averages from outside
         initializeHistory(A5Two, TwoByTwo, 5);
         initializeHistory(A12Two, TwoByTwo, 12);
         initializeHistory(A5Tree, TreeByTree, 5);
@@ -83,38 +83,37 @@ public class StatisticServerImplementation implements StatisticServer {
         int DNFcounter;
         long value;
         int i;
-        if (source.size() < k){
-            for(int j=0;j<source.size();j++){
-                ToFill.add(new AVGwrapper(j+1, new Timestamp(0), false));
-                ToFill.get(ToFill.size()-1).setNET();
+        if (source.size() < k) {
+            for (int j = 0; j < source.size(); j++) {
+                ToFill.add(new AVGwrapper(j + 1, new Timestamp(0), false));
+                ToFill.get(ToFill.size() - 1).setNET();
             }
-        }else{
-            for(int j=k-1;j>0;j--){
-                ToFill.add(new AVGwrapper(j+1, new Timestamp(0), false));
-                ToFill.get(ToFill.size()-1).setNET();
+        } else {
+            for (int j = k - 1; j > 0; j--) {
+                ToFill.add(new AVGwrapper(j + 1, new Timestamp(0), false));
+                ToFill.get(ToFill.size() - 1).setNET();
             }
-            for (i = k-1; i < source.size(); i++) {
-                helper=k;
-                value=0;
-                DNFcounter=0;
-                for(int j=i;helper>0;j--,helper--){
-                    if (source.get(j).getState() == State.DNF){
+            for (i = k - 1; i < source.size(); i++) {
+                helper = k;
+                value = 0;
+                DNFcounter = 0;
+                for (int j = i; helper > 0; j--, helper--) {
+                    if (source.get(j).getState() == State.DNF) {
                         DNFcounter++;
-                    }
-                    else value += source.get(j).getTime().getTime();
+                    } else value += source.get(j).getTime().getTime();
                 }
                 value = value / k;
-                if(DNFcounter<2)
-                    ToFill.add(new AVGwrapper(i+1, new Timestamp(value), false));
-                else ToFill.add(new AVGwrapper(i+1, new Timestamp(value), true));
+                if (DNFcounter < 2)
+                    ToFill.add(new AVGwrapper(i + 1, new Timestamp(value), false));
+                else ToFill.add(new AVGwrapper(i + 1, new Timestamp(value), true));
             }
         }
     }
 
     @Override
-    public Timestamp GiveMeAverage(int WhatAverage, CubeType WhatModel){
+    public Timestamp GiveMeAverage(int WhatAverage, CubeType WhatModel) {
         Timestamp average = null;
-        boolean somethingWrong=false;
+        boolean somethingWrong = false;
         ObservableList<AVGwrapper> temp;
         if (WhatAverage == 5 && WhatModel == CubeType.TWOBYTWO) temp = A5Two;
         else if (WhatAverage == 12 && WhatModel == CubeType.TWOBYTWO) temp = A12Two;
@@ -135,14 +134,14 @@ public class StatisticServerImplementation implements StatisticServer {
             average = CreateAverage(WhatAverage, WhatModel);
         } catch (NotEnoughTimes notEnoughTimes) {
             temp.add(new AVGwrapper(source.size(), new Timestamp(0), false));
-            temp.get(temp.size()-1).setNET();
-            somethingWrong=true;
+            temp.get(temp.size() - 1).setNET();
+            somethingWrong = true;
         } catch (DNF dnf) {
             temp.add(new AVGwrapper(source.size(), new Timestamp(0), true));
-            somethingWrong=true;
+            somethingWrong = true;
         }
-        if(!somethingWrong)
-        temp.add(new AVGwrapper(source.size(), average, false));
+        if (!somethingWrong)
+            temp.add(new AVGwrapper(source.size(), average, false));
         return average;
     }
 
@@ -203,7 +202,7 @@ public class StatisticServerImplementation implements StatisticServer {
             temp = FourByFour;
         }
         for (Solve a : temp) {
-            if (a.getTime().getTime() > max.getTime()) // unfortunate
+            if (a.getTime().getTime() > max.getTime() && a.getState()!=State.DNF) // unfortunate
                 max = a.getTime();
         }
         return max;
@@ -221,8 +220,57 @@ public class StatisticServerImplementation implements StatisticServer {
             temp = FourByFour;
         }
         for (Solve a : temp) {
-            if (a.getTime().getTime() < min.getTime()) // unfortunate
+            if (a.getTime().getTime() < min.getTime() && a.getState()!=State.DNF) // unfortunate
                 min = a.getTime();
+        }
+        return min;
+    }
+
+    @Override
+    public AVGwrapper GiveMeMaxAVG(CubeType WhatModel, AVG whatAvg) {
+        ObservableList<AVGwrapper> temp;
+        AVGwrapper max = new AVGwrapper(-1,new Timestamp(0), false);
+        if (WhatModel == CubeType.TWOBYTWO) {
+            if (whatAvg == AVG.Ao5)
+                temp = A5Two;
+            else temp = A12Two;
+        } else if (WhatModel == CubeType.THREEBYTHREE) {
+            if (whatAvg == AVG.Ao5)
+                temp = A5Tree;
+            else temp = A12Tree;
+        } else {
+            if (whatAvg == AVG.Ao5)
+                temp = A5Four;
+            else temp = A12Four;
+        }
+        for (AVGwrapper a : temp) {
+            if (a.getAVG().getTime() > max.getAVG().getTime() && !a.isDNF()) // unfortunate
+                max = a;
+        }
+        return max;
+    }
+
+
+    @Override
+    public AVGwrapper GiveMeMinAVG(CubeType WhatModel, AVG whatAvg) {
+        ObservableList<AVGwrapper> temp;
+        AVGwrapper min = new AVGwrapper(-1,new Timestamp(999999999), false);
+        if (WhatModel == CubeType.TWOBYTWO) {
+            if (whatAvg == AVG.Ao5)
+                temp = A5Two;
+            else temp = A12Two;
+        } else if (WhatModel == CubeType.THREEBYTHREE) {
+            if (whatAvg == AVG.Ao5)
+                temp = A5Tree;
+            else temp = A12Tree;
+        } else {
+            if (whatAvg == AVG.Ao5)
+                temp = A5Four;
+            else temp = A12Four;
+        }
+        for (AVGwrapper a : temp) {
+            if (a.getAVG().getTime() < min.getAVG().getTime() && !a.isDNF()) // unfortunate
+                min = a;
         }
         return min;
     }
@@ -232,6 +280,7 @@ public class StatisticServerImplementation implements StatisticServer {
         ObservableList<Solve> temp;
         if (WhatModel == CubeType.TWOBYTWO) {
             temp = TwoByTwo;
+            if(temp.isEmpty()) return;
             if(state==State.TWOSECPENALTY){
                 Solve solve=temp.get(temp.size()-1);
                 solve.getTime().setTime(solve.getTime().getTime()+2000);
@@ -259,6 +308,7 @@ public class StatisticServerImplementation implements StatisticServer {
             }
         } else if (WhatModel == CubeType.THREEBYTHREE) {
             temp = TreeByTree;
+            if(temp.isEmpty()) return;
             if(state==State.TWOSECPENALTY){
                 Solve solve=temp.get(temp.size()-1);
                 solve.getTime().setTime(solve.getTime().getTime()+2000);
@@ -287,6 +337,7 @@ public class StatisticServerImplementation implements StatisticServer {
             }
         } else {
             temp = FourByFour;
+            if(temp.isEmpty()) return;
             if(state==State.TWOSECPENALTY){
                 Solve solve=temp.get(temp.size()-1);
                 solve.getTime().setTime(solve.getTime().getTime()+2000);
@@ -316,14 +367,7 @@ public class StatisticServerImplementation implements StatisticServer {
         }
         myDataBase.updateLast(temp.get(temp.size() - 1));
     }
-    private int WhetherSetAVGtoDNF(ObservableList<Solve>temp, int k){
-        int DNFcounter=0;
-        for(int i=temp.size()-1;i+1>0 && k>0;i--,k--){
-            if(temp.get(i).getState()==State.DNF)
-                DNFcounter++;
-        }
-        return DNFcounter;
-    }
+
     @Override
     public void DeleteLast(CubeType WhatModel) {
         ObservableList<Solve> temp;
