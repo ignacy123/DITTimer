@@ -133,11 +133,11 @@ public class StatisticServerImplementation implements StatisticServer {
         try {
             average = CreateAverage(WhatAverage, WhatModel);
         } catch (NotEnoughTimes notEnoughTimes) {
-            temp.add(new AVGwrapper(source.size(), new Timestamp(0), false));
+            temp.add(new AVGwrapper(-1, new Timestamp(0), false));
             temp.get(temp.size() - 1).setNET();
             somethingWrong = true;
         } catch (DNF dnf) {
-            temp.add(new AVGwrapper(source.size(), new Timestamp(0), true));
+            temp.add(new AVGwrapper(-1, new Timestamp(0), true));
             somethingWrong = true;
         }
         if (!somethingWrong)
