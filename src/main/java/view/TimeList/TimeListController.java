@@ -53,32 +53,9 @@ public class TimeListController extends Stage {
         this.ss = ss;
         this.ow = ow;
         currentType = ow.getCubeCurrType().get(0);
-        ow.getListOfSolves(CubeType.TWOBYTWO).addListener(new ListChangeListener<Solve>() {
-            @Override
-            public void onChanged(Change<? extends Solve> change) {
-                listView.scrollTo(Integer.MAX_VALUE);
-                listView2.scrollTo(Integer.MAX_VALUE);
-                listView3.scrollTo(Integer.MAX_VALUE);
-                setBestAndCount();
-            }
-        });
-        ow.getListOfSolves(CubeType.THREEBYTHREE).addListener(new ListChangeListener<Solve>() {
-            @Override
-            public void onChanged(Change<? extends Solve> change) {
-                listView.scrollTo(Integer.MAX_VALUE);
-                listView2.scrollTo(Integer.MAX_VALUE);
-                listView3.scrollTo(Integer.MAX_VALUE);
-                setBestAndCount();
-            }
-        });
-        ow.getListOfSolves(CubeType.FOURBYFOUR).addListener(new ListChangeListener<Solve>() {
-            @Override
-            public void onChanged(Change<? extends Solve> change) {
-                listView.scrollTo(Integer.MAX_VALUE);
-                listView2.scrollTo(Integer.MAX_VALUE);
-                listView3.scrollTo(Integer.MAX_VALUE);
-            }
-        });
+        addListeners(CubeType.TWOBYTWO);
+        addListeners(CubeType.THREEBYTHREE);
+        addListeners(CubeType.FOURBYFOUR);
         listView.setItems(ow.getListOfSolves(currentType));
         listView2.setItems(ow.getListAvg(currentType, Ao5));
         listView3.setItems(ow.getListAvg(currentType, Ao12));
@@ -259,6 +236,37 @@ public class TimeListController extends Stage {
             bestAo12.setText(ss.GiveMeMinAVG(currentType, Ao12).getAVG().toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS")));
         }
         count.setText(String.valueOf(ow.getListOfSolves(currentType).size()));
+    }
+
+    private void addListeners(CubeType cubeType){
+
+        ow.getListOfSolves(cubeType).addListener(new ListChangeListener<Solve>() {
+            @Override
+            public void onChanged(Change<? extends Solve> change) {
+                listView.scrollTo(Integer.MAX_VALUE);
+                listView2.scrollTo(Integer.MAX_VALUE);
+                listView3.scrollTo(Integer.MAX_VALUE);
+                setBestAndCount();
+            }
+        });
+        ow.getListAvg(cubeType, Ao5).addListener(new ListChangeListener<AVGwrapper>() {
+            @Override
+            public void onChanged(Change<? extends AVGwrapper> change) {
+                listView.scrollTo(Integer.MAX_VALUE);
+                listView2.scrollTo(Integer.MAX_VALUE);
+                listView3.scrollTo(Integer.MAX_VALUE);
+                setBestAndCount();
+            }
+        });
+        ow.getListAvg(cubeType, Ao12).addListener(new ListChangeListener<AVGwrapper>() {
+            @Override
+            public void onChanged(Change<? extends AVGwrapper> change) {
+                listView.scrollTo(Integer.MAX_VALUE);
+                listView2.scrollTo(Integer.MAX_VALUE);
+                listView3.scrollTo(Integer.MAX_VALUE);
+                setBestAndCount();
+            }
+        });
     }
 
 
