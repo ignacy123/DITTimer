@@ -23,7 +23,8 @@ public class MetronomeController {
     private ObservableWrapper ow = null;
     public MetronomeController() throws MalformedURLException {
     }
-
+    Thread thread;
+    boolean wasDone=false;
     enum POWER{
         ON,OFF;
     }
@@ -54,31 +55,36 @@ public class MetronomeController {
     void getValue(MouseEvent event) {
         if(BMPline.valueProperty()==null)
             bmpChooser.setValue(1000);
-        System.out.println(BMPline.valueProperty());
     }
     @FXML
-    void PowerON(ActionEvent event) throws InterruptedException {
-        state= POWER.ON;
-        Thread thread= new Thread( ()-> {
-            while (state == POWER.ON) {
-                System.out.println(ow.getRunning().get(0));
-                if(ow.getRunning().get(0)==Running.YES)
-                mediaPlayer.play();
-                try {
-                    Thread.sleep((long) BMPline.getValue());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+    synchronized void PowerON(ActionEvent event) {
+        state = POWER.ON;
+        if (!wasDone) {
+            thread = new Thread(() -> {
+                while (state == POWER.ON) {
+                    if (ow.getRunning().get(0) == Running.YES)
+                        mediaPlayer.play();
+                    try {
+                        Thread.sleep((long) BMPline.getValue());
+                    } catch (InterruptedException e) {
+                        wasDone = false;
+                        break;
+                    }
+                    mediaPlayer.stop();
+                    if (state == POWER.OFF) break;
                 }
-                mediaPlayer.stop();
-                if(state== POWER.OFF) break;
-            }
-        } );
-        thread.start();
+            });
+            wasDone=true;
+            thread.start();
+        }
     }
     @FXML
     void PowerOFF(ActionEvent event) {
-        if(state== POWER.ON)
+        if(state== POWER.ON){
             state= POWER.OFF;
+            thread.interrupt();
+        }
+
     }
     @FXML
     void initialize() {

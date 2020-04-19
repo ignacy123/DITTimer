@@ -75,7 +75,7 @@ public class Controller {
             ow.setRunning(Running.NO);
             long value=0;
             if(ss!=null){
-                value+=millis+secs*1000+mins*60*60*1000-1;
+                value+=millis+secs*1000+mins*60*1000-1;
                 Solve solve=new SolveImplementation(new Date(),value, State.CORRECT, type);
                 solve.setScramble(Scramble.getText());
                 ss.insertSolve(solve);
