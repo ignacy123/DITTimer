@@ -7,7 +7,7 @@
       <Pane fx:id="pane" layoutX="14.0" layoutY="14.0" prefHeight="744.0" prefWidth="281.0" />
       <Pane fx:id="pane4" layoutX="660.0" layoutY="340.0" prefHeight="211.0" prefWidth="600.0" />
       <Pane fx:id="pane3" layoutX="54.0" layoutY="870.0" prefHeight="128.0" prefWidth="600.0" />
-      <Pane fx:id="pane2" layoutX="1226.0" layoutY="687.0" prefHeight="393.0" prefWidth="680.0" />
+      <Pane fx:id="pane2" layoutX="1226.0" layoutY="649.0" prefHeight="393.0" prefWidth="680.0" />
       <Pane fx:id="pane5" layoutX="779.0" layoutY="642.0" prefHeight="51.0" prefWidth="362.0" />
       <Pane fx:id="pane6" layoutX="1343.0" layoutY="104.0" prefHeight="295.0" prefWidth="417.0" />
    </children>

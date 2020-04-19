@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -16,6 +17,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import javafx.util.StringConverter;
 import model.SS.StatisticServer;
 import model.SS.StatisticServerImplementation;
 import model.enums.AVG;
@@ -134,6 +136,43 @@ public class StatsWindow implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         chart.setAnimated(false);
+        chart.setLegendSide(Side.TOP);
         chart.setCreateSymbols(false);
+        yAxis.setTickLabelFormatter(new StringConverter<Number>() {
+            @Override
+            public String toString(Number number) {
+                Date date = new Date(number.intValue());
+                StringBuilder sb = new StringBuilder();
+                int hr = date.getHours() - 1;
+                if(hr > 0)
+                {
+                    sb.append("hr: ").append(hr);
+                }
+                int min = date.getMinutes();
+                if(min > 0)
+                {
+                    if(sb.length() > 0) sb.append(' ');
+                    sb.append("min: ").append(min);
+                }
+                int s = date.getSeconds();
+                if(s > 0)
+                {
+                    if(sb.length() > 0) sb.append(' ');
+                    sb.append("sec: ").append(s);
+                }
+                long ms = date.getTime()%1000;
+                if(ms > 0)
+                {
+                    if(sb.length() > 0) sb.append(' ');
+                    sb.append("ms: ").append(ms);
+                }
+                return sb.toString();
+            }
+
+            @Override
+            public Number fromString(String s) {
+                return null;
+            }
+        });
     }
 }
