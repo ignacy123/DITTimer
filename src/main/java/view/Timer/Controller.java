@@ -3,6 +3,7 @@ package view.Timer;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
@@ -27,6 +28,8 @@ import java.util.Date;
 public class Controller {
     @FXML
     Pane mainPane;
+    boolean alreadyPressed;
+    boolean canRun=true;
     private StatisticServer ss = null;
     private ObservableWrapper ow = null;
     CubeType type = CubeType.THREEBYTHREE;
@@ -67,12 +70,30 @@ public class Controller {
     @FXML
     private Text Scramble;
     @FXML
-    void ResetAndGetReady() {
-        if(whatToDo== StartOrStop.START)
+    void ResetAndGetReady() throws InterruptedException {
+        if(!canRun) return;
+        if(whatToDo==StartOrStop.START)
+        {
+            if(alreadyPressed) return;
+            alreadyPressed=true;
             timePassed.setText("00:00:000");
+        }
         else{
+            if(alreadyPressed) return;
+            alreadyPressed=true;
             timeline.stop(); // tutaj zczytywanie do Solve
             ow.setRunning(Running.NO);
+
+
+            canRun = false;
+            final Timeline animation = new Timeline(
+                    new KeyFrame(Duration.seconds(1),
+                            actionEvent -> canRun = true));
+            animation.setCycleCount(1);
+            animation.play();
+
+
+
             long value=0;
             if(ss!=null){
                 value+=millis+secs*1000+mins*60*1000-1;
@@ -90,8 +111,10 @@ public class Controller {
 
     @FXML
     public void StartTimer() {
+        if(!canRun) return;
         if (whatToDo == StartOrStop.STOP) {
             whatToDo = StartOrStop.START;
+            alreadyPressed=false;
         } else {
             timeline = new Timeline(new KeyFrame(Duration.millis(1), GO -> change(timePassed)));
             timeline.setCycleCount(Timeline.INDEFINITE);
@@ -99,6 +122,7 @@ public class Controller {
             timeline.play();
             ow.setRunning(Running.YES);
             whatToDo = StartOrStop.STOP;
+            alreadyPressed=false;
         }
     }
 
@@ -107,7 +131,11 @@ public class Controller {
         assert timePassed != null : "fx:id=\"timePassed\" was not injected: check your FXML file 'timersample.fxml'.";
         EventHandler handler = new EventHandler<InputEvent>() {
             public void handle(InputEvent event) {
-                ResetAndGetReady();
+                try {
+                    ResetAndGetReady();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 event.consume();
             }
 
