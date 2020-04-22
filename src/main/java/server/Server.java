@@ -1,9 +1,6 @@
 package server;
 
-import model.conn.ClientRequest;
-import model.conn.RoomHolder;
-import model.conn.ServerResponse;
-import model.conn.User;
+import model.conn.*;
 import model.enums.ServerResponseType;
 
 import java.io.*;
@@ -38,7 +35,6 @@ public class Server {
             this.socket = socket;
             user = new User(id);
             this.holder = holder;
-            holder.requestRoom(new User(1));
         }
 
         @Override
@@ -52,11 +48,24 @@ public class Server {
                         continue;
                     }
 
+                    ServerResponse sr;
                     switch (request.getType()){
                         case REQUESTROOMS:
-                            ServerResponse sr = new ServerResponse(ServerResponseType.SENDINGROOMS);
+                            sr = new ServerResponse(ServerResponseType.SENDINGROOMS);
                             sr.setRooms(holder.getAvailableRooms());
                             System.out.println("Sending rooms: "+holder.getAvailableRooms().size());
+                            outputStream.writeObject(sr);
+                            break;
+                        case CREATEROOM:
+                            sr = new ServerResponse(ServerResponseType.ROOMHASBEENCREATED);
+                            if(holder.hasFreeRoom()){
+                                Room room = holder.requestRoom(user);
+                                sr.setRoom(room);
+                                user.setName(request.getUserName());
+                                if(room!=null){
+                                    room.setType(request.getCubeType());
+                                }
+                            }
                             outputStream.writeObject(sr);
                             break;
                     }

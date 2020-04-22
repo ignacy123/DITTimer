@@ -1,27 +1,35 @@
 package model.conn;
 
+import model.enums.CubeType;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Room implements Serializable {
     ArrayList<User> users;
     User host;
-    private int id;
-    Room(int id){
-        this.id = id;
+    CubeType type;
+
+    Room(){
+
     }
     public void setHost(User user){
         host = user;
     }
+
+    public User getHost() {
+        return host;
+    }
+
     public boolean isJoinable(){
         return true;
     }
 
-    public int getId() {
-        return id;
+    public void setType(CubeType type) {
+        this.type = type;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public CubeType getType() {
+        return type;
     }
 }

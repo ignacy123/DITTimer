@@ -7,32 +7,48 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.conn.Room;
 import model.conn.ServerService;
 import model.conn.ServerServiceImplementation;
+import model.enums.CubeType;
+import model.logic.Solve;
 
-import java.io.*;
-import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.Arrays;
 
 public class Client extends Application {
     @FXML
     private Button createButton;
     @FXML
+    private Button refreshButton;
+    @FXML
     private ListView roomsListView;
+    @FXML
+    private ChoiceBox cubeTypeChoiceBox;
+    @FXML
+    private TextField nameField;
     private ObservableList<Room> rooms;
-
+    ServerService conn;
     @FXML
     void initialize(){
-        ServerService conn = new ServerServiceImplementation(this);
+        conn = new ServerServiceImplementation(this);
         conn.start();
         rooms = FXCollections.observableArrayList();
+        cubeTypeChoiceBox.setItems(FXCollections.observableArrayList(CubeType.TWOBYTWO, CubeType.THREEBYTHREE, CubeType.FOURBYFOUR));
+        cubeTypeChoiceBox.setValue(CubeType.THREEBYTHREE);
         roomsListView.setItems(rooms);
-        conn.requestRooms();
+        roomsListView.setCellFactory(listView -> {
+            TextFieldListCell<Room> cell = new TextFieldListCell<>();
+            cell.setConverter(new RoomConverter());
+            return cell;
+        });
+        refreshRooms();
     }
 
     @Override
@@ -44,8 +60,28 @@ public class Client extends Application {
         stage.show();
     }
 
+    @FXML
     public void sendRooms(ArrayList<Room> rooms){
         this.rooms.clear();
         this.rooms.addAll(rooms);
+    }
+    @FXML
+    public void createRoom(){
+        conn.createRoom((CubeType)cubeTypeChoiceBox.getValue(), String.valueOf(nameField.getCharacters()));
+    }
+
+    @FXML
+    public void refreshRooms(){
+        conn.requestRooms();
+    }
+
+    @FXML
+    public void roomHasBeenCreated(Room room){
+        if(room==null){
+            System.out.println("Room couldn't be created.");
+            return;
+        }
+        System.out.println("I requested a room and it has been created ="+room+ ". A new view should start now.");
+        refreshRooms();
     }
 }

@@ -21,10 +21,16 @@ public class RoomHolder {
         }
         return false;
     }
-    public void requestRoom(User user){
-        roomCounter++;
-        rooms.put(roomCounter, new Room(roomCounter));
-        rooms.get(roomCounter).setHost(user);
+    public Room requestRoom(User user){
+        if(!user.isInRoom()){
+            roomCounter++;
+            rooms.put(roomCounter, new Room());
+            rooms.get(roomCounter).setHost(user);
+            user.setInRoom(true);
+            user.setRoom(rooms.get(roomCounter));
+            return user.getRoom();
+        }
+        return null;
     }
     public ArrayList<Room> getAvailableRooms(){
         ArrayList<Room> toReturn = new ArrayList<>();
