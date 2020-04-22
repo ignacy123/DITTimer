@@ -143,7 +143,7 @@ public class TimeListController extends Stage {
             return;
         }
         AVGwrapper avg = (AVGwrapper) listView2.getSelectionModel().getSelectedItem();
-        if(avg.isNET()){
+        if(avg!=null && avg.isNET()){
             event.consume();
             return;
         }

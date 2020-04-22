@@ -111,11 +111,11 @@ public class Controller {
 
     @FXML
     public void StartTimer() {
-        if(!canRun) return;
         if (whatToDo == StartOrStop.STOP) {
             whatToDo = StartOrStop.START;
             alreadyPressed=false;
         } else {
+            if(!canRun) return;
             timeline = new Timeline(new KeyFrame(Duration.millis(1), GO -> change(timePassed)));
             timeline.setCycleCount(Timeline.INDEFINITE);
             timeline.setAutoReverse(false);
