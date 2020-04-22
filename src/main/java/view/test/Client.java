@@ -3,6 +3,7 @@ package view.test;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -33,6 +34,9 @@ public class Client extends Application {
     private ChoiceBox cubeTypeChoiceBox;
     @FXML
     private TextField nameField;
+    @FXML
+    private Button joinTo;
+
     private ObservableList<Room> rooms;
     ServerService conn;
     @FXML
@@ -59,7 +63,17 @@ public class Client extends Application {
         stage.setScene(scene);
         stage.show();
     }
-
+    @FXML
+    void joinRoom(ActionEvent event) {
+        Room sel = (Room)roomsListView.getSelectionModel().getSelectedItem();
+        RoomWindow roomWindow = new RoomWindow(conn, sel);
+        conn.setWindow(roomWindow);
+        try {
+            roomWindow.start(roomWindow.classStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     @FXML
     public void sendRooms(ArrayList<Room> rooms){
         this.rooms.clear();

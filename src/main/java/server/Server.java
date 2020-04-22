@@ -1,6 +1,7 @@
 package server;
 
 import model.conn.*;
+import model.enums.ClientRequestType;
 import model.enums.ServerResponseType;
 
 import java.io.*;
@@ -80,16 +81,6 @@ public class Server {
                             outputStream.writeObject(sr);
                             break;
                         case GETTIMES:
-                            sr = new ServerResponse(ServerResponseType.TIMESCHANGED);
-                            Room rome = holder.getRoom(request.getRoom().getID());
-                            if(rome == null) {
-                                System.out.println("Room not found ;c");//should handle properly
-                                break;
-                            }
-                            System.out.println("Sending times");
-                            sr.setTimes(rome.getTimes());
-                            outputStream.writeObject(sr);
-                            break;
                         case SENDTIME:
                             sr = new ServerResponse(ServerResponseType.TIMESCHANGED);
                             Room sienna = holder.getRoom(request.getRoom().getID());
@@ -97,9 +88,10 @@ public class Server {
                                 System.out.println("Room not found ;c");//should handle properly
                                 break;
                             }
-                            System.out.println("Time"+request.getTime());
+                            if(request.getType() == ClientRequestType.SENDTIME)
                             sienna.addTime(request.getTime());
                             sr.setTimes(sienna.getTimes());
+                            outputStream.reset();
                             outputStream.writeObject(sr);
                             break;
                     }

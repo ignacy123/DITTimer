@@ -56,7 +56,6 @@ public class RoomWindow extends Application {
         playerList.getItems().setAll(names);
 }
     public void renderTimes(ArrayList<Time> times) {
-        System.out.println("x"+times.size());
         timeList.getItems().setAll(times);
     }
     @FXML
