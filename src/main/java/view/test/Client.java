@@ -76,12 +76,19 @@ public class Client extends Application {
     }
 
     @FXML
-    public void roomHasBeenCreated(Room room){
+    public void roomHasBeenCreated(Room room) {
         if(room==null){
             System.out.println("Room couldn't be created.");
             return;
         }
         System.out.println("I requested a room and it has been created ="+room+ ". A new view should start now.");
+        RoomWindow roomWindow = new RoomWindow(conn, room);
+        conn.setWindow(roomWindow);
+        try {
+            roomWindow.start(roomWindow.classStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         refreshRooms();
     }
 }

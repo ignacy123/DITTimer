@@ -41,4 +41,10 @@ public class RoomHolder {
         }
         return toReturn;
     }
+    public Room getRoom(int id) {
+        for(Room room: rooms.values()) {
+            if(room.getID() == id) return room;
+        }
+        return null;
+    }
 }

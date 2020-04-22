@@ -3,18 +3,22 @@ package model.conn;
 import model.enums.CubeType;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class Room implements Serializable {
     ArrayList<User> users;
+    ArrayList<Time> times;
+
     User host;
     CubeType type;
-
+    int id;
     Room(){
 
     }
     public void setHost(User user){
         host = user;
+        users.add(host);
     }
 
     public User getHost() {
@@ -31,5 +35,18 @@ public class Room implements Serializable {
 
     public CubeType getType() {
         return type;
+    }
+
+    public int getID() {
+        return id;
+    }
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+    public ArrayList<Time> getTimes() {
+        return times;
+    }
+    public void addTime(Time time) {
+        times.add(time);
     }
 }

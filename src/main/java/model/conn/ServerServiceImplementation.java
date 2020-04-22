@@ -6,6 +6,7 @@ import model.enums.ClientRequestType;
 import model.enums.CubeType;
 import model.enums.ServerResponseType;
 import view.test.Client;
+import view.test.RoomWindow;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class ServerServiceImplementation implements ServerService {
     ObjectInputStream inputStream;
     ObjectOutputStream outputStream;
     private Client client;
-    
+    private ServerResponseHandler responseHandler;
     public ServerServiceImplementation(Client client){
         this.client = client;
     }
@@ -27,7 +28,8 @@ public class ServerServiceImplementation implements ServerService {
             Socket socket = new Socket("localhost", 8000);
             inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
-            new ServerResponseHandler(inputStream, client).start();
+            responseHandler = new ServerResponseHandler(inputStream, client);
+            responseHandler.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -58,14 +60,38 @@ public class ServerServiceImplementation implements ServerService {
         }
     }
 
+    @Override
+    public void setWindow(RoomWindow wind) {
+        responseHandler.setWindow(wind);
+    }
+
+    @Override
+    public void getPlayers(Room room) {
+        try {
+            outputStream.writeObject(new ClientRequest(ClientRequestType.GETUSERS, room));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @Override
+    public void getTimes(Room room) {
+        try {
+            outputStream.writeObject(new ClientRequest(ClientRequestType.GETTIMES, room));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     static class ServerResponseHandler extends Thread{
+        private RoomWindow window;
         ObjectInputStream inputStream;
         Client client;
         ServerResponseHandler(ObjectInputStream inputStream, Client client){
             this.inputStream = inputStream;
             this.client = client;
         }
-
+        public void setWindow(RoomWindow wind) {
+            this.window = wind;
+        }
         @Override
         public void run() {
             while(true){
@@ -83,6 +109,23 @@ public class ServerServiceImplementation implements ServerService {
                         case ROOMHASBEENCREATED:
                             Platform.runLater(() -> {
                                 client.roomHasBeenCreated(sr.getRoom());
+                            });
+                            break;
+                        case USERSSENT:
+                            if(window == null) break;
+                            Platform.runLater(()-> {
+                                window.renderUsers(sr.getUsers());
+                            });
+                            break;
+                        case TIMEADDED:
+                            Platform.runLater(()-> {
+                                window.renderTimes(sr.getTimes());
+                            });
+                            break;
+                        case TIMESSENT:
+                            if(window == null) break;
+                            Platform.runLater(()-> {
+                                window.renderTimes(sr.getTimes());
                             });
                     }
                 } catch (EOFException e) {

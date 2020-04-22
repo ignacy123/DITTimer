@@ -4,15 +4,26 @@ import model.enums.ClientRequestType;
 import model.enums.CubeType;
 
 import java.io.Serializable;
+import java.sql.Time;
 
 public class ClientRequest implements Serializable {
     private ClientRequestType type;
     private CubeType cubeType;
     private String userName;
-    ClientRequest(ClientRequestType type){
+    private Room room;
+    private Time time;
+    public ClientRequest(ClientRequestType type){
         this.type = type;
     }
-
+    public ClientRequest(ClientRequestType type, Room room){
+        this.type = type;
+        this.room = room;
+    }
+    public ClientRequest(ClientRequestType type, Room room, Time time){
+        this.type = type;
+        this.room = room;
+        this.time = time;
+    }
     public ClientRequestType getType() {
         return type;
     }
@@ -31,5 +42,12 @@ public class ClientRequest implements Serializable {
 
     public String getUserName() {
         return userName;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+    public Time getTime() {
+        return time;
     }
 }

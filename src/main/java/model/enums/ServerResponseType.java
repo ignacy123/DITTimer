@@ -1,5 +1,5 @@
 package model.enums;
 
 public enum ServerResponseType {
-    SENDINGROOMS, ROOMHASBEENCREATED;
+    SENDINGROOMS, ROOMHASBEENCREATED, TIMESSENT, USERSSENT, TIMEADDED;
 }

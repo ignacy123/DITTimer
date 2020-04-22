@@ -1,5 +1,5 @@
 package model.enums;
 
 public enum ClientRequestType {
-    REQUESTROOMS, CREATEROOM;
+    REQUESTROOMS, CREATEROOM, GETUSERS, GETTIMES, SENDTIME;
 }

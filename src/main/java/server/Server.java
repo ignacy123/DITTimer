@@ -68,6 +68,40 @@ public class Server {
                             }
                             outputStream.writeObject(sr);
                             break;
+                        case GETUSERS:
+                            sr = new ServerResponse(ServerResponseType.USERSSENT);
+                            Room room = holder.getRoom(request.getRoom().getID());
+                            if(room == null) {
+                                System.out.println("Room not found ;c");//same
+                                break;
+                            }
+                            System.out.println("Sending users");
+                            sr.setUsers(room.getUsers());
+                            outputStream.writeObject(sr);
+                            break;
+                        case GETTIMES:
+                            sr = new ServerResponse(ServerResponseType.TIMESSENT);
+                            Room rome = holder.getRoom(request.getRoom().getID());
+                            if(rome == null) {
+                                System.out.println("Room not found ;c");//should handle properly
+                                break;
+                            }
+                            System.out.println("Sending times");
+                            sr.setTimes(rome.getTimes());
+                            outputStream.writeObject(sr);
+                            break;
+                        case SENDTIME:
+                            sr = new ServerResponse(ServerResponseType.TIMEADDED);
+                            Room sienna = holder.getRoom(request.getRoom().getID());
+                            if(sienna == null) {
+                                System.out.println("Room not found ;c");//should handle properly
+                                break;
+                            }
+                            System.out.println("Time"+request.getTime());
+                            sienna.addTime(request.getTime());
+                            sr.setTimes(sienna.getTimes());
+                            outputStream.writeObject(sr);
+                            break;
                     }
                 }
             } catch (EOFException e) {
