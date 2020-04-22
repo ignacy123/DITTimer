@@ -11,9 +11,11 @@ import java.util.concurrent.ConcurrentMap;
 public class RoomHolder {
     ConcurrentMap<Integer, Room> rooms;
     int roomCounter;
+    int id;
     public RoomHolder(){
         rooms = new ConcurrentHashMap<>();
         roomCounter = 0;
+        id=0;
     }
     public boolean hasFreeRoom(){
         if(roomCounter<=20){
@@ -24,7 +26,7 @@ public class RoomHolder {
     public Room requestRoom(User user){
         if(!user.isInRoom()){
             roomCounter++;
-            rooms.put(roomCounter, new Room());
+            rooms.put(roomCounter, new Room(id++));
             rooms.get(roomCounter).setHost(user);
             user.setInRoom(true);
             user.setRoom(rooms.get(roomCounter));

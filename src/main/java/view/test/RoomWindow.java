@@ -3,6 +3,7 @@ package view.test;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -33,26 +34,30 @@ public class RoomWindow extends Application {
     @FXML
     private Button addTime;
 
+
     @FXML
     private ListView<String> playerList;
     Stage classStage = new Stage();
     ServerService jez;
     Room room;
+    @FXML
+    void testTime(ActionEvent event) {
+        jez.sendTime(room, new Time(12, 12, 12));
+    }
     public RoomWindow(ServerService conn, Room room) {
         jez=conn;
         this.room=room;
     }
     public void renderUsers(ArrayList<User> users) {
         ArrayList<String> names = new ArrayList<>();
-        //System.out.println(names.toString());
         for(User xd: users) {
-            System.out.println(xd.getName());
             names.add(xd.getName());
         }
         playerList.getItems().setAll(names);
-    }
+}
     public void renderTimes(ArrayList<Time> times) {
-        timeList.setItems(FXCollections.observableArrayList(times));
+        System.out.println("x"+times.size());
+        timeList.getItems().setAll(times);
     }
     @FXML
     @Override

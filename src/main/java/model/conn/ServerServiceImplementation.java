@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class ServerServiceImplementation implements ServerService {
@@ -81,6 +82,16 @@ public class ServerServiceImplementation implements ServerService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void sendTime(Room room, Time time) {
+        try {
+            outputStream.writeObject(new ClientRequest(ClientRequestType.SENDTIME, room, time));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     static class ServerResponseHandler extends Thread{
         private RoomWindow window;
         ObjectInputStream inputStream;
@@ -111,22 +122,18 @@ public class ServerServiceImplementation implements ServerService {
                                 client.roomHasBeenCreated(sr.getRoom());
                             });
                             break;
-                        case USERSSENT:
+                        case USERSCHANGED:
                             if(window == null) break;
                             Platform.runLater(()-> {
                                 window.renderUsers(sr.getUsers());
                             });
                             break;
-                        case TIMEADDED:
-                            Platform.runLater(()-> {
-                                window.renderTimes(sr.getTimes());
-                            });
-                            break;
-                        case TIMESSENT:
+                        case TIMESCHANGED:
                             if(window == null) break;
                             Platform.runLater(()-> {
                                 window.renderTimes(sr.getTimes());
                             });
+                            break;
                     }
                 } catch (EOFException e) {
 

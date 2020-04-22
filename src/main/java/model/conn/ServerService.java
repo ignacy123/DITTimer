@@ -4,6 +4,7 @@ package model.conn;
 import model.enums.CubeType;
 import view.test.RoomWindow;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 public interface ServerService {
@@ -14,4 +15,5 @@ public interface ServerService {
     void getPlayers(Room room);
 
     void getTimes(Room room);
+    void sendTime(Room room, Time time);
 }

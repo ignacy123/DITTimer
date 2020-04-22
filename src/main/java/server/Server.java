@@ -69,7 +69,7 @@ public class Server {
                             outputStream.writeObject(sr);
                             break;
                         case GETUSERS:
-                            sr = new ServerResponse(ServerResponseType.USERSSENT);
+                            sr = new ServerResponse(ServerResponseType.USERSCHANGED);
                             Room room = holder.getRoom(request.getRoom().getID());
                             if(room == null) {
                                 System.out.println("Room not found ;c");//same
@@ -80,7 +80,7 @@ public class Server {
                             outputStream.writeObject(sr);
                             break;
                         case GETTIMES:
-                            sr = new ServerResponse(ServerResponseType.TIMESSENT);
+                            sr = new ServerResponse(ServerResponseType.TIMESCHANGED);
                             Room rome = holder.getRoom(request.getRoom().getID());
                             if(rome == null) {
                                 System.out.println("Room not found ;c");//should handle properly
@@ -91,7 +91,7 @@ public class Server {
                             outputStream.writeObject(sr);
                             break;
                         case SENDTIME:
-                            sr = new ServerResponse(ServerResponseType.TIMEADDED);
+                            sr = new ServerResponse(ServerResponseType.TIMESCHANGED);
                             Room sienna = holder.getRoom(request.getRoom().getID());
                             if(sienna == null) {
                                 System.out.println("Room not found ;c");//should handle properly

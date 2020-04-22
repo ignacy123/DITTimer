@@ -7,14 +7,14 @@ import java.sql.Time;
 import java.util.ArrayList;
 
 public class Room implements Serializable {
-    ArrayList<User> users;
-    ArrayList<Time> times;
+    ArrayList<User> users = new ArrayList<>();
+    ArrayList<Time> times = new ArrayList<>();
 
     User host;
     CubeType type;
     int id;
-    Room(){
-
+    Room(int id){
+        this.id=id;
     }
     public void setHost(User user){
         host = user;
