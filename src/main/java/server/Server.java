@@ -2,7 +2,9 @@ package server;
 
 import model.conn.ClientRequest;
 import model.conn.RoomHolder;
+import model.conn.ServerResponse;
 import model.conn.User;
+import model.enums.ServerResponseType;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -44,17 +46,26 @@ public class Server {
             try {
                 ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-                outputStream.writeObject(holder.getAvailableRooms());
                 while (true) {
                     ClientRequest request = (ClientRequest) inputStream.readObject();
                     if(request==null){
                         continue;
                     }
-                    System.out.println(request.getType());
 
+                    switch (request.getType()){
+                        case REQUESTROOMS:
+                            ServerResponse sr = new ServerResponse(ServerResponseType.SENDINGROOMS);
+                            sr.setRooms(holder.getAvailableRooms());
+                            System.out.println("Sending rooms: "+holder.getAvailableRooms().size());
+                            outputStream.writeObject(sr);
+                            break;
+                    }
                 }
-            } catch (Exception e) {
+            } catch (EOFException e) {
+                //reached EOF
+            } catch(Exception e){
                 e.printStackTrace();
+
             }
         }
     }

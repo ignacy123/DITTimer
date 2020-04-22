@@ -16,6 +16,7 @@ import model.conn.ServerServiceImplementation;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Client extends Application {
@@ -23,15 +24,15 @@ public class Client extends Application {
     private Button createButton;
     @FXML
     private ListView roomsListView;
-
+    private ObservableList<Room> rooms;
 
     @FXML
     void initialize(){
-        ServerService conn = new ServerServiceImplementation();
+        ServerService conn = new ServerServiceImplementation(this);
         conn.start();
-        ObservableList<Room> rooms = FXCollections.observableArrayList();
-        rooms.addAll(conn.requestRooms());
+        rooms = FXCollections.observableArrayList();
         roomsListView.setItems(rooms);
+        conn.requestRooms();
     }
 
     @Override
@@ -41,5 +42,10 @@ public class Client extends Application {
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public void sendRooms(ArrayList<Room> rooms){
+        this.rooms.clear();
+        this.rooms.addAll(rooms);
     }
 }
