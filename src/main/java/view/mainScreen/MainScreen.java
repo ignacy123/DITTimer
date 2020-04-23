@@ -91,7 +91,7 @@ public class MainScreen extends Stage {
         mainPane.setOnKeyReleased(handler);
     }
 
-    public void setSSAndOw(StatisticServer ss, ObservableWrapper ow){
+    public void setSSAndOw(StatisticServer ss, ObservableWrapper ow) throws IOException {
         TimeListController controller = listLoader.getController();
         controller.setSSAndOw(ss, ow);
         StatsWindow controller2 = statsLoader.getController();
@@ -102,6 +102,7 @@ public class MainScreen extends Stage {
         controllerMet.setSSAndOw(ss,ow);
         StateSetterController controllerSet = StateSetterLoader.getController();
         controllerSet.setSSAndOw(ss,ow);
+        controllerSet.init();
         drawer.setOw(ow);
         ow.getRunning().addListener(new ListChangeListener<Running>() {
             @Override

@@ -15,10 +15,11 @@ public class SolveImplementation implements Solve {
     String scramble;
     int ID;
     public SolveImplementation(){
-        dateOfSolution=null;
+        dateOfSolution=new Date();
         timeOfSolution=null;
         whatState=State.NONE;
         whatCube=CubeType.THREEBYTHREE;
+        scramble="none";
     }
     public SolveImplementation(Date date,long time, State state,CubeType type){
         timeOfSolution=new Timestamp(time);

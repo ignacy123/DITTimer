@@ -26,5 +26,7 @@ public interface StatisticServer {
 
     void DeleteLast(CubeType WhatModel);       // changes in DB and in SS
     void delete(CubeType type);  // cleans everything including db
+    void addComment(CubeType WhatModel, String string);
+    Timestamp CreateAverage(int WhatAverage, CubeType WhatModel) throws StatisticServerImplementation.DNF, StatisticServerImplementation.NotEnoughTimes;
 
 }

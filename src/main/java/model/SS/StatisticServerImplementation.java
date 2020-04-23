@@ -144,8 +144,8 @@ public class StatisticServerImplementation implements StatisticServer {
             temp.add(new AVGwrapper(source.size(), average, false));
         return average;
     }
-
-    private Timestamp CreateAverage(int WhatAverage, CubeType WhatModel) throws DNF, NotEnoughTimes {
+    @Override
+    public Timestamp CreateAverage(int WhatAverage, CubeType WhatModel) throws DNF, NotEnoughTimes {
         ObservableList<Solve> temp;
         if (WhatModel == CubeType.TWOBYTWO) {
             temp = TwoByTwo;
@@ -416,6 +416,21 @@ public class StatisticServerImplementation implements StatisticServer {
             FourByFour.clear();
             A5Four.clear();
             A12Four.clear();
+        }
+
+    }
+
+    @Override
+    public void addComment(CubeType WhatModel, String string) {
+        if (WhatModel == CubeType.TWOBYTWO) {
+           TwoByTwo.get(TwoByTwo.size()-1).setComment(string);
+            myDataBase.updateLast(TwoByTwo.get(TwoByTwo.size()-1));
+        } else if (WhatModel == CubeType.THREEBYTHREE) {
+            TreeByTree.get(TreeByTree.size()-1).setComment(string);
+            myDataBase.updateLast(TreeByTree.get(TreeByTree.size()-1));
+        } else {
+            FourByFour.get(FourByFour.size()-1).setComment(string);
+            myDataBase.updateLast(FourByFour.get(FourByFour.size()-1));
         }
 
     }
