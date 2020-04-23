@@ -34,6 +34,9 @@ public class RoomHolder {
         }
         return null;
     }
+    public void joinRoom(User user, Room room) {
+        room.addUser(user);
+    }
     public ArrayList<Room> getAvailableRooms(){
         ArrayList<Room> toReturn = new ArrayList<>();
         for(Map.Entry entry: rooms.entrySet()){

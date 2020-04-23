@@ -20,7 +20,9 @@ public class Room implements Serializable {
         host = user;
         users.add(host);
     }
-
+    public void addUser(User guest) {
+        users.add(guest);
+    }
     public User getHost() {
         return host;
     }

@@ -62,6 +62,22 @@ public class ServerServiceImplementation implements ServerService {
     }
 
     @Override
+    public void joinRoom(Room room, String name) {
+        ClientRequest cr = new ClientRequest(ClientRequestType.JOINROOM, room);
+        System.out.println("sending");
+        if(name.equals("")){
+            name = "nobody";
+        }
+        cr.setUserName(name);
+        try {
+            outputStream.writeObject(cr);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
     public void setWindow(RoomWindow wind) {
         responseHandler.setWindow(wind);
     }
@@ -132,6 +148,15 @@ public class ServerServiceImplementation implements ServerService {
                             if(window == null) break;
                             Platform.runLater(()-> {
                                 window.renderTimes(sr.getTimes());
+                            });
+                            break;
+                        case ROOMJOINED:
+                            if(window == null) break;
+                            Platform.runLater(()-> {
+                                window.renderTimes(sr.getTimes());
+                            });
+                            Platform.runLater(()-> {
+                                window.renderUsers(sr.getUsers());
                             });
                             break;
                     }

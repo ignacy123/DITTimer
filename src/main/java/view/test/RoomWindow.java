@@ -40,6 +40,11 @@ public class RoomWindow extends Application {
     Stage classStage = new Stage();
     ServerService jez;
     Room room;
+    boolean joining = false;
+    String name="";
+    void setName(String name) {
+        this.name=name;
+    }
     @FXML
     void testTime(ActionEvent event) {
         jez.sendTime(room, new Time(12, 12, 12));
@@ -58,6 +63,7 @@ public class RoomWindow extends Application {
     public void renderTimes(ArrayList<Time> times) {
         timeList.getItems().setAll(times);
     }
+
     @FXML
     @Override
     public void start(Stage stage) throws Exception {
@@ -67,8 +73,14 @@ public class RoomWindow extends Application {
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         //fill things with data
-        jez.getPlayers(room);
-        jez.getTimes(room);
+        if(joining) {
+            jez.joinRoom(room, name);
+        }
+        else {
+            jez.getPlayers(room);
+            jez.getTimes(room);
+        }
+
         stage.show();
     }
 }

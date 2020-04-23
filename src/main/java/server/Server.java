@@ -94,6 +94,18 @@ public class Server {
                             outputStream.reset();
                             outputStream.writeObject(sr);
                             break;
+                        case JOINROOM:
+                            sr = new ServerResponse(ServerResponseType.ROOMJOINED);
+                            Room rome = holder.getRoom(request.getRoom().getID());
+                            if(rome == null) {
+                                System.out.println("Room not found ;c");//should handle properly
+                                break;
+                            }
+                            rome.addUser(user);
+                            sr.setTimes(rome.getTimes());
+                            sr.setUsers(rome.getUsers());
+                            outputStream.reset();
+                            outputStream.writeObject(sr);
                     }
                 }
             } catch (EOFException e) {

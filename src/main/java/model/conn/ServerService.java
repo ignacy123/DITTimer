@@ -11,6 +11,7 @@ public interface ServerService {
     public void start();
     public ArrayList<Room> requestRooms();
     public void createRoom(CubeType cubeType, String name);
+    public void joinRoom(Room room, String name);
     public void setWindow(RoomWindow wind);
     void getPlayers(Room room);
 

@@ -68,6 +68,8 @@ public class Client extends Application {
         Room sel = (Room)roomsListView.getSelectionModel().getSelectedItem();
         RoomWindow roomWindow = new RoomWindow(conn, sel);
         conn.setWindow(roomWindow);
+        roomWindow.joining=true;
+        roomWindow.setName(String.valueOf(nameField.getCharacters()));
         try {
             roomWindow.start(roomWindow.classStage);
         } catch (Exception e) {
