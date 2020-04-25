@@ -74,7 +74,7 @@ public class RoomWindow extends Application {
         stage.setScene(scene);
         //fill things with data
         if(joining) {
-            jez.joinRoom(room, name);
+            jez.joinRoom(room, name, null);
         }
         else {
             jez.getPlayers(room);

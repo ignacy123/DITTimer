@@ -9,10 +9,10 @@ import java.util.ArrayList;
 public class Room implements Serializable {
     ArrayList<User> users = new ArrayList<>();
     ArrayList<Time> times = new ArrayList<>();
-
     User host;
     CubeType type;
     int id;
+    boolean isPrivate;
     Room(int id){
         this.id=id;
     }
@@ -50,5 +50,12 @@ public class Room implements Serializable {
     }
     public void addTime(Time time) {
         times.add(time);
+    }
+
+    public void setPrivate(boolean aPrivate) {
+        isPrivate = aPrivate;
+    }
+    public boolean isPrivate() {
+        return isPrivate;
     }
 }

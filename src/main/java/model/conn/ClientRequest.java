@@ -12,6 +12,8 @@ public class ClientRequest implements Serializable {
     private String userName;
     private Room room;
     private Time time;
+    private boolean isPrivate;
+    private String password;
     public ClientRequest(ClientRequestType type){
         this.type = type;
     }
@@ -49,5 +51,18 @@ public class ClientRequest implements Serializable {
     }
     public Time getTime() {
         return time;
+    }
+
+    public void setPrivate(boolean aPrivate) {
+        isPrivate = aPrivate;
+    }
+    public boolean getPrivate(){
+        return isPrivate;
+    }
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    public String getPassword() {
+        return password;
     }
 }

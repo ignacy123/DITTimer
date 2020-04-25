@@ -9,10 +9,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class RoomHolder {
+    ConcurrentMap<Room, String> passwords;
     ConcurrentMap<Integer, Room> rooms;
     int roomCounter;
     int id;
     public RoomHolder(){
+        passwords = new ConcurrentHashMap<>();
         rooms = new ConcurrentHashMap<>();
         roomCounter = 0;
         id=0;
@@ -51,5 +53,11 @@ public class RoomHolder {
             if(room.getID() == id) return room;
         }
         return null;
+    }
+    public void setPassword(Room room, String password){
+        passwords.put(room, password);
+    }
+    public String getPassword(Room room){
+        return passwords.get(room);
     }
 }

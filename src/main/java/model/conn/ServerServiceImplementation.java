@@ -47,7 +47,7 @@ public class ServerServiceImplementation implements ServerService {
     }
 
     @Override
-    public void createRoom(CubeType type, String name) {
+    public void createRoom(CubeType type, String name, boolean isPrivate, String password) {
         try {
             ClientRequest cr = new ClientRequest(ClientRequestType.CREATEROOM);
             cr.setCubeType(type);
@@ -55,6 +55,8 @@ public class ServerServiceImplementation implements ServerService {
                 name = "nobody";
             }
             cr.setUserName(name);
+            cr.setPrivate(isPrivate);
+            cr.setPassword(password);
             outputStream.writeObject(cr);
         } catch (IOException e) {
             e.printStackTrace();
@@ -62,13 +64,14 @@ public class ServerServiceImplementation implements ServerService {
     }
 
     @Override
-    public void joinRoom(Room room, String name) {
+    public void joinRoom(Room room, String name, String password) {
         ClientRequest cr = new ClientRequest(ClientRequestType.JOINROOM, room);
         System.out.println("sending");
         if(name.equals("")){
             name = "nobody";
         }
         cr.setUserName(name);
+        cr.setPassword(password);
         try {
             outputStream.writeObject(cr);
         } catch (IOException e) {
@@ -151,6 +154,7 @@ public class ServerServiceImplementation implements ServerService {
                             });
                             break;
                         case ROOMJOINED:
+                            client.roomAccessHasBeenGranted(sr.getRoom());
                             if(window == null) break;
                             Platform.runLater(()-> {
                                 window.renderTimes(sr.getTimes());
@@ -159,6 +163,17 @@ public class ServerServiceImplementation implements ServerService {
                                 window.renderUsers(sr.getUsers());
                             });
                             break;
+                        case WRONGPASSWORD:
+                            Platform.runLater(()-> {
+                                client.wrongPassword();
+                            });
+                            break;
+                        case ROOMFULL:
+                            Platform.runLater(()-> {
+                                client.roomFull();
+                            });
+                            break;
+
                     }
                 } catch (EOFException e) {
 

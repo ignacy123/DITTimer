@@ -7,7 +7,11 @@ public class RoomConverter extends StringConverter<Room> {
 
     @Override
     public String toString(Room room) {
-        return room.getHost().getName()+"'s room for: "+room.getType();
+        String priv = "";
+        if(room.isPrivate()){
+            priv = " private";
+        }
+        return room.getHost().getName()+"'s" + priv + " room for: "+room.getType();
     }
 
     @Override

@@ -6,22 +6,22 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.conn.Room;
 import model.conn.ServerService;
 import model.conn.ServerServiceImplementation;
 import model.enums.CubeType;
-import model.logic.Solve;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Optional;
 
 public class Client extends Application {
     @FXML
@@ -35,12 +35,22 @@ public class Client extends Application {
     @FXML
     private TextField nameField;
     @FXML
-    private Button joinTo;
+    private PasswordField passwordField;
+    @FXML
+    private CheckBox passwordCheckBox;
 
     private ObservableList<Room> rooms;
     ServerService conn;
+    private RoomWindow roomWindow;
     @FXML
     void initialize(){
+        passwordCheckBox.selectedProperty().addListener(observable -> {
+            if(passwordCheckBox.isSelected()){
+                passwordField.setVisible(true);
+            }else{
+                passwordField.setVisible(false);
+            }
+        });
         conn = new ServerServiceImplementation(this);
         conn.start();
         rooms = FXCollections.observableArrayList();
@@ -64,17 +74,38 @@ public class Client extends Application {
         stage.show();
     }
     @FXML
-    void joinRoom(ActionEvent event) {
-        Room sel = (Room)roomsListView.getSelectionModel().getSelectedItem();
-        RoomWindow roomWindow = new RoomWindow(conn, sel);
-        conn.setWindow(roomWindow);
-        roomWindow.joining=true;
-        roomWindow.setName(String.valueOf(nameField.getCharacters()));
-        try {
-            roomWindow.start(roomWindow.classStage);
-        } catch (Exception e) {
-            e.printStackTrace();
+    void joinRoom(MouseEvent event) {
+        if (!event.getButton().equals(MouseButton.PRIMARY)) {
+            return;
         }
+        if (event.getClickCount() != 2) {
+            return;
+        }
+        Room room = (Room)roomsListView.getSelectionModel().getSelectedItem();
+        String password = null;
+        if(room.isPrivate()){
+            Dialog<String> passwordDialog = new Dialog<>();
+            passwordDialog.setTitle("Password");
+            passwordDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+            PasswordField pwd = new PasswordField();
+            HBox content = new HBox();
+            content.setAlignment(Pos.CENTER_LEFT);
+            content.setSpacing(10);
+            content.getChildren().addAll(new Label("Please insert password: "), pwd);
+            passwordDialog.getDialogPane().setContent(content);
+            passwordDialog.setResultConverter(dialogButton -> {
+                if (dialogButton == ButtonType.OK) {
+                    return pwd.getText();
+                }
+                return null;
+            });
+            Optional<String> pass = passwordDialog.showAndWait();
+            if(pass.isPresent()){
+                password = pass.get();
+            }
+
+        }
+        conn.joinRoom(room, String.valueOf(nameField.getCharacters()), password);
     }
     @FXML
     public void sendRooms(ArrayList<Room> rooms){
@@ -83,13 +114,19 @@ public class Client extends Application {
     }
     @FXML
     public void createRoom(){
-        conn.createRoom((CubeType)cubeTypeChoiceBox.getValue(), String.valueOf(nameField.getCharacters()));
+        String password = null;
+        if(passwordCheckBox.isSelected()){
+            password = String.valueOf(passwordField.getCharacters());
+        }
+        conn.createRoom((CubeType)cubeTypeChoiceBox.getValue(), String.valueOf(nameField.getCharacters()), passwordCheckBox.isSelected(), password);
     }
 
     @FXML
     public void refreshRooms(){
         conn.requestRooms();
     }
+
+
 
     @FXML
     public void roomHasBeenCreated(Room room) {
@@ -106,5 +143,18 @@ public class Client extends Application {
             e.printStackTrace();
         }
         refreshRooms();
+    }
+
+    @FXML
+    public void roomAccessHasBeenGranted(Room room){
+        System.out.println("I've requested an access to a room and server has granted it to me. A new view should start now. Room: "+room);
+    }
+    @FXML
+    public void wrongPassword(){
+        System.out.println("I've inserted a wrong password and server is letting me know about that.");
+    }
+    @FXML
+    public void roomFull(){
+        System.out.println("I've tried to join a full room and server is letting me know about that.");
     }
 }

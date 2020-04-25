@@ -10,8 +10,8 @@ import java.util.ArrayList;
 public interface ServerService {
     public void start();
     public ArrayList<Room> requestRooms();
-    public void createRoom(CubeType cubeType, String name);
-    public void joinRoom(Room room, String name);
+    public void createRoom(CubeType cubeType, String name, boolean isPrivate, String password);
+    public void joinRoom(Room room, String name, String password);
     public void setWindow(RoomWindow wind);
     void getPlayers(Room room);
 

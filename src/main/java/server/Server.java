@@ -65,6 +65,12 @@ public class Server {
                                 user.setName(request.getUserName());
                                 if(room!=null){
                                     room.setType(request.getCubeType());
+                                    room.setHost(user);
+                                    room.setPrivate(request.getPrivate());
+                                    System.out.println(request.getPassword());
+                                    if(request.getPassword()!=null){
+                                        holder.setPassword(room, request.getPassword());
+                                    }
                                 }
                             }
                             outputStream.writeObject(sr);
@@ -101,9 +107,25 @@ public class Server {
                                 System.out.println("Room not found ;c");//should handle properly
                                 break;
                             }
+                            if(!rome.isJoinable()){
+                                sr = new ServerResponse(ServerResponseType.ROOMFULL);
+                                outputStream.writeObject(sr);
+                                break;
+                            }
+                            if(rome.isPrivate()){
+                                String password = holder.getPassword(rome);
+                                System.out.println("Expected password: "+password);
+                                System.out.println("Actual password: "+request.getPassword());
+                                if(!password.equals(request.getPassword())){
+                                    sr = new ServerResponse(ServerResponseType.WRONGPASSWORD);
+                                    outputStream.writeObject(sr);
+                                    break;
+                                }
+                            }
                             rome.addUser(user);
                             sr.setTimes(rome.getTimes());
                             sr.setUsers(rome.getUsers());
+                            sr.setRoom(rome);
                             outputStream.reset();
                             outputStream.writeObject(sr);
                     }
