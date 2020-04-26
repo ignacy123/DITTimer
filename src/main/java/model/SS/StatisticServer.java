@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 
 public interface StatisticServer {
-    Timestamp GiveMeAverage(int WhatAverage, CubeType WhatModel) throws StatisticServerImplementation.DNF, StatisticServerImplementation.NotEnoughTimes ; // returns upToDate Average (5,12,100) or throw exception DNF
+    Timestamp GiveMeAverage(AVG what, CubeType WhatModel) throws StatisticServerImplementation.DNF, StatisticServerImplementation.NotEnoughTimes ; // returns upToDate Average (5,12,100) or throw exception DNF
     //also creates average if can
 
 
@@ -27,6 +27,6 @@ public interface StatisticServer {
     void DeleteLast(CubeType WhatModel);       // changes in DB and in SS
     void delete(CubeType type);  // cleans everything including db
     void addComment(CubeType WhatModel, String string);
-    Timestamp CreateAverage(int WhatAverage, CubeType WhatModel) throws StatisticServerImplementation.DNF, StatisticServerImplementation.NotEnoughTimes;
+    Timestamp CreateAverage(AVG WhatAverage, CubeType WhatModel) throws StatisticServerImplementation.DNF, StatisticServerImplementation.NotEnoughTimes;
 
 }

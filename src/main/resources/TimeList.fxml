@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="806.0" prefWidth="277.0" stylesheets="TimeList.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.TimeList.TimeListController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="806.0" prefWidth="503.0" stylesheets="TimeList.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.TimeList.TimeListController">
    <children>
       <ListView fx:id="listView" layoutY="42.0" onMouseClicked="#handle" prefHeight="666.0" prefWidth="95.0" />
       <ListView fx:id="listView2" layoutX="89.0" layoutY="42.0" onMouseClicked="#handle2" prefHeight="666.0" prefWidth="95.0" />
@@ -30,6 +30,10 @@
             <Font size="17.0" />
          </font>
       </Text>
+      <Text layoutX="300.0" layoutY="731.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Best Ao50" />
+      <Text layoutX="395.0" layoutY="731.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Best Ao100" />
+      <Label fx:id="bestAo100" layoutX="404.0" layoutY="735.0" text="Best" />
+      <Label fx:id="bestAo50" layoutX="304.0" layoutY="735.0" text="Best" />
    </children>
 
 </Pane>

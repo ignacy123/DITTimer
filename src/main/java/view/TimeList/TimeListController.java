@@ -20,8 +20,7 @@ import model.wrappers.ObservableWrapper;
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 
-import static model.enums.AVG.Ao12;
-import static model.enums.AVG.Ao5;
+import static model.enums.AVG.*;
 
 
 public class TimeListController extends Stage {
@@ -46,7 +45,10 @@ public class TimeListController extends Stage {
     private Label bestAo12;
     @FXML
     private Label count;
-
+    @FXML
+    private Label bestAo100;
+    @FXML
+    private Label bestAo50;
 
 
     public void setSSAndOw(StatisticServer ss, ObservableWrapper ow){
@@ -59,7 +61,6 @@ public class TimeListController extends Stage {
         listView.setItems(ow.getListOfSolves(currentType));
         listView2.setItems(ow.getListAvg(currentType, Ao5));
         listView3.setItems(ow.getListAvg(currentType, Ao12));
-
         setBestAndCount();
     }
 
@@ -222,7 +223,6 @@ public class TimeListController extends Stage {
         if(ss.GiveMeMin(currentType).equals(new Timestamp(999999999))){
             bestSingle.setText("-");
         }else{
-
             bestSingle.setText(ss.GiveMeMin(currentType).toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS")));
         }
         if(ss.GiveMeMinAVG(currentType, Ao5).getID()==-1){
@@ -234,6 +234,16 @@ public class TimeListController extends Stage {
             bestAo12.setText("-");
         }else{
             bestAo12.setText(ss.GiveMeMinAVG(currentType, Ao12).getAVG().toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS")));
+        }
+        if(ss.GiveMeMinAVG(currentType, Ao50).getID()==-1){
+            bestAo50.setText("-");
+        }else{
+            bestAo50.setText(ss.GiveMeMinAVG(currentType, Ao50).getAVG().toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS")));
+        }
+        if(ss.GiveMeMinAVG(currentType, Ao100).getID()==-1){
+            bestAo100.setText("-");
+        }else{
+            bestAo100.setText(ss.GiveMeMinAVG(currentType, Ao100).getAVG().toLocalDateTime().format(DateTimeFormatter.ofPattern("mm:ss.SSS")));
         }
         count.setText(String.valueOf(ow.getListOfSolves(currentType).size()));
     }

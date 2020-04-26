@@ -37,10 +37,16 @@ public class ObservableWrapper {
         listsOfSolves.put(CubeType.FOURBYFOUR, FXCollections.observableArrayList());
         listsOfAvgs.put(new Pair<>(CubeType.TWOBYTWO, AVG.Ao5), FXCollections.observableArrayList());
         listsOfAvgs.put(new Pair<>(CubeType.TWOBYTWO, AVG.Ao12), FXCollections.observableArrayList());
+        listsOfAvgs.put(new Pair<>(CubeType.TWOBYTWO, AVG.Ao50), FXCollections.observableArrayList());
+        listsOfAvgs.put(new Pair<>(CubeType.TWOBYTWO, AVG.Ao100), FXCollections.observableArrayList());
         listsOfAvgs.put(new Pair<>(CubeType.THREEBYTHREE, AVG.Ao5), FXCollections.observableArrayList());
         listsOfAvgs.put(new Pair<>(CubeType.THREEBYTHREE, AVG.Ao12), FXCollections.observableArrayList());
+        listsOfAvgs.put(new Pair<>(CubeType.THREEBYTHREE, AVG.Ao50), FXCollections.observableArrayList());
+        listsOfAvgs.put(new Pair<>(CubeType.THREEBYTHREE, AVG.Ao100), FXCollections.observableArrayList());
         listsOfAvgs.put(new Pair<>(CubeType.FOURBYFOUR, AVG.Ao5), FXCollections.observableArrayList());
         listsOfAvgs.put(new Pair<>(CubeType.FOURBYFOUR, AVG.Ao12), FXCollections.observableArrayList());
+        listsOfAvgs.put(new Pair<>(CubeType.FOURBYFOUR, AVG.Ao50), FXCollections.observableArrayList());
+        listsOfAvgs.put(new Pair<>(CubeType.FOURBYFOUR, AVG.Ao100), FXCollections.observableArrayList());
     }
 
     public ObservableList<Solve> getListOfSolves(CubeType type){

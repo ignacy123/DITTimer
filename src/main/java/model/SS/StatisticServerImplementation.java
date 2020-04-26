@@ -1,19 +1,17 @@
 package model.SS;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.db.DatabaseServiceImplementation;
 import model.enums.AVG;
 import model.enums.CubeType;
 import model.enums.State;
 import model.logic.Solve;
-import model.logic.SolveImplementation;
 import model.wrappers.AVGwrapper;
 import model.wrappers.ObservableWrapper;
 
-
-import java.util.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class StatisticServerImplementation implements StatisticServer {
     DatabaseServiceImplementation myDataBase;
@@ -21,12 +19,21 @@ public class StatisticServerImplementation implements StatisticServer {
     ObservableList<Solve> TwoByTwo;
     ObservableList<Solve> TreeByTree;
     ObservableList<Solve> FourByFour;
+
     ObservableList<AVGwrapper> A5Two;
     ObservableList<AVGwrapper> A12Two;
+    ObservableList<AVGwrapper> A50Two;
+    ObservableList<AVGwrapper> A100Two;
+
     ObservableList<AVGwrapper> A5Tree;
     ObservableList<AVGwrapper> A12Tree;
+    ObservableList<AVGwrapper> A50Tree;
+    ObservableList<AVGwrapper> A100Tree;
+
     ObservableList<AVGwrapper> A5Four;
     ObservableList<AVGwrapper> A12Four; // history
+    ObservableList<AVGwrapper> A50Four;
+    ObservableList<AVGwrapper> A100Four;
 
     Date CurrentDate;
 
@@ -42,16 +49,33 @@ public class StatisticServerImplementation implements StatisticServer {
         FourByFour.addAll(myDataBase.pullAndParseAllSolves(CubeType.FOURBYFOUR)); //provides times to those lists from db
         A5Two = OW.getListAvg(CubeType.TWOBYTWO, AVG.Ao5);
         A12Two = OW.getListAvg(CubeType.TWOBYTWO, AVG.Ao12);
+        A50Two = OW.getListAvg(CubeType.TWOBYTWO, AVG.Ao50);
+        A100Two = OW.getListAvg(CubeType.TWOBYTWO, AVG.Ao100);
+
         A5Tree = OW.getListAvg(CubeType.THREEBYTHREE, AVG.Ao5);
         A12Tree = OW.getListAvg(CubeType.THREEBYTHREE, AVG.Ao12);
+        A50Tree = OW.getListAvg(CubeType.THREEBYTHREE, AVG.Ao50);
+        A100Tree = OW.getListAvg(CubeType.THREEBYTHREE, AVG.Ao100);
+
         A5Four = OW.getListAvg(CubeType.FOURBYFOUR, AVG.Ao5);
         A12Four = OW.getListAvg(CubeType.FOURBYFOUR, AVG.Ao12); //taking lists of averages from outside
+        A50Four = OW.getListAvg(CubeType.FOURBYFOUR, AVG.Ao50);
+        A100Four = OW.getListAvg(CubeType.FOURBYFOUR, AVG.Ao100);
+
         initializeHistory(A5Two, TwoByTwo, 5);
         initializeHistory(A12Two, TwoByTwo, 12);
+        initializeHistory(A50Two, TwoByTwo, 50);
+        initializeHistory(A100Two, TwoByTwo, 100);
+
         initializeHistory(A5Tree, TreeByTree, 5);
         initializeHistory(A12Tree, TreeByTree, 12);
+        initializeHistory(A50Tree, TreeByTree, 50);
+        initializeHistory(A100Tree, TreeByTree, 100);
+
         initializeHistory(A5Four, FourByFour, 5);
         initializeHistory(A12Four, FourByFour, 12); // initialize those lists with data from db
+        initializeHistory(A50Four, FourByFour, 50);
+        initializeHistory(A100Four, FourByFour, 100);
     }
     /* private void initializeHistory(ObservableList<AVGwrapper> ToFill, ObservableList<Solve> source, int k){
          if(source.size()<k) return;
@@ -109,26 +133,51 @@ public class StatisticServerImplementation implements StatisticServer {
             }
         }
     }
+    private ObservableList<AVGwrapper> returnAVGlist(AVG WhatAverage, CubeType WhatModel){
+        ObservableList<AVGwrapper> temp;
+        if (WhatModel == CubeType.TWOBYTWO) {
+            if (WhatAverage == AVG.Ao5)
+                temp = A5Two;
+            else if(WhatAverage == AVG.Ao12)
+                temp= A12Two;
+            else  if(WhatAverage == AVG.Ao50)
+                temp=A50Two;
+            else temp=A100Two;
 
+        } else if (WhatModel == CubeType.THREEBYTHREE) {
+            if (WhatAverage == AVG.Ao5)
+                temp = A5Tree;
+            else if(WhatAverage == AVG.Ao12)
+                temp= A12Tree;
+            else  if(WhatAverage == AVG.Ao50)
+                temp=A50Tree;
+            else temp=A100Tree;
+        } else {
+            if (WhatAverage == AVG.Ao5)
+                temp = A5Four;
+            else if(WhatAverage == AVG.Ao12)
+                temp= A12Four;
+            else  if(WhatAverage == AVG.Ao50)
+                temp=A50Four;
+            else temp=A100Four;
+        }
+        return temp;
+    }
+    private ObservableList<Solve> returnSOLVElist(CubeType WhatModel){
+        if (WhatModel == CubeType.TWOBYTWO) {
+            return TwoByTwo;
+        } else if (WhatModel == CubeType.THREEBYTHREE) {
+            return TreeByTree;
+        } else {
+          return FourByFour;
+        }
+    }
     @Override
-    public Timestamp GiveMeAverage(int WhatAverage, CubeType WhatModel) {
+    public Timestamp GiveMeAverage(AVG WhatAverage, CubeType WhatModel) {
         Timestamp average = null;
         boolean somethingWrong = false;
-        ObservableList<AVGwrapper> temp;
-        if (WhatAverage == 5 && WhatModel == CubeType.TWOBYTWO) temp = A5Two;
-        else if (WhatAverage == 12 && WhatModel == CubeType.TWOBYTWO) temp = A12Two;
-        else if (WhatAverage == 5 && WhatModel == CubeType.THREEBYTHREE) temp = A5Tree;
-        else if (WhatAverage == 12 && WhatModel == CubeType.THREEBYTHREE) temp = A12Tree;
-        else if (WhatAverage == 5 && WhatModel == CubeType.FOURBYFOUR) temp = A5Four;
-        else temp = A12Four;
-        ObservableList<Solve> source;
-        if (WhatModel == CubeType.TWOBYTWO) {
-            source = TwoByTwo;
-        } else if (WhatModel == CubeType.THREEBYTHREE) {
-            source = TreeByTree;
-        } else {
-            source = FourByFour;
-        }
+        ObservableList<AVGwrapper> temp=returnAVGlist(WhatAverage,WhatModel);
+        ObservableList<Solve> source=returnSOLVElist(WhatModel);
 
         try {
             average = CreateAverage(WhatAverage, WhatModel);
@@ -140,48 +189,59 @@ public class StatisticServerImplementation implements StatisticServer {
             temp.add(new AVGwrapper(-1, new Timestamp(0), true));
             somethingWrong = true;
         }
-        if (!somethingWrong)
+        if (!somethingWrong){
+            System.out.println("nothing");
             temp.add(new AVGwrapper(source.size(), average, false));
+            System.out.println(temp.get(temp.size()-1));
+        }
+
         return average;
     }
-    @Override
-    public Timestamp CreateAverage(int WhatAverage, CubeType WhatModel) throws DNF, NotEnoughTimes {
-        ObservableList<Solve> temp;
-        if (WhatModel == CubeType.TWOBYTWO) {
-            temp = TwoByTwo;
-        } else if (WhatModel == CubeType.THREEBYTHREE) {
-            temp = TreeByTree;
-        } else {
-            temp = FourByFour;
+    private int giveMeSize(AVG WhatAverage){
+        if(WhatAverage.equals(AVG.Ao5)) return 5;
+        else if(WhatAverage.equals(AVG.Ao12)){
+            return 12;
         }
-        if (temp.size() < WhatAverage) throw new NotEnoughTimes();
+        else if(WhatAverage.equals(AVG.Ao50)){
+            return 50;
+        }
+        else return 100;
+    }
+    @Override
+    public Timestamp CreateAverage(AVG WhatAverage, CubeType WhatModel) throws DNF, NotEnoughTimes {
+        ObservableList<Solve> temp=returnSOLVElist(WhatModel);
+        int IntAVG=giveMeSize(WhatAverage);;
+        long best = 999999999;
+        long worst=0;
+        if (temp.size() < IntAVG) {
+            System.out.println(IntAVG);
+            throw new NotEnoughTimes();
+        }
         else {
-            int helper = WhatAverage;
-            long value = 0;
+            int helper = IntAVG;
+            long  value = 0;
             int amountOfDNF = 0;
             for (int i = temp.size() - 1; helper > 0; i--, helper--) {
                 if (temp.get(i).getState() == State.DNF) {
                     amountOfDNF++;
                     if (amountOfDNF == 2) break;
-                } else value += temp.get(i).getTime().getTime(); // unfortunate
+                } else {
+                    value += temp.get(i).getTime().getTime(); // unfortunate
+                   // if(temp.get(i).getTime().getTime()<best) best=temp.get(i).getTime().getTime();
+                    //if(temp.get(i).getTime().getTime()>worst) worst=temp.get(i).getTime().getTime();
+                }
             }
             if (amountOfDNF >= 2) throw new DNF();
             else {
-                return new Timestamp(value / WhatAverage);
+                //value=value-best-worst;
+                return new Timestamp(value / (IntAVG));
             }
         }
     }
 
     @Override
     public ArrayList<Timestamp> GiveMeTimes(CubeType WhatModel) {
-        ObservableList<Solve> temp;
-        if (WhatModel == CubeType.TWOBYTWO) {
-            temp = TwoByTwo;
-        } else if (WhatModel == CubeType.THREEBYTHREE) {
-            temp = TreeByTree;
-        } else {
-            temp = FourByFour;
-        }
+        ObservableList<Solve> temp=returnSOLVElist(WhatModel);
         ArrayList<Timestamp> times = new ArrayList<>();
         for (Solve a : temp) {
             if (a.getState() == State.DNF || a.getState() == State.REJ) continue;
@@ -192,15 +252,8 @@ public class StatisticServerImplementation implements StatisticServer {
 
     @Override
     public Timestamp GiveMeMax(CubeType WhatModel) {
-        ObservableList<Solve> temp;
+        ObservableList<Solve> temp=returnSOLVElist(WhatModel);
         Timestamp max = new Timestamp(0);
-        if (WhatModel == CubeType.TWOBYTWO) {
-            temp = TwoByTwo;
-        } else if (WhatModel == CubeType.THREEBYTHREE) {
-            temp = TreeByTree;
-        } else {
-            temp = FourByFour;
-        }
         for (Solve a : temp) {
             if (a.getTime().getTime() > max.getTime() && a.getState()!=State.DNF) // unfortunate
                 max = a.getTime();
@@ -210,15 +263,8 @@ public class StatisticServerImplementation implements StatisticServer {
 
     @Override
     public Timestamp GiveMeMin(CubeType WhatModel) {
-        ObservableList<Solve> temp;
+        ObservableList<Solve> temp=returnSOLVElist(WhatModel);
         Timestamp min = new Timestamp(999999999);
-        if (WhatModel == CubeType.TWOBYTWO) {
-            temp = TwoByTwo;
-        } else if (WhatModel == CubeType.THREEBYTHREE) {
-            temp = TreeByTree;
-        } else {
-            temp = FourByFour;
-        }
         for (Solve a : temp) {
             if (a.getTime().getTime() < min.getTime() && a.getState()!=State.DNF) // unfortunate
                 min = a.getTime();
@@ -228,21 +274,8 @@ public class StatisticServerImplementation implements StatisticServer {
 
     @Override
     public AVGwrapper GiveMeMaxAVG(CubeType WhatModel, AVG whatAvg) {
-        ObservableList<AVGwrapper> temp;
+        ObservableList<AVGwrapper> temp=returnAVGlist(whatAvg,WhatModel);
         AVGwrapper max = new AVGwrapper(-1,new Timestamp(0), false);
-        if (WhatModel == CubeType.TWOBYTWO) {
-            if (whatAvg == AVG.Ao5)
-                temp = A5Two;
-            else temp = A12Two;
-        } else if (WhatModel == CubeType.THREEBYTHREE) {
-            if (whatAvg == AVG.Ao5)
-                temp = A5Tree;
-            else temp = A12Tree;
-        } else {
-            if (whatAvg == AVG.Ao5)
-                temp = A5Four;
-            else temp = A12Four;
-        }
         for (AVGwrapper a : temp) {
             if (a.getAVG().getTime() > max.getAVG().getTime() && !a.isDNF()) // unfortunate
                 max = a;
@@ -253,21 +286,8 @@ public class StatisticServerImplementation implements StatisticServer {
 
     @Override
     public AVGwrapper GiveMeMinAVG(CubeType WhatModel, AVG whatAvg) {
-        ObservableList<AVGwrapper> temp;
+        ObservableList<AVGwrapper> temp=returnAVGlist(whatAvg,WhatModel);
         AVGwrapper min = new AVGwrapper(-1,new Timestamp(999999999), false);
-        if (WhatModel == CubeType.TWOBYTWO) {
-            if (whatAvg == AVG.Ao5)
-                temp = A5Two;
-            else temp = A12Two;
-        } else if (WhatModel == CubeType.THREEBYTHREE) {
-            if (whatAvg == AVG.Ao5)
-                temp = A5Tree;
-            else temp = A12Tree;
-        } else {
-            if (whatAvg == AVG.Ao5)
-                temp = A5Four;
-            else temp = A12Four;
-        }
         for (AVGwrapper a : temp) {
             if (a.getAVG().getTime() < min.getAVG().getTime() && !a.isDNF() && !a.isNET()) // unfortunate
                 min = a;
@@ -277,9 +297,7 @@ public class StatisticServerImplementation implements StatisticServer {
 
     @Override
     public void ChangeStateLast(CubeType WhatModel, State state) {
-        ObservableList<Solve> temp;
-        if (WhatModel == CubeType.TWOBYTWO) {
-            temp = TwoByTwo;
+        ObservableList<Solve> temp=returnSOLVElist(WhatModel);
             if(temp.isEmpty()) return;
             if(state==State.TWOSECPENALTY){
                 Solve solve=temp.get(temp.size()-1);
@@ -306,65 +324,6 @@ public class StatisticServerImplementation implements StatisticServer {
                     insertSolve(solve);
                 }
             }
-        } else if (WhatModel == CubeType.THREEBYTHREE) {
-            temp = TreeByTree;
-            if(temp.isEmpty()) return;
-            if(state==State.TWOSECPENALTY){
-                Solve solve=temp.get(temp.size()-1);
-                solve.getTime().setTime(solve.getTime().getTime()+2000);
-                solve.setState(State.TWOSECPENALTY);
-                DeleteLast(WhatModel);
-                insertSolve(solve);
-            }else if(state==State.DNF) {
-                Solve solve=temp.get(temp.size()-1);
-                solve.setState(State.DNF);
-                DeleteLast(WhatModel);
-                insertSolve(solve);
-            }else {
-                Solve solve=temp.get(temp.size()-1);
-                DeleteLast(WhatModel);
-                if(solve.getState()==State.DNF){
-                    solve.setState(State.CORRECT);
-                    insertSolve(solve);
-                } else if(solve.getState()==State.TWOSECPENALTY){
-                    solve.setState(State.CORRECT);
-                    solve.getTime().setTime(solve.getTime().getTime()-2000);
-                    insertSolve(solve);
-                }
-                else {
-                    insertSolve(solve);
-                }
-            }
-        } else {
-            temp = FourByFour;
-            if(temp.isEmpty()) return;
-            if(state==State.TWOSECPENALTY){
-                Solve solve=temp.get(temp.size()-1);
-                solve.getTime().setTime(solve.getTime().getTime()+2000);
-                solve.setState(State.TWOSECPENALTY);
-                DeleteLast(WhatModel);
-                insertSolve(solve);
-            }else if(state==State.DNF) {
-                Solve solve=temp.get(temp.size()-1);
-                solve.setState(State.DNF);
-                DeleteLast(WhatModel);
-                insertSolve(solve);
-            }else {
-                Solve solve=temp.get(temp.size()-1);
-                DeleteLast(WhatModel);
-                if(solve.getState()==State.DNF){
-                    solve.setState(State.CORRECT);
-                    insertSolve(solve);
-                }
-                else if(solve.getState()==State.TWOSECPENALTY){
-                    solve.setState(State.CORRECT);
-                    solve.getTime().setTime(solve.getTime().getTime()-2000);
-                    insertSolve(solve);
-                } else{
-                    insertSolve(solve);
-                }
-            }
-        }
         myDataBase.updateLast(temp.get(temp.size() - 1));
     }
 
@@ -378,6 +337,8 @@ public class StatisticServerImplementation implements StatisticServer {
                 temp.remove(temp.size()-1);
                 A5Two.remove(A5Two.size()-1);
                 A12Two.remove(A12Two.size()-1);
+                A50Two.remove(A50Two.size()-1);
+                A100Two.remove(A100Two.size()-1);
                 myDataBase.deleteLast(WhatModel);
             }
         } else if (WhatModel == CubeType.THREEBYTHREE) {
@@ -386,6 +347,8 @@ public class StatisticServerImplementation implements StatisticServer {
                 temp.remove(temp.size()-1);
                 A5Tree.remove(A5Tree.size() - 1);
                 A12Tree.remove(A12Tree.size() - 1);
+                A50Tree.remove(A50Tree.size()-1);
+                A100Tree.remove(A100Tree.size()-1);
                 myDataBase.deleteLast(WhatModel);
             }
         } else {
@@ -394,11 +357,11 @@ public class StatisticServerImplementation implements StatisticServer {
                 temp.remove(temp.size()-1);
                 A5Four.remove(A5Four.size() - 1);
                 A12Four.remove(A12Four.size() - 1);
+                A50Four.remove(A50Four.size()-1);
+                A100Four.remove(A100Four.size()-1);
                 myDataBase.deleteLast(WhatModel);
             }
         }
-
-
     }
 
     @Override
@@ -408,14 +371,20 @@ public class StatisticServerImplementation implements StatisticServer {
             TwoByTwo.clear();
             A5Two.clear();
             A12Two.clear();
+            A50Two.clear();
+            A100Two.clear();
         }else if(type==CubeType.THREEBYTHREE){
             TreeByTree.clear();
             A5Tree.clear();
             A12Tree.clear();
+            A50Tree.clear();
+            A100Tree.clear();
         }else{
             FourByFour.clear();
             A5Four.clear();
             A12Four.clear();
+            A50Four.clear();
+            A100Four.clear();
         }
 
     }
@@ -440,42 +409,25 @@ public class StatisticServerImplementation implements StatisticServer {
 
         if (solve.getType() == CubeType.TWOBYTWO) {
             TwoByTwo.add(solve);
-            GiveMeAverage(5,CubeType.TWOBYTWO);
-            GiveMeAverage(12,CubeType.TWOBYTWO);
+            GiveMeAverage(AVG.Ao5,CubeType.TWOBYTWO);
+            GiveMeAverage(AVG.Ao12,CubeType.TWOBYTWO);
+            GiveMeAverage(AVG.Ao50,CubeType.TWOBYTWO);
+            GiveMeAverage(AVG.Ao100,CubeType.TWOBYTWO);
         } else if (solve.getType() == CubeType.THREEBYTHREE) {
             TreeByTree.add(solve);
-            GiveMeAverage(5,CubeType.THREEBYTHREE);
-            GiveMeAverage(12,CubeType.THREEBYTHREE);
+            GiveMeAverage(AVG.Ao5,CubeType.THREEBYTHREE);
+            GiveMeAverage(AVG.Ao12,CubeType.THREEBYTHREE);
+            GiveMeAverage(AVG.Ao50,CubeType.THREEBYTHREE);
+            GiveMeAverage(AVG.Ao100,CubeType.THREEBYTHREE);
         } else {
             FourByFour.add(solve);
-            GiveMeAverage(5,CubeType.FOURBYFOUR);
-            GiveMeAverage(12,CubeType.FOURBYFOUR);
+            GiveMeAverage(AVG.Ao5,CubeType.FOURBYFOUR);
+            GiveMeAverage(AVG.Ao12,CubeType.FOURBYFOUR);
+            GiveMeAverage(AVG.Ao50,CubeType.FOURBYFOUR);
+            GiveMeAverage(AVG.Ao100,CubeType.FOURBYFOUR);
         }
         myDataBase.insert(solve);
     }
-
-   /* private void Refresh(HashSet<Integer> set, Time timeOfSolution, CubeType WhatModel){
-        String model;
-        ArrayList<Solve> temp;
-        if (WhatModel == CubeType.TWOBYTWO) {
-            model = "TWOBYTWO";
-            temp=TwoByTwo;
-        } else if (WhatModel == CubeType.THREEBYTHREE) {
-            model = "THREEBYTHREE";
-            temp=TreeByTree;
-        } else {
-            model = "FOURBYFOUR";
-            temp=FourByFour;
-        }
-        for(Integer a : set){
-            System.out.println("doing refresh for " + a);
-            System.out.println(Averages.get(model + a).getTime());
-            System.out.println(temp.get());
-            System.out.println(Averages.get(model + a).getTime()-temp.get(temp.size()-a).getTime().getTime()+timeOfSolution.getTime()/a);
-
-           // Averages.replace(model+a,new Time(Averages.get(model + a).getTime()-temp.get(temp.size()-a).getTime().getTime()+timeOfSolution.getTime()/a));
-        }
-    }*/
 
     public static class DNF extends Exception {
     }
