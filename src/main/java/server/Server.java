@@ -109,6 +109,21 @@ public class Server {
                                 mike.writeObject(sr);
                             }
                             break;
+                        case SENDCHAT:
+                            String msg = user.getName()+": "+request.getMsg();
+                            Room room1 = holder.getRoom(request.getRoom().getID());
+                            if(room1 == null) {
+                                System.out.println("Room not found ;c");//should handle properly
+                                break;
+                            }
+                            sr = new ServerResponse(ServerResponseType.CHATMSG);
+                            sr.setMsg(msg);
+                            for(ObjectOutputStream mike: holder.getStreams(room1)) {
+                                mike.reset();
+                                mike.writeObject(sr);
+                            }
+                            break;
+
                         case JOINROOM:
                             System.out.println("join");
                             sr = new ServerResponse(ServerResponseType.ROOMJOINED);

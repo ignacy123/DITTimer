@@ -17,4 +17,5 @@ public interface ServerService {
 
     void getTimes(Room room);
     void sendTime(Room room, Time time);
+    void sendChat(Room room, String msg);
 }

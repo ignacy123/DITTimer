@@ -1,8 +1,6 @@
 package view.test;
 
 import javafx.application.Application;
-import javafx.event.Event;
-import javafx.event.EventTarget;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -14,7 +12,7 @@ import model.SS.StatisticServerImplementation;
 import model.wrappers.ObservableWrapper;
 import view.mainScreen.MainScreen;
 
-public class test extends Application {
+public class OfflineTimer extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("timer.fxml"));

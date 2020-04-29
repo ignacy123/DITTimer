@@ -112,6 +112,19 @@ public class ServerServiceImplementation implements ServerService {
         }
     }
 
+    @Override
+    public void sendChat(Room room, String msg) {
+        try {
+            ClientRequest cr = new ClientRequest(ClientRequestType.SENDCHAT);
+            cr.setRoom(room);
+            cr.setMsg(msg);
+            outputStream.writeObject(cr);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     static class ServerResponseHandler extends Thread{
         private RoomWindow window;
         ObjectInputStream inputStream;
@@ -176,6 +189,12 @@ public class ServerServiceImplementation implements ServerService {
                                 client.roomFull();
                             });
                             break;
+                        case CHATMSG:
+                            if(window == null) break;
+                            System.out.println("chat msg");
+                            Platform.runLater(()-> {
+                                window.getMessage(sr.getMsg());
+                            });
 
                     }
                 } catch (EOFException e) {

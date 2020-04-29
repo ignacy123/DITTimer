@@ -12,8 +12,9 @@ public class ServerResponse implements Serializable {
     private Room room;
     private ArrayList<Time> times;
     private ArrayList<User> users;
+    private String msg;
 
-    public ServerResponse(ServerResponseType type){
+    public ServerResponse(ServerResponseType type) {
         this.type = type;
     }
 
@@ -38,16 +39,27 @@ public class ServerResponse implements Serializable {
     }
 
     public void setTimes(ArrayList<Time> times) {
-        this.times=times;
+        this.times = times;
     }
+
     public ArrayList<Time> getTimes() {
         return times;
     }
+
     public void setUsers(ArrayList<User> users) {
-        this.users=users;
+        this.users = users;
     }
+
     public ArrayList<User> getUsers() {
         return users;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public String getMsg() {
+        return msg;
     }
 }
 

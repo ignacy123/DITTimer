@@ -5,9 +5,11 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="564.0" prefWidth="916.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <ListView fx:id="timeList" layoutX="8.0" layoutY="8.0" prefHeight="182.0" prefWidth="201.0" />
    <TextField fx:id="scrambleField" layoutX="234.0" layoutY="37.0" prefHeight="43.0" prefWidth="352.0" />
    <Button fx:id="addTime" layoutX="234.0" layoutY="165.0" mnemonicParsing="false" onAction="#testTime" text="Button" />
    <ListView fx:id="playerList" layoutX="9.0" layoutY="190.0" prefHeight="119.0" prefWidth="201.0" />
+   <ListView fx:id="msgBox" layoutX="433.0" layoutY="138.0" prefHeight="288.0" prefWidth="428.0" />
+   <TextField fx:id="msgField" layoutX="434.0" layoutY="426.0" onKeyPressed="#sendMessage" prefHeight="28.0" prefWidth="428.0" promptText="Enter message..." />
 </AnchorPane>

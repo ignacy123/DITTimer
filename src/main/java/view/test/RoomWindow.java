@@ -10,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.conn.ClientRequest;
@@ -34,7 +36,20 @@ public class RoomWindow extends Application {
     @FXML
     private Button addTime;
 
+    @FXML
+    private ListView msgBox;
+    @FXML
+    private TextField msgField;
 
+    private ObservableList<String> chat;
+
+
+    @FXML
+    void initialize(){
+        chat = FXCollections.observableArrayList();
+        msgBox.setItems(chat);
+        chat.addAll("test");
+    }
     @FXML
     private ListView<String> playerList;
     Stage classStage = new Stage();
@@ -72,10 +87,26 @@ public class RoomWindow extends Application {
         Pane pane = loader.load();
         Scene scene = new Scene(pane);
         stage.setScene(scene);
-
         jez.getPlayers(room);
         jez.getTimes(room);
-
         stage.show();
+    }
+
+    @FXML
+    public void sendMessage(KeyEvent event){
+        if(event.getEventType()==KeyEvent.KEY_PRESSED && event.getCode()==KeyCode.ENTER){
+            String msg = String.valueOf(msgField.getCharacters());
+            if(msg.equals("")){
+                return;
+            }
+            System.out.println("sending message: "+msg);
+            jez.sendChat(room, msg);
+            msgField.clear();
+        }
+    }
+
+    @FXML
+    public void getMessage(String msg){
+        chat.addAll(msg);
     }
 }
