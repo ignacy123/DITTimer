@@ -66,7 +66,7 @@ public class ServerServiceImplementation implements ServerService {
     @Override
     public void joinRoom(Room room, String name, String password) {
         ClientRequest cr = new ClientRequest(ClientRequestType.JOINROOM, room);
-        System.out.println("sending");
+        System.out.println("sending"+name);
         if(name.equals("")){
             name = "nobody";
         }
@@ -74,6 +74,7 @@ public class ServerServiceImplementation implements ServerService {
         cr.setPassword(password);
         try {
             outputStream.writeObject(cr);
+            System.out.println("writing join ");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -143,25 +144,27 @@ public class ServerServiceImplementation implements ServerService {
                             break;
                         case USERSCHANGED:
                             if(window == null) break;
+                            System.out.println("user upd");
                             Platform.runLater(()-> {
                                 window.renderUsers(sr.getUsers());
                             });
                             break;
                         case TIMESCHANGED:
                             if(window == null) break;
+                            System.out.println("TImes upd");
                             Platform.runLater(()-> {
                                 window.renderTimes(sr.getTimes());
                             });
                             break;
                         case ROOMJOINED:
+                            //if(window == null) break;
                             client.roomAccessHasBeenGranted(sr.getRoom());
-                            if(window == null) break;
-                            Platform.runLater(()-> {
-                                window.renderTimes(sr.getTimes());
-                            });
-                            Platform.runLater(()-> {
-                                window.renderUsers(sr.getUsers());
-                            });
+                            //Platform.runLater(()-> {
+                            //    window.renderTimes(sr.getTimes());
+                            //});
+                            //Platform.runLater(()-> {
+                             //   window.renderUsers(sr.getUsers());
+                            //});
                             break;
                         case WRONGPASSWORD:
                             Platform.runLater(()-> {

@@ -3,6 +3,7 @@ package model.conn;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,11 +12,13 @@ import java.util.concurrent.ConcurrentMap;
 public class RoomHolder {
     ConcurrentMap<Room, String> passwords;
     ConcurrentMap<Integer, Room> rooms;
+    ConcurrentMap<Room, ArrayList<ObjectOutputStream>> streamHolder;
     int roomCounter;
     int id;
     public RoomHolder(){
         passwords = new ConcurrentHashMap<>();
         rooms = new ConcurrentHashMap<>();
+        streamHolder = new ConcurrentHashMap<>();
         roomCounter = 0;
         id=0;
     }
@@ -30,14 +33,16 @@ public class RoomHolder {
             roomCounter++;
             rooms.put(roomCounter, new Room(id++));
             rooms.get(roomCounter).setHost(user);
+            streamHolder.put(rooms.get(roomCounter), new ArrayList<>());
             user.setInRoom(true);
             user.setRoom(rooms.get(roomCounter));
             return user.getRoom();
         }
         return null;
     }
-    public void joinRoom(User user, Room room) {
+    public void joinRoom(User user, Room room, ObjectOutputStream oos) {
         room.addUser(user);
+        streamHolder.get(room).add(oos);
     }
     public ArrayList<Room> getAvailableRooms(){
         ArrayList<Room> toReturn = new ArrayList<>();
@@ -47,6 +52,9 @@ public class RoomHolder {
             }
         }
         return toReturn;
+    }
+    public ArrayList<ObjectOutputStream> getStreams(Room room) {
+        return streamHolder.get(room);
     }
     public Room getRoom(int id) {
         for(Room room: rooms.values()) {

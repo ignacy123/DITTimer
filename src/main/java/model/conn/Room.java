@@ -18,7 +18,7 @@ public class Room implements Serializable {
     }
     public void setHost(User user){
         host = user;
-        users.add(host);
+        //users.add(host);
     }
     public void addUser(User guest) {
         users.add(guest);

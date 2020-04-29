@@ -1,6 +1,7 @@
 package view.test;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -75,12 +76,14 @@ public class Client extends Application {
     }
     @FXML
     void joinRoom(MouseEvent event) {
+        System.out.println("p");
         if (!event.getButton().equals(MouseButton.PRIMARY)) {
             return;
         }
         if (event.getClickCount() != 2) {
             return;
         }
+
         Room room = (Room)roomsListView.getSelectionModel().getSelectedItem();
         String password = null;
         if(room.isPrivate()){
@@ -103,7 +106,6 @@ public class Client extends Application {
             if(pass.isPresent()){
                 password = pass.get();
             }
-
         }
         conn.joinRoom(room, String.valueOf(nameField.getCharacters()), password);
     }
@@ -144,10 +146,19 @@ public class Client extends Application {
         }
         refreshRooms();
     }
-
     @FXML
     public void roomAccessHasBeenGranted(Room room){
         System.out.println("I've requested an access to a room and server has granted it to me. A new view should start now. Room: "+room);
+        Platform.runLater(() -> {
+            RoomWindow roomWindow = new RoomWindow(conn, room);
+            conn.setWindow(roomWindow);
+            roomWindow.setName(String.valueOf(nameField.getCharacters()));
+            try {
+                roomWindow.start(roomWindow.classStage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
     @FXML
     public void wrongPassword(){

@@ -35,6 +35,7 @@ public class Server {
         ClientHandler(Socket socket, int id, RoomHolder holder) {
             this.socket = socket;
             user = new User(id);
+            //user.setSocket(socket);
             this.holder = holder;
         }
 
@@ -58,14 +59,16 @@ public class Server {
                             outputStream.writeObject(sr);
                             break;
                         case CREATEROOM:
+                            System.out.println("Creating");
                             sr = new ServerResponse(ServerResponseType.ROOMHASBEENCREATED);
                             if(holder.hasFreeRoom()){
                                 Room room = holder.requestRoom(user);
                                 sr.setRoom(room);
+                                holder.joinRoom(user, room, outputStream);
                                 user.setName(request.getUserName());
                                 if(room!=null){
                                     room.setType(request.getCubeType());
-                                    room.setHost(user);
+                                    //room.setHost(user);
                                     room.setPrivate(request.getPrivate());
                                     System.out.println(request.getPassword());
                                     if(request.getPassword()!=null){
@@ -84,6 +87,7 @@ public class Server {
                             }
                             System.out.println("Sending users");
                             sr.setUsers(room.getUsers());
+                            outputStream.reset();
                             outputStream.writeObject(sr);
                             break;
                         case GETTIMES:
@@ -97,10 +101,16 @@ public class Server {
                             if(request.getType() == ClientRequestType.SENDTIME)
                             sienna.addTime(request.getTime());
                             sr.setTimes(sienna.getTimes());
-                            outputStream.reset();
-                            outputStream.writeObject(sr);
+                            //outputStream.reset();
+                            //outputStream.writeObject(sr);
+                            //for every user in room
+                            for(ObjectOutputStream mike: holder.getStreams(sienna)) {
+                                mike.reset();
+                                mike.writeObject(sr);
+                            }
                             break;
                         case JOINROOM:
+                            System.out.println("join");
                             sr = new ServerResponse(ServerResponseType.ROOMJOINED);
                             Room rome = holder.getRoom(request.getRoom().getID());
                             if(rome == null) {
@@ -122,12 +132,22 @@ public class Server {
                                     break;
                                 }
                             }
-                            rome.addUser(user);
+                            System.out.println(user.getName()+"asked to join "+rome.getHost().getName());
+                            user.setName(request.getUserName());
+                            //rome.addUser(user);
+                            holder.joinRoom(user, rome, outputStream);
                             sr.setTimes(rome.getTimes());
                             sr.setUsers(rome.getUsers());
                             sr.setRoom(rome);
                             outputStream.reset();
                             outputStream.writeObject(sr);
+                            ServerResponse ans = new ServerResponse(ServerResponseType.USERSCHANGED);
+                            ans.setUsers(rome.getUsers());
+                            for(ObjectOutputStream mike: holder.getStreams(rome)) {
+                                if(mike == outputStream) continue;
+                                mike.reset();
+                                mike.writeObject(ans);
+                            }
                     }
                 }
             } catch (EOFException e) {

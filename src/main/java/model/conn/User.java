@@ -7,6 +7,7 @@ public class User implements Serializable {
     private boolean inRoom = false;
     private Room room;
     private String name;
+    //SocketWrapper socket;
     public User(int id){
         this.id = id;
     }
@@ -37,4 +38,5 @@ public class User implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
 }
