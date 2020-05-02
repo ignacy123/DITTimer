@@ -124,6 +124,17 @@ public class ServerServiceImplementation implements ServerService {
         }
     }
 
+    @Override
+    public void leaveRoom(Room room) {
+        ClientRequest cr = new ClientRequest(ClientRequestType.LEAVEROOM);
+        cr.setRoom(room);
+        try {
+            outputStream.writeObject(cr);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     static class ServerResponseHandler extends Thread{
         private RoomWindow window;
@@ -170,14 +181,7 @@ public class ServerServiceImplementation implements ServerService {
                             });
                             break;
                         case ROOMJOINED:
-                            //if(window == null) break;
                             client.roomAccessHasBeenGranted(sr.getRoom());
-                            //Platform.runLater(()-> {
-                            //    window.renderTimes(sr.getTimes());
-                            //});
-                            //Platform.runLater(()-> {
-                             //   window.renderUsers(sr.getUsers());
-                            //});
                             break;
                         case WRONGPASSWORD:
                             Platform.runLater(()-> {
@@ -200,7 +204,9 @@ public class ServerServiceImplementation implements ServerService {
                 } catch (EOFException e) {
 
                 }catch(Exception e){
-                    e.printStackTrace();
+                    //disconnected from server, oopsie
+                    Platform.exit();
+                    System.exit(0);
                 }
             }
         }

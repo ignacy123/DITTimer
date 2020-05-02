@@ -4,12 +4,48 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="564.0" prefWidth="916.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <ListView fx:id="timeList" layoutX="8.0" layoutY="8.0" prefHeight="182.0" prefWidth="201.0" />
+<AnchorPane prefHeight="735.0" prefWidth="940.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <TextField fx:id="scrambleField" layoutX="234.0" layoutY="37.0" prefHeight="43.0" prefWidth="352.0" />
    <Button fx:id="addTime" layoutX="234.0" layoutY="165.0" mnemonicParsing="false" onAction="#testTime" text="Button" />
    <ListView fx:id="playerList" layoutX="9.0" layoutY="190.0" prefHeight="119.0" prefWidth="201.0" />
-   <ListView fx:id="msgBox" layoutX="433.0" layoutY="138.0" prefHeight="288.0" prefWidth="428.0" />
-   <TextField fx:id="msgField" layoutX="434.0" layoutY="426.0" onKeyPressed="#sendMessage" prefHeight="28.0" prefWidth="428.0" promptText="Enter message..." />
+   <ListView fx:id="msgBox" layoutX="438.0" layoutY="123.0" prefHeight="288.0" prefWidth="428.0" />
+   <TextField fx:id="msgField" layoutX="438.0" layoutY="411.0" onKeyPressed="#sendMessage" prefHeight="28.0" prefWidth="428.0" promptText="Enter message..." />
+   <HBox fx:id="timesHolder" layoutX="25.0" layoutY="481.0" prefHeight="200.0" prefWidth="850.0">
+      <children>
+         <ListView fx:id="timeList0" prefHeight="200.0" prefWidth="170.0" />
+         <ListView fx:id="timeList1" prefHeight="200.0" prefWidth="170.0" />
+         <ListView fx:id="timeList2" prefHeight="200.0" prefWidth="170.0" />
+         <ListView fx:id="timeList3" prefHeight="200.0" prefWidth="170.0" />
+         <ListView fx:id="timeList4" prefHeight="200.0" prefWidth="170.0" />
+      </children>
+   </HBox>
+   <Text fx:id="user0" layoutX="25.0" layoutY="470.0" strokeType="OUTSIDE" strokeWidth="0.0" text="null" wrappingWidth="170.0">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Text>
+   <Text fx:id="user1" layoutX="195.0" layoutY="470.0" strokeType="OUTSIDE" strokeWidth="0.0" text="null" wrappingWidth="170.0">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Text>
+   <Text fx:id="user2" layoutX="365.0" layoutY="470.0" strokeType="OUTSIDE" strokeWidth="0.0" text="null" wrappingWidth="170.0">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Text>
+   <Text fx:id="user3" layoutX="535.0" layoutY="470.0" strokeType="OUTSIDE" strokeWidth="0.0" text="null" wrappingWidth="170.0">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Text>
+   <Text fx:id="user4" layoutX="705.0" layoutY="470.0" strokeType="OUTSIDE" strokeWidth="0.0" text="null" wrappingWidth="170.0">
+      <font>
+         <Font size="15.0" />
+      </font>
+   </Text>
 </AnchorPane>

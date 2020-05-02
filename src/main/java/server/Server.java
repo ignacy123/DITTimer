@@ -99,14 +99,32 @@ public class Server {
                                 break;
                             }
                             if(request.getType() == ClientRequestType.SENDTIME)
-                            sienna.addTime(request.getTime());
+                            sienna.addTime(user, request.getTime());
                             sr.setTimes(sienna.getTimes());
-                            //outputStream.reset();
-                            //outputStream.writeObject(sr);
                             //for every user in room
                             for(ObjectOutputStream mike: holder.getStreams(sienna)) {
                                 mike.reset();
                                 mike.writeObject(sr);
+                            }
+                            break;
+                        case LEAVEROOM:
+                            Room verona = holder.getRoom(request.getRoom().getID());
+                            //remove user from verona
+                            holder.removeUser(user, verona);
+                            sr=new ServerResponse(ServerResponseType.USERSCHANGED);
+                            sr.setUsers(verona.getUsers());
+                            ServerResponse dt = new ServerResponse(ServerResponseType.TIMESCHANGED);
+                            dt.setTimes(verona.getTimes());
+                            for(ObjectOutputStream marcel: holder.getStreams(verona)) {
+                                System.out.println("sending update to");
+                                marcel.reset();
+                                marcel.writeObject(sr);
+                                marcel.reset();
+                                marcel.writeObject(dt);
+                            }
+                            //if no user in, then delete it
+                            if(verona.getUsers().isEmpty()) {
+                                holder.removeRoom(verona);
                             }
                             break;
                         case SENDCHAT:
@@ -149,7 +167,6 @@ public class Server {
                             }
                             System.out.println(user.getName()+"asked to join "+rome.getHost().getName());
                             user.setName(request.getUserName());
-                            //rome.addUser(user);
                             holder.joinRoom(user, rome, outputStream);
                             sr.setTimes(rome.getTimes());
                             sr.setUsers(rome.getUsers());
@@ -168,8 +185,12 @@ public class Server {
             } catch (EOFException e) {
                 //reached EOF
             } catch(Exception e){
-                e.printStackTrace();
-
+                //user disconnected, he might still be in some room?
+                //user.getRoom().removeUser(user);
+                //if(user.getRoom().getUsers().isEmpty()) {
+                //    holder.removeRoom(user.getRoom());
+                //}
+                //update for other users?
             }
         }
     }

@@ -128,8 +128,6 @@ public class Client extends Application {
         conn.requestRooms();
     }
 
-
-
     @FXML
     public void roomHasBeenCreated(Room room) {
         if(room==null){

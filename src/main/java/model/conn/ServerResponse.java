@@ -5,12 +5,13 @@ import model.enums.ServerResponseType;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ServerResponse implements Serializable {
     private ServerResponseType type;
     private ArrayList<Room> rooms;
     private Room room;
-    private ArrayList<Time> times;
+    private ConcurrentHashMap<User, ArrayList<Time>> times;
     private ArrayList<User> users;
     private String msg;
 
@@ -38,11 +39,11 @@ public class ServerResponse implements Serializable {
         this.room = room;
     }
 
-    public void setTimes(ArrayList<Time> times) {
+    public void setTimes(ConcurrentHashMap<User, ArrayList<Time>> times) {
         this.times = times;
     }
 
-    public ArrayList<Time> getTimes() {
+    public ConcurrentHashMap<User, ArrayList<Time>> getTimes() {
         return times;
     }
 

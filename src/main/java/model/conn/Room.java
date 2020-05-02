@@ -5,10 +5,12 @@ import model.enums.CubeType;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class Room implements Serializable {
     ArrayList<User> users = new ArrayList<>();
-    ArrayList<Time> times = new ArrayList<>();
+    ConcurrentHashMap<User, ArrayList<Time>> times = new ConcurrentHashMap<>();
     User host;
     CubeType type;
     int id;
@@ -18,10 +20,14 @@ public class Room implements Serializable {
     }
     public void setHost(User user){
         host = user;
-        //users.add(host);
     }
-    public void addUser(User guest) {
-        users.add(guest);
+    public void addUser(User user) {
+        users.add(user);
+        times.put(user, new ArrayList<>());
+    }
+    public void removeUser(User user) {
+        users.remove(user);
+        times.remove(user);
     }
     public User getHost() {
         return host;
@@ -45,11 +51,11 @@ public class Room implements Serializable {
     public ArrayList<User> getUsers() {
         return users;
     }
-    public ArrayList<Time> getTimes() {
+    public ConcurrentHashMap<User, ArrayList<Time>> getTimes() {
         return times;
     }
-    public void addTime(Time time) {
-        times.add(time);
+    public void addTime(User user, Time time) {
+        times.get(user).add(time);
     }
 
     public void setPrivate(boolean aPrivate) {

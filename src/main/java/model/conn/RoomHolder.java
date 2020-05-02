@@ -13,12 +13,14 @@ public class RoomHolder {
     ConcurrentMap<Room, String> passwords;
     ConcurrentMap<Integer, Room> rooms;
     ConcurrentMap<Room, ArrayList<ObjectOutputStream>> streamHolder;
+    private ConcurrentMap<User, ObjectOutputStream> users;
     int roomCounter;
     int id;
     public RoomHolder(){
         passwords = new ConcurrentHashMap<>();
         rooms = new ConcurrentHashMap<>();
         streamHolder = new ConcurrentHashMap<>();
+        users=new ConcurrentHashMap<>();
         roomCounter = 0;
         id=0;
     }
@@ -40,9 +42,27 @@ public class RoomHolder {
         }
         return null;
     }
+    public void removeUser(User user, Room room) {
+        streamHolder.get(room).remove(users.get(user));
+        room.removeUser(user);
+        users.remove(user);
+    }
+    public void removeRoom(Room room) {
+        streamHolder.remove(room);
+        //give new roomCounters
+        ConcurrentMap<Integer, Room> newRooms = new ConcurrentHashMap<>();
+        roomCounter=0;
+        for(int i = 1; i <= rooms.size(); i++) {
+            if(rooms.get(i)==room) continue;
+            newRooms.put(++roomCounter, rooms.get(i));
+        }
+        rooms=newRooms;
+        passwords.remove(room);
+    }
     public void joinRoom(User user, Room room, ObjectOutputStream oos) {
         room.addUser(user);
         streamHolder.get(room).add(oos);
+        users.put(user, oos);
     }
     public ArrayList<Room> getAvailableRooms(){
         ArrayList<Room> toReturn = new ArrayList<>();
