@@ -24,10 +24,12 @@ public class Room implements Serializable {
     public void addUser(User user) {
         users.add(user);
         times.put(user, new ArrayList<>());
+        user.setInRoom(true);
     }
     public void removeUser(User user) {
         users.remove(user);
         times.remove(user);
+        user.setInRoom(false);
     }
     public User getHost() {
         return host;

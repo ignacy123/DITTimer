@@ -84,7 +84,6 @@ public class RoomWindow extends Application {
     private Text user4;
     @FXML
     void initialize(){
-        //poiu.setVisible(true);
         chat = FXCollections.observableArrayList();
         msgBox.setItems(chat);
         chat.addAll("test");
@@ -96,7 +95,6 @@ public class RoomWindow extends Application {
     Stage classStage = new Stage();
     ServerService jez;
     Room room;
-    boolean joining = false;
     String name="";
     void setName(String name) {
         this.name=name;
@@ -118,23 +116,17 @@ public class RoomWindow extends Application {
     }
 
     private ListView<Time> getList(int i) {
-        switch(i) {
-            case 0: return timeList0;
-            case 1: return timeList1;
-            case 2: return timeList2;
-            case 3: return timeList3;
-            case 4: return timeList4;
+        try {
+            return (ListView<Time>) getClass().getDeclaredField("timeList"+i).get(this);
         }
+        catch (Exception ignored) { }
         return null;
     }
     private Text getText(int i) {
-        switch(i) {
-            case 0: return user0;
-            case 1: return user1;
-            case 2: return user2;
-            case 3: return user3;
-            case 4: return user4;
+        try {
+            return (Text) getClass().getDeclaredField("user"+i).get(this);
         }
+        catch (Exception ignored) { }
         return null;
     }
     private void hideLists() {

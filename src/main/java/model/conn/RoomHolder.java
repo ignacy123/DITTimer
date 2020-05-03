@@ -46,6 +46,7 @@ public class RoomHolder {
         streamHolder.get(room).remove(users.get(user));
         room.removeUser(user);
         users.remove(user);
+        user.setRoom(null);
     }
     public void removeRoom(Room room) {
         streamHolder.remove(room);
@@ -63,6 +64,7 @@ public class RoomHolder {
         room.addUser(user);
         streamHolder.get(room).add(oos);
         users.put(user, oos);
+        user.setRoom(room);
     }
     public ArrayList<Room> getAvailableRooms(){
         ArrayList<Room> toReturn = new ArrayList<>();

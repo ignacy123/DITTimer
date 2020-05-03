@@ -116,6 +116,7 @@ public class Client extends Application {
     }
     @FXML
     public void createRoom(){
+        System.out.println("xd");
         String password = null;
         if(passwordCheckBox.isSelected()){
             password = String.valueOf(passwordField.getCharacters());

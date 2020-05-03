@@ -186,11 +186,29 @@ public class Server {
                 //reached EOF
             } catch(Exception e){
                 //user disconnected, he might still be in some room?
-                //user.getRoom().removeUser(user);
-                //if(user.getRoom().getUsers().isEmpty()) {
-                //    holder.removeRoom(user.getRoom());
-                //}
-                //update for other users?
+                if(user.getRoom()!=null) {
+                    Room room = user.getRoom();
+                    user.getRoom().removeUser(user);
+                    if(room.getUsers().isEmpty()) {
+                        holder.removeRoom(room);
+                    }
+                    ServerResponse pol = new ServerResponse(ServerResponseType.USERSCHANGED);
+                    pol.setUsers(room.getUsers());
+                    ServerResponse rubio = new ServerResponse(ServerResponseType.TIMESCHANGED);
+                    rubio.setTimes(room.getTimes());
+                    //update for other users?
+                    for(ObjectOutputStream oth: holder.getStreams(room)) {
+                        try {
+                            oth.reset();
+                            oth.writeObject(pol);
+                            oth.writeObject(rubio);
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                        }
+                    }
+                }
+
+
             }
         }
     }
