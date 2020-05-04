@@ -1,16 +1,16 @@
 package model.conn;
 
 import model.enums.CubeType;
+import model.logic.Solve;
 
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 public class Room implements Serializable {
     ArrayList<User> users = new ArrayList<>();
-    ConcurrentHashMap<User, ArrayList<Time>> times = new ConcurrentHashMap<>();
+    ConcurrentHashMap<User, ArrayList<Solve>> solves = new ConcurrentHashMap<>();
     User host;
     CubeType type;
     int id;
@@ -23,12 +23,12 @@ public class Room implements Serializable {
     }
     public void addUser(User user) {
         users.add(user);
-        times.put(user, new ArrayList<>());
+        solves.put(user, new ArrayList<>());
         user.setInRoom(true);
     }
     public void removeUser(User user) {
         users.remove(user);
-        times.remove(user);
+        solves.remove(user);
         user.setInRoom(false);
     }
     public User getHost() {
@@ -53,11 +53,11 @@ public class Room implements Serializable {
     public ArrayList<User> getUsers() {
         return users;
     }
-    public ConcurrentHashMap<User, ArrayList<Time>> getTimes() {
-        return times;
+    public ConcurrentHashMap<User, ArrayList<Solve>> getSolves() {
+        return solves;
     }
-    public void addTime(User user, Time time) {
-        times.get(user).add(time);
+    public void addSolve(User user, Solve solve) {
+        solves.get(user).add(solve);
     }
 
     public void setPrivate(boolean aPrivate) {

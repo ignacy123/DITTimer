@@ -2,11 +2,16 @@ package server;
 
 import model.conn.*;
 import model.enums.ClientRequestType;
+import model.enums.CubeType;
 import model.enums.ServerResponseType;
+import model.logic.Move;
+import model.logic.ScrambleGenerator;
+import model.logic.ScrambleGeneratorImplementation;
 
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Server {
     public static void main(String[] args) {
@@ -31,6 +36,9 @@ public class Server {
         private Socket socket;
         private User user;
         private RoomHolder holder;
+        private ScrambleGenerator gen2 = new ScrambleGeneratorImplementation(CubeType.TWOBYTWO);
+        private ScrambleGenerator gen3 = new ScrambleGeneratorImplementation(CubeType.THREEBYTHREE);
+        private ScrambleGenerator gen4 = new ScrambleGeneratorImplementation(CubeType.FOURBYFOUR);
 
         ClientHandler(Socket socket, int id, RoomHolder holder) {
             this.socket = socket;
@@ -46,32 +54,32 @@ public class Server {
                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
                 while (true) {
                     ClientRequest request = (ClientRequest) inputStream.readObject();
-                    if(request==null){
+                    if (request == null) {
                         continue;
                     }
 
                     ServerResponse sr;
-                    switch (request.getType()){
+                    switch (request.getType()) {
                         case REQUESTROOMS:
                             sr = new ServerResponse(ServerResponseType.SENDINGROOMS);
                             sr.setRooms(holder.getAvailableRooms());
-                            System.out.println("Sending rooms: "+holder.getAvailableRooms().size());
+                            System.out.println("Sending rooms: " + holder.getAvailableRooms().size());
                             outputStream.writeObject(sr);
                             break;
                         case CREATEROOM:
                             System.out.println("Creating");
                             sr = new ServerResponse(ServerResponseType.ROOMHASBEENCREATED);
-                            if(holder.hasFreeRoom()){
+                            if (holder.hasFreeRoom()) {
                                 Room room = holder.requestRoom(user);
                                 sr.setRoom(room);
                                 holder.joinRoom(user, room, outputStream);
                                 user.setName(request.getUserName());
-                                if(room!=null){
+                                if (room != null) {
                                     room.setType(request.getCubeType());
-                                    //room.setHost(user);
+                                    room.setHost(user);
                                     room.setPrivate(request.getPrivate());
                                     System.out.println(request.getPassword());
-                                    if(request.getPassword()!=null){
+                                    if (request.getPassword() != null) {
                                         holder.setPassword(room, request.getPassword());
                                     }
                                 }
@@ -81,7 +89,7 @@ public class Server {
                         case GETUSERS:
                             sr = new ServerResponse(ServerResponseType.USERSCHANGED);
                             Room room = holder.getRoom(request.getRoom().getID());
-                            if(room == null) {
+                            if (room == null) {
                                 System.out.println("Room not found ;c");//same
                                 break;
                             }
@@ -94,15 +102,15 @@ public class Server {
                         case SENDTIME:
                             sr = new ServerResponse(ServerResponseType.TIMESCHANGED);
                             Room sienna = holder.getRoom(request.getRoom().getID());
-                            if(sienna == null) {
+                            if (sienna == null) {
                                 System.out.println("Room not found ;c");//should handle properly
                                 break;
                             }
-                            if(request.getType() == ClientRequestType.SENDTIME)
-                            sienna.addTime(user, request.getTime());
-                            sr.setTimes(sienna.getTimes());
+                            if (request.getType() == ClientRequestType.SENDTIME)
+                                sienna.addSolve(user, request.getSolve());
+                                sr.setSolves(sienna.getSolves());
                             //for every user in room
-                            for(ObjectOutputStream mike: holder.getStreams(sienna)) {
+                            for (ObjectOutputStream mike : holder.getStreams(sienna)) {
                                 mike.reset();
                                 mike.writeObject(sr);
                             }
@@ -111,11 +119,11 @@ public class Server {
                             Room verona = holder.getRoom(request.getRoom().getID());
                             //remove user from verona
                             holder.removeUser(user, verona);
-                            sr=new ServerResponse(ServerResponseType.USERSCHANGED);
+                            sr = new ServerResponse(ServerResponseType.USERSCHANGED);
                             sr.setUsers(verona.getUsers());
                             ServerResponse dt = new ServerResponse(ServerResponseType.TIMESCHANGED);
-                            dt.setTimes(verona.getTimes());
-                            for(ObjectOutputStream marcel: holder.getStreams(verona)) {
+                            dt.setSolves(verona.getSolves());
+                            for (ObjectOutputStream marcel : holder.getStreams(verona)) {
                                 System.out.println("sending update to");
                                 marcel.reset();
                                 marcel.writeObject(sr);
@@ -123,20 +131,30 @@ public class Server {
                                 marcel.writeObject(dt);
                             }
                             //if no user in, then delete it
-                            if(verona.getUsers().isEmpty()) {
+                            if (verona.getUsers().isEmpty()) {
                                 holder.removeRoom(verona);
                             }
                             break;
+                        case REQUESTSCRAMBLE:
+                            room = holder.getRoom(request.getRoom().getID());
+                            sr = new ServerResponse(ServerResponseType.SCRAMBLERECEIVED);
+                            CubeType type = room.getType();
+                            sr.setScramble(nextScramble(type));
+                            for (ObjectOutputStream nycz : holder.getStreams(room)) {
+                                nycz.reset();
+                                nycz.writeObject(sr);
+                            }
+                            break;
                         case SENDCHAT:
-                            String msg = user.getName()+": "+request.getMsg();
+                            String msg = user.getName() + ": " + request.getMsg();
                             Room room1 = holder.getRoom(request.getRoom().getID());
-                            if(room1 == null) {
+                            if (room1 == null) {
                                 System.out.println("Room not found ;c");//should handle properly
                                 break;
                             }
                             sr = new ServerResponse(ServerResponseType.CHATMSG);
                             sr.setMsg(msg);
-                            for(ObjectOutputStream mike: holder.getStreams(room1)) {
+                            for (ObjectOutputStream mike : holder.getStreams(room1)) {
                                 mike.reset();
                                 mike.writeObject(sr);
                             }
@@ -146,37 +164,37 @@ public class Server {
                             System.out.println("join");
                             sr = new ServerResponse(ServerResponseType.ROOMJOINED);
                             Room rome = holder.getRoom(request.getRoom().getID());
-                            if(rome == null) {
+                            if (rome == null) {
                                 System.out.println("Room not found ;c");//should handle properly
                                 break;
                             }
-                            if(!rome.isJoinable()){
+                            if (!rome.isJoinable()) {
                                 sr = new ServerResponse(ServerResponseType.ROOMFULL);
                                 outputStream.writeObject(sr);
                                 break;
                             }
-                            if(rome.isPrivate()){
+                            if (rome.isPrivate()) {
                                 String password = holder.getPassword(rome);
-                                System.out.println("Expected password: "+password);
-                                System.out.println("Actual password: "+request.getPassword());
-                                if(!password.equals(request.getPassword())){
+                                System.out.println("Expected password: " + password);
+                                System.out.println("Actual password: " + request.getPassword());
+                                if (!password.equals(request.getPassword())) {
                                     sr = new ServerResponse(ServerResponseType.WRONGPASSWORD);
                                     outputStream.writeObject(sr);
                                     break;
                                 }
                             }
-                            System.out.println(user.getName()+"asked to join "+rome.getHost().getName());
+                            System.out.println(user.getName() + "asked to join " + rome.getHost().getName());
                             user.setName(request.getUserName());
                             holder.joinRoom(user, rome, outputStream);
-                            sr.setTimes(rome.getTimes());
+                            sr.setSolves(rome.getSolves());
                             sr.setUsers(rome.getUsers());
                             sr.setRoom(rome);
                             outputStream.reset();
                             outputStream.writeObject(sr);
                             ServerResponse ans = new ServerResponse(ServerResponseType.USERSCHANGED);
                             ans.setUsers(rome.getUsers());
-                            for(ObjectOutputStream mike: holder.getStreams(rome)) {
-                                if(mike == outputStream) continue;
+                            for (ObjectOutputStream mike : holder.getStreams(rome)) {
+                                if (mike == outputStream) continue;
                                 mike.reset();
                                 mike.writeObject(ans);
                             }
@@ -184,20 +202,22 @@ public class Server {
                 }
             } catch (EOFException e) {
                 //reached EOF
-            } catch(Exception e){
+            } catch (Exception e) {
+                e.printStackTrace();
+                e.printStackTrace();
                 //user disconnected, he might still be in some room?
-                if(user.getRoom()!=null) {
+                if (user.getRoom() != null) {
                     Room room = user.getRoom();
                     user.getRoom().removeUser(user);
-                    if(room.getUsers().isEmpty()) {
+                    if (room.getUsers().isEmpty()) {
                         holder.removeRoom(room);
                     }
                     ServerResponse pol = new ServerResponse(ServerResponseType.USERSCHANGED);
                     pol.setUsers(room.getUsers());
                     ServerResponse rubio = new ServerResponse(ServerResponseType.TIMESCHANGED);
-                    rubio.setTimes(room.getTimes());
+                    rubio.setSolves(room.getSolves());
                     //update for other users?
-                    for(ObjectOutputStream oth: holder.getStreams(room)) {
+                    for (ObjectOutputStream oth : holder.getStreams(room)) {
                         try {
                             oth.reset();
                             oth.writeObject(pol);
@@ -210,6 +230,18 @@ public class Server {
 
 
             }
+        }
+
+        ArrayList<Move> nextScramble(CubeType type) {
+            switch (type) {
+                case TWOBYTWO:
+                    return gen2.generate();
+                case THREEBYTHREE:
+                    return gen3.generate();
+                case FOURBYFOUR:
+                    return gen4.generate();
+            }
+            return null;
         }
     }
 }

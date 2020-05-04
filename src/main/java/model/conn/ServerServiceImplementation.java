@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import model.enums.ClientRequestType;
 import model.enums.CubeType;
 import model.enums.ServerResponseType;
+import model.logic.Solve;
 import view.test.Client;
 import view.test.RoomWindow;
 
@@ -94,6 +95,18 @@ public class ServerServiceImplementation implements ServerService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void requestScramble(Room room) {
+        ClientRequest cr = new ClientRequest(ClientRequestType.REQUESTSCRAMBLE);
+        cr.setRoom(room);
+        try {
+            outputStream.writeObject(cr);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void getTimes(Room room) {
         try {
@@ -104,9 +117,12 @@ public class ServerServiceImplementation implements ServerService {
     }
 
     @Override
-    public void sendTime(Room room, Time time) {
+    public void sendTime(Room room, Solve solve) {
         try {
-            outputStream.writeObject(new ClientRequest(ClientRequestType.SENDTIME, room, time));
+            ClientRequest cr = new ClientRequest(ClientRequestType.SENDTIME);
+            cr.setSolve(solve);
+            cr.setRoom(room);
+            outputStream.writeObject(cr);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -177,7 +193,7 @@ public class ServerServiceImplementation implements ServerService {
                             if(window == null) break;
                             System.out.println("TImes upd");
                             Platform.runLater(()-> {
-                                window.renderTimes(sr.getTimes());
+                                window.renderTimes(sr.getSolves());
                             });
                             break;
                         case ROOMJOINED:
@@ -199,6 +215,22 @@ public class ServerServiceImplementation implements ServerService {
                             Platform.runLater(()-> {
                                 window.getMessage(sr.getMsg());
                             });
+                            break;
+                        case SCRAMBLERECEIVED:
+                            if(window==null) break;
+                            System.out.println("Scramble received, ay");
+                            Platform.runLater(()-> {
+                                window.getScramble(sr.getScramble());
+                            });
+                            break;
+                        case HOSTGRANTED:
+                            if(window==null) break;
+                            System.out.println("I'm da host");
+                            Platform.runLater(() -> {
+                                window.getHostPermissions();
+                            });
+                            break;
+
 
                     }
                 } catch (EOFException e) {

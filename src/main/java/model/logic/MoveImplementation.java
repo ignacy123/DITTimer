@@ -5,7 +5,9 @@ import model.enums.Axis;
 import model.enums.Direction;
 import model.enums.Face;
 
-public class MoveImplementation implements Move {
+import java.io.Serializable;
+
+public class MoveImplementation implements Move, Serializable {
     private Axis axis;
     private Face face;
     private Direction direction;

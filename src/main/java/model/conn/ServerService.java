@@ -2,21 +2,23 @@ package model.conn;
 
 
 import model.enums.CubeType;
+import model.logic.Solve;
 import view.test.RoomWindow;
 
 import java.sql.Time;
 import java.util.ArrayList;
 
 public interface ServerService {
-    public void start();
-    public ArrayList<Room> requestRooms();
-    public void createRoom(CubeType cubeType, String name, boolean isPrivate, String password);
-    public void joinRoom(Room room, String name, String password);
-    public void setWindow(RoomWindow wind);
+    void start();
+    ArrayList<Room> requestRooms();
+    void createRoom(CubeType cubeType, String name, boolean isPrivate, String password);
+    void joinRoom(Room room, String name, String password);
+    void setWindow(RoomWindow wind);
     void getPlayers(Room room);
+    void requestScramble(Room room);
 
     void getTimes(Room room);
-    void sendTime(Room room, Time time);
+    void sendTime(Room room, Solve solve);
     void sendChat(Room room, String msg);
     void leaveRoom(Room room);
 }

@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -140,6 +139,7 @@ public class Client extends Application {
         conn.setWindow(roomWindow);
         try {
             roomWindow.start(roomWindow.classStage);
+            roomWindow.getHostPermissions();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -2,6 +2,7 @@ package model.conn;
 
 import model.enums.ClientRequestType;
 import model.enums.CubeType;
+import model.logic.Solve;
 
 import java.io.Serializable;
 import java.sql.Time;
@@ -11,21 +12,16 @@ public class ClientRequest implements Serializable {
     private CubeType cubeType;
     private String userName;
     private Room room;
-    private Time time;
     private boolean isPrivate;
     private String password;
     private String msg;
+    private Solve solve;
     public ClientRequest(ClientRequestType type){
         this.type = type;
     }
     public ClientRequest(ClientRequestType type, Room room){
         this.type = type;
         this.room = room;
-    }
-    public ClientRequest(ClientRequestType type, Room room, Time time){
-        this.type = type;
-        this.room = room;
-        this.time = time;
     }
     public ClientRequestType getType() {
         return type;
@@ -49,9 +45,6 @@ public class ClientRequest implements Serializable {
 
     public Room getRoom() {
         return room;
-    }
-    public Time getTime() {
-        return time;
     }
 
     public void setPrivate(boolean aPrivate) {
@@ -77,5 +70,13 @@ public class ClientRequest implements Serializable {
 
     public void setRoom(Room room) {
         this.room = room;
+    }
+
+    public Solve getSolve() {
+        return solve;
+    }
+
+    public void setSolve(Solve solve) {
+        this.solve = solve;
     }
 }

@@ -1,6 +1,8 @@
 package model.conn;
 
 import model.enums.ServerResponseType;
+import model.logic.Move;
+import model.logic.Solve;
 
 import java.io.Serializable;
 import java.sql.Time;
@@ -11,9 +13,10 @@ public class ServerResponse implements Serializable {
     private ServerResponseType type;
     private ArrayList<Room> rooms;
     private Room room;
-    private ConcurrentHashMap<User, ArrayList<Time>> times;
+    private ConcurrentHashMap<User, ArrayList<Solve>> solves;
     private ArrayList<User> users;
     private String msg;
+    private ArrayList<Move> scramble;
 
     public ServerResponse(ServerResponseType type) {
         this.type = type;
@@ -39,12 +42,12 @@ public class ServerResponse implements Serializable {
         this.room = room;
     }
 
-    public void setTimes(ConcurrentHashMap<User, ArrayList<Time>> times) {
-        this.times = times;
+    public void setSolves(ConcurrentHashMap<User, ArrayList<Solve>> solves) {
+        this.solves = solves;
     }
 
-    public ConcurrentHashMap<User, ArrayList<Time>> getTimes() {
-        return times;
+    public ConcurrentHashMap<User, ArrayList<Solve>> getSolves() {
+        return solves;
     }
 
     public void setUsers(ArrayList<User> users) {
@@ -61,6 +64,15 @@ public class ServerResponse implements Serializable {
 
     public String getMsg() {
         return msg;
+    }
+
+
+    public ArrayList<Move> getScramble() {
+        return scramble;
+    }
+
+    public void setScramble(ArrayList<Move> scramble) {
+        this.scramble = scramble;
     }
 }
 

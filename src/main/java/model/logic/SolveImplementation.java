@@ -2,11 +2,13 @@ package model.logic;
 
 import model.enums.CubeType;
 import model.enums.State;
+
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
-public class SolveImplementation implements Solve {
+public class SolveImplementation implements Solve, Serializable {
     Date dateOfSolution;
     Timestamp timeOfSolution;
     State whatState;
