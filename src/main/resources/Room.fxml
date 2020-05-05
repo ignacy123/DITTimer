@@ -59,4 +59,5 @@
       </font></Text>
    <Button fx:id="nextScramble" layoutX="80.0" layoutY="464.0" mnemonicParsing="false" onAction="#requestScramble" text="Next Scramble" />
    <ChoiceBox fx:id="stateChoiceBox" layoutX="643.0" layoutY="506.0" prefWidth="150.0" />
+   <Button fx:id="leaveButton" layoutX="88.0" layoutY="526.0" mnemonicParsing="false" onAction="#leaveRoom" text="Leave Room" />
 </AnchorPane>

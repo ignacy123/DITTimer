@@ -104,6 +104,8 @@ public class RoomWindow extends Application {
     private Button nextScramble;
     @FXML
     ChoiceBox stateChoiceBox;
+    @FXML
+    Button leaveButton;
 
     Stage classStage = new Stage();
     ServerService jez;
@@ -196,7 +198,7 @@ public class RoomWindow extends Application {
                     startCounting();
                     t.consume();
                 }
-                if(t.getCode() == KeyCode.ENTER){
+                if (t.getCode() == KeyCode.ENTER) {
                     t.consume();
                 }
             }
@@ -250,7 +252,7 @@ public class RoomWindow extends Application {
 
     @FXML
     void sendTime() {
-        if(hasBeenSent){
+        if (hasBeenSent) {
             return;
         }
         currentSolve.setState((State) stateChoiceBox.getSelectionModel().getSelectedItem());
@@ -321,6 +323,7 @@ public class RoomWindow extends Application {
         stage.setOnCloseRequest(windowEvent -> {
             System.out.println("close");
             jez.leaveRoom(room);
+            jez.close();
         });
         stage.show();
     }
@@ -364,6 +367,20 @@ public class RoomWindow extends Application {
     @FXML
     public void getHostPermissions() {
         nextScramble.setVisible(true);
+    }
+
+    @FXML
+    public void leaveRoom(){
+        System.out.println("close");
+        jez.leaveRoom(room);
+        Client client = new Client();
+        Stage stage = (Stage) Scramble.getScene().getWindow();
+        stage.close();
+        try {
+            client.start(classStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

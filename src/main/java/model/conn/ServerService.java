@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public interface ServerService {
     void start();
+    void close();
     ArrayList<Room> requestRooms();
     void createRoom(CubeType cubeType, String name, boolean isPrivate, String password);
     void joinRoom(Room room, String name, String password);

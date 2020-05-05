@@ -16,18 +16,22 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ServerServiceImplementation implements ServerService {
     ObjectInputStream inputStream;
     ObjectOutputStream outputStream;
     private Client client;
     private ServerResponseHandler responseHandler;
+    Socket socket;
+    Random random;
     public ServerServiceImplementation(Client client){
         this.client = client;
+        random = new Random();
     }
     public void start(){
         try {
-            Socket socket = new Socket("localhost", 8000);
+            socket = new Socket("localhost", 8000);
             inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             responseHandler = new ServerResponseHandler(inputStream, client);
@@ -36,6 +40,18 @@ public class ServerServiceImplementation implements ServerService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void close() {
+        try {
+            inputStream.close();
+            outputStream.close();
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public ArrayList<Room> requestRooms() {
         ArrayList<Room> toReturn = null;
@@ -53,7 +69,7 @@ public class ServerServiceImplementation implements ServerService {
             ClientRequest cr = new ClientRequest(ClientRequestType.CREATEROOM);
             cr.setCubeType(type);
             if(name.equals("")){
-                name = "nobody";
+                name = "anonymous"+random.nextInt(100000);
             }
             cr.setUserName(name);
             cr.setPrivate(isPrivate);
@@ -69,7 +85,7 @@ public class ServerServiceImplementation implements ServerService {
         ClientRequest cr = new ClientRequest(ClientRequestType.JOINROOM, room);
         System.out.println("sending"+name);
         if(name.equals("")){
-            name = "nobody";
+            name = "anonymous"+random.nextInt(100000);
         }
         cr.setUserName(name);
         cr.setPassword(password);

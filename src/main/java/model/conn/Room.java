@@ -36,6 +36,9 @@ public class Room implements Serializable {
     }
 
     public boolean isJoinable(){
+        if(users.size()>=5){
+            return false;
+        }
         return true;
     }
 

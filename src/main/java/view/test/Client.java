@@ -42,6 +42,8 @@ public class Client extends Application {
     private ObservableList<Room> rooms;
     ServerService conn;
     private RoomWindow roomWindow;
+
+
     @FXML
     void initialize(){
         passwordCheckBox.selectedProperty().addListener(observable -> {
@@ -68,9 +70,16 @@ public class Client extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("client.fxml"));
+        loader.setController(this);
         Pane pane = loader.load();
         Scene scene = new Scene(pane);
         stage.setScene(scene);
+        stage.setOnCloseRequest((windowEvent) -> {
+            System.out.println("Closing client");
+            if(conn!=null){
+                conn.close();
+            }
+        });
         stage.show();
     }
     @FXML
@@ -85,6 +94,9 @@ public class Client extends Application {
 
         Room room = (Room)roomsListView.getSelectionModel().getSelectedItem();
         String password = null;
+        if(room==null){
+            return;
+        }
         if(room.isPrivate()){
             Dialog<String> passwordDialog = new Dialog<>();
             passwordDialog.setTitle("Password");
@@ -138,6 +150,8 @@ public class Client extends Application {
         RoomWindow roomWindow = new RoomWindow(conn, room);
         conn.setWindow(roomWindow);
         try {
+            Stage stage = (Stage) roomsListView.getScene().getWindow();
+            stage.close();
             roomWindow.start(roomWindow.classStage);
             roomWindow.getHostPermissions();
         } catch (Exception e) {
@@ -153,6 +167,8 @@ public class Client extends Application {
             conn.setWindow(roomWindow);
             roomWindow.setName(String.valueOf(nameField.getCharacters()));
             try {
+                Stage stage = (Stage) roomsListView.getScene().getWindow();
+                stage.close();
                 roomWindow.start(roomWindow.classStage);
             } catch (Exception e) {
                 e.printStackTrace();

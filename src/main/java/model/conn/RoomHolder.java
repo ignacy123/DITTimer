@@ -1,9 +1,5 @@
 package model.conn;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import model.logic.Solve;
-
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Map;
