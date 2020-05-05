@@ -2,6 +2,7 @@ package model.conn;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.logic.Solve;
 
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class RoomHolder {
     private ConcurrentMap<User, ObjectOutputStream> users;
     int roomCounter;
     int id;
+    private int scrambleCounter;
     public RoomHolder(){
         passwords = new ConcurrentHashMap<>();
         rooms = new ConcurrentHashMap<>();
@@ -83,6 +85,25 @@ public class RoomHolder {
             if(room.getID() == id) return room;
         }
         return null;
+    }
+
+    public boolean isRoomReady(Room room){
+        int amountOfUsers = room.getUsers().size();
+        int amountWithZero = 0;
+        for(User user: room.getUsers()){
+            if(room.getSolves().get(user).size()==0){
+                amountWithZero++;
+            }
+        }
+        if(amountOfUsers==amountWithZero){
+            return false;
+        }
+        for(User user: room.getUsers()){
+            if(!user.isReadyForNext()){
+                return false;
+            }
+        }
+        return true;
     }
     public void setPassword(Room room, String password){
         passwords.put(room, password);

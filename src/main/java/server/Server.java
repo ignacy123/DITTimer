@@ -114,6 +114,20 @@ public class Server {
                                 mike.reset();
                                 mike.writeObject(sr);
                             }
+                            user.setReadyForNext(true);
+                            if(holder.isRoomReady(sienna)){
+                                room = holder.getRoom(request.getRoom().getID());
+                                sr = new ServerResponse(ServerResponseType.SCRAMBLERECEIVED);
+                                CubeType type = room.getType();
+                                sr.setScramble(nextScramble(type));
+                                for (ObjectOutputStream nycz : holder.getStreams(room)) {
+                                    nycz.reset();
+                                    nycz.writeObject(sr);
+                                }
+                                for(User user: room.getUsers()){
+                                    user.setReadyForNext(false);
+                                }
+                            }
                             break;
                         case LEAVEROOM:
                             Room verona = holder.getRoom(request.getRoom().getID());
@@ -143,6 +157,9 @@ public class Server {
                             for (ObjectOutputStream nycz : holder.getStreams(room)) {
                                 nycz.reset();
                                 nycz.writeObject(sr);
+                            }
+                            for(User user: room.getUsers()){
+                                user.setReadyForNext(false);
                             }
                             break;
                         case SENDCHAT:

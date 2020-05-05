@@ -115,6 +115,7 @@ public class RoomWindow extends Application {
     int mins = 0, secs = 0, millis = 0;
     Timeline timeline;
     Solve currentSolve;
+    boolean hasBeenSent = false;
 
     void setName(String name) {
         this.name = name;
@@ -160,21 +161,48 @@ public class RoomWindow extends Application {
 
         EventHandler handler = new EventHandler<InputEvent>() {
             public void handle(InputEvent event) {
-                stopCounting();
+                if (!msgField.isFocused()) {
+                    stopCounting();
+                }
                 event.consume();
             }
 
         };
         EventHandler handler2 = new EventHandler<InputEvent>() {
             public void handle(InputEvent event) {
-                startCounting();
+                if (!msgField.isFocused()) {
+                    startCounting();
+                }
                 event.consume();
             }
 
         };
         mainPane.setOnKeyPressed(handler);
         mainPane.setOnKeyReleased(handler2);
+        mainPane.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent t) {
+                if (t.getCode() == KeyCode.SPACE) {
+                    stopCounting();
+                    t.consume();
+                }
+
+            }
+        });
+        mainPane.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent t) {
+                if (t.getCode() == KeyCode.SPACE) {
+                    startCounting();
+                    t.consume();
+                }
+                if(t.getCode() == KeyCode.ENTER){
+                    t.consume();
+                }
+            }
+        });
         stateChoiceBox.setItems(FXCollections.observableArrayList(State.CORRECT, State.TWOSECPENALTY, State.DNF));
+        stateChoiceBox.setValue(State.CORRECT);
     }
 
     void startCounting() {
@@ -203,6 +231,7 @@ public class RoomWindow extends Application {
         currentSolve = new SolveImplementation(new Date(), value, State.CORRECT, room.getType());
         currentSolve.setScramble(Scramble.getText());
         canRun = false;
+        hasBeenSent = false;
     }
 
     void change(Text text) {
@@ -220,9 +249,13 @@ public class RoomWindow extends Application {
     }
 
     @FXML
-    void sendTime(){
+    void sendTime() {
+        if(hasBeenSent){
+            return;
+        }
         currentSolve.setState((State) stateChoiceBox.getSelectionModel().getSelectedItem());
         jez.sendTime(room, currentSolve);
+        hasBeenSent = true;
     }
 
     public RoomWindow(ServerService conn, Room room) {
@@ -302,6 +335,8 @@ public class RoomWindow extends Application {
             System.out.println("sending message: " + msg);
             jez.sendChat(room, msg);
             msgField.clear();
+            Scramble.requestFocus();
+            event.consume();
         }
     }
 

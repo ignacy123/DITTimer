@@ -7,6 +7,7 @@ public class User implements Serializable {
     private boolean inRoom = false;
     private Room room;
     private String name;
+    private boolean readyForNext = true;
     public User(int id){
         this.id = id;
     }
@@ -38,4 +39,11 @@ public class User implements Serializable {
         this.name = name;
     }
 
+    public void setReadyForNext(boolean readyForNext) {
+        this.readyForNext = readyForNext;
+    }
+
+    public boolean isReadyForNext() {
+        return readyForNext;
+    }
 }
