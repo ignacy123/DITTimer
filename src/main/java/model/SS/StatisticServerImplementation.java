@@ -6,12 +6,16 @@ import model.enums.AVG;
 import model.enums.CubeType;
 import model.enums.State;
 import model.logic.Solve;
+import model.logic.SolveImplementation;
 import model.wrappers.AVGwrapper;
 import model.wrappers.ObservableWrapper;
 
+import java.awt.*;
+import java.io.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Scanner;
 
 public class StatisticServerImplementation implements StatisticServer {
     DatabaseServiceImplementation myDataBase;
@@ -214,7 +218,6 @@ public class StatisticServerImplementation implements StatisticServer {
         long best = 999999999;
         long worst=0;
         if (temp.size() < IntAVG) {
-            System.out.println(IntAVG);
             throw new NotEnoughTimes();
         }
         else {
@@ -237,6 +240,72 @@ public class StatisticServerImplementation implements StatisticServer {
                 return new Timestamp(value / (IntAVG));
             }
         }
+    }
+
+    @Override
+    public void importFromFile(File selectedFile) {
+        Scanner scanner = null;
+        try{
+            scanner = new Scanner(selectedFile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        while (scanner.hasNextLine()) {
+           parseLineToSolve(scanner.nextLine());
+        }
+        scanner.close();
+    }
+
+    @Override
+    public void parseLineToSolve(String line) {
+        String[] array=line.split(":");
+        Solve solve=new SolveImplementation();
+        solve.setTime(new Timestamp(Long.parseLong(array[0])));
+        if(array[1].equals("DNF")) solve.setState(State.DNF);
+        else if(array[1].equals("CORRECT")) solve.setState(State.CORRECT);
+        else solve.setState(State.TWOSECPENALTY);
+        if(array[2].equals("THREEBYTHREE")) solve.setType(CubeType.THREEBYTHREE);
+        else if(array[2].equals("TWOBYTWO")) solve.setType(CubeType.TWOBYTWO);
+        else solve.setType(CubeType.FOURBYFOUR);
+        solve.setComment(array[3]);
+        solve.setScramble(array[4]);
+        insertSolve(solve);
+    }
+
+    @Override
+    public String parseSolveToLine(Solve solve) {
+        String str="";
+       // if(solve.getDate() != null)  str+=solve.getDate() + ":";
+       // else str += ":";
+        if(solve.getTime() != null)  str+=Long.toString(solve.getTime().getTime()) + ":"; else str += ":";
+        if(solve.getState() != null)  str+=solve.getState() + ":"; else str += ":";
+        if(solve.getType() != null)  str+=solve.getType() + ":"; else str += ":";
+        if(solve.getComment() != null)  str+=solve.getComment() + ":"; else str += ":";
+        if(solve.getScramble() != null)  str+=solve.getScramble() + ":";
+        str += ":";
+        return str;
+    }
+
+    @Override
+    public void exportToFile(File selectedFile) throws IOException {
+        FileWriter myWriter=null;
+        try {
+            myWriter = new FileWriter(selectedFile);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            for (Solve s : TwoByTwo) myWriter.append(parseSolveToLine(s) + '\n');
+            for (Solve s : TreeByTree) myWriter.append(parseSolveToLine(s)+'\n');
+            for (Solve s : FourByFour) myWriter.append(parseSolveToLine(s)+'\n');
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+       // for (Solve s : TreeByTree) System.out.println(parseSolveToLine(s)+'\n');
+        Writer writer=new BufferedWriter(myWriter);;
+        writer.close();
     }
 
     @Override

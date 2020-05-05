@@ -6,6 +6,8 @@ import model.enums.State;
 import model.logic.Solve;
 import model.wrappers.AVGwrapper;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -28,5 +30,8 @@ public interface StatisticServer {
     void delete(CubeType type);  // cleans everything including db
     void addComment(CubeType WhatModel, String string);
     Timestamp CreateAverage(AVG WhatAverage, CubeType WhatModel) throws StatisticServerImplementation.DNF, StatisticServerImplementation.NotEnoughTimes;
-
+    void importFromFile(File selectedFile); // import Solves from file
+    void parseLineToSolve(String line);
+    String parseSolveToLine(Solve solve);
+    void exportToFile(File selectedFile) throws IOException;
 }

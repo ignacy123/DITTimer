@@ -18,7 +18,6 @@ public class SolveImplementation implements Solve, Serializable {
     int ID;
     public SolveImplementation(){
         dateOfSolution=new Date();
-        timeOfSolution=null;
         whatState=State.NONE;
         whatCube=CubeType.THREEBYTHREE;
         scramble="none";

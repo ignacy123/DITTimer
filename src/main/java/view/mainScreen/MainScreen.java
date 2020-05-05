@@ -18,6 +18,7 @@ import model.SS.StatisticServer;
 import model.enums.CubeType;
 import model.enums.Running;
 import model.wrappers.ObservableWrapper;
+import view.ExportImport.ExportImportController;
 import view.Metronome.MetronomeController;
 import view.StateSetter.StateSetterController;
 import view.TimeList.TimeListController;
@@ -40,10 +41,10 @@ public class MainScreen extends Stage {
     Pane pane4;
     @FXML
     Pane pane5;
-
     @FXML
     Pane pane6;
-
+    @FXML
+    Pane pane7;
     private Text scramble;
 
     DrawScramble drawer;
@@ -53,6 +54,7 @@ public class MainScreen extends Stage {
     FXMLLoader timerLoader = null;
     FXMLLoader metronomeLoader=null;
     FXMLLoader StateSetterLoader=null;
+    FXMLLoader FileLoader=null;
     @FXML
     void initialize() throws IOException {
         listLoader = new FXMLLoader(getClass().getClassLoader().getResource("TimeList.fxml"));
@@ -76,6 +78,9 @@ public class MainScreen extends Stage {
         StateSetterLoader=new FXMLLoader(getClass().getClassLoader().getResource("StateSetter.fxml"));
         Node node5 = StateSetterLoader.load();
         pane5.getChildren().setAll(node5);
+        FileLoader=new FXMLLoader(getClass().getClassLoader().getResource("FileService.fxml"));
+        Node node7 = FileLoader.load();
+        pane7.getChildren().setAll(node7);
 
         drawer=new DrawScramble();
 
@@ -103,6 +108,8 @@ public class MainScreen extends Stage {
         StateSetterController controllerSet = StateSetterLoader.getController();
         controllerSet.setSSAndOw(ss,ow);
         controllerSet.init();
+        ExportImportController FileController = FileLoader.getController();
+        FileController.setSSAndOw(ss,ow);
         drawer.setOw(ow);
         ow.getRunning().addListener(new ListChangeListener<Running>() {
             @Override
@@ -113,6 +120,7 @@ public class MainScreen extends Stage {
                     pane3.setVisible(false);
                     pane5.setVisible(false);
                     pane6.setVisible(false);
+                    pane7.setVisible(false);
                     scramble.setVisible(false);
 
                 }else{
@@ -121,6 +129,7 @@ public class MainScreen extends Stage {
                     pane3.setVisible(true);
                     pane5.setVisible(true);
                     pane6.setVisible(true);
+                    pane7.setVisible(true);
                     scramble.setVisible(true);
                 }
             }
