@@ -6,15 +6,15 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="51.0" prefWidth="488.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.StateSetter.StateSetterController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="51.0" prefWidth="485.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.StateSetter.StateSetterController">
    <children>
       <GridPane prefHeight="50.0" prefWidth="488.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="132.0" minWidth="10.0" prefWidth="130.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="91.0" minWidth="10.0" prefWidth="66.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="132.0" minWidth="10.0" prefWidth="119.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="91.0" minWidth="10.0" prefWidth="75.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
@@ -23,7 +23,7 @@
             <Button fx:id="DNFbutton" mnemonicParsing="false" onAction="#MakeLastDNF" prefHeight="100.0" prefWidth="125.0" text="DNF" GridPane.columnIndex="2" />
             <Button fx:id="DELETEbutton" mnemonicParsing="false" onAction="#MakeLastDelete" prefHeight="100.0" prefWidth="138.0" text="DELETE" GridPane.columnIndex="1" />
             <Button fx:id="TwoSecbutton" mnemonicParsing="false" onAction="#MakeLastTwoSec" prefHeight="100.0" prefWidth="127.0" text="+2" />
-            <Button fx:id="CorrectButton" mnemonicParsing="false" onAction="#Correction" prefHeight="60.0" prefWidth="91.0" text="OK" GridPane.columnIndex="4" />
+            <Button fx:id="CorrectButton" mnemonicParsing="false" onAction="#Correction" prefHeight="50.0" prefWidth="101.0" text="OK" GridPane.columnIndex="4" />
             <Button fx:id="CommentButton" mnemonicParsing="false" onAction="#AddComment" prefHeight="50.0" prefWidth="144.0" text="Add Comment" GridPane.columnIndex="3" />
          </children>
       </GridPane>

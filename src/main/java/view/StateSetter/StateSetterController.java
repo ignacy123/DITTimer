@@ -30,7 +30,6 @@ public class StateSetterController {
     Button CorrectButton;
     @FXML
     Button TwoSecbutton;
-
     @FXML
     Button DELETEbutton;
     @FXML
