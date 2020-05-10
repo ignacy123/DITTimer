@@ -7,6 +7,7 @@ import model.enums.Face;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class ScrambleGeneratorImplementation implements ScrambleGenerator {
     private CubeType cubeType;
@@ -30,6 +31,78 @@ public class ScrambleGeneratorImplementation implements ScrambleGenerator {
         }
         sb.deleteCharAt(sb.lastIndexOf(" "));
         return sb.toString();
+    }
+
+    @Override
+    public ArrayList<Move> fromString(String scramble) {
+        Scanner in = new Scanner(scramble);
+        ArrayList<Move> toRet = new ArrayList<>();
+        while(in.hasNext()){
+            String next = in.next();
+            int width = 0;
+            Direction direction;
+            Face face = null;
+            Move move;
+            if(!Character.isLetter(next.charAt(0))){
+                width = next.charAt(0)-'0';
+                next = next.substring(1);
+            }else{
+                width = 1;
+            }
+            switch(Character.toLowerCase(next.charAt(0))){
+                case 'f':
+                    face = Face.F;
+                    break;
+                case 'b':
+                    face = Face.B;
+                    break;
+                case 'u':
+                    face = Face.U;
+                    break;
+                case 'd':
+                    face = Face.D;
+                    break;
+                case 'r':
+                    face = Face.R;
+                    break;
+                case 'l':
+                    face = Face.L;
+                    break;
+
+            }
+            next = next.substring(1);
+            if(next.length()==0){
+                direction = Direction.CLOCKWISE;
+                move = new MoveImplementation(face, direction, width);
+                toRet.add(move);
+                continue;
+            }
+            if(next.charAt(0)=='w'){
+                next = next.substring(1);
+                if(width==1){
+                    width=2;
+                }
+            }
+            if(next.length()==0){
+                direction = Direction.CLOCKWISE;
+                move = new MoveImplementation(face, direction, width);
+                toRet.add(move);
+                continue;
+            }
+            if(next.substring(0, 1).equals("'")){
+                direction = Direction.ANTICLOCKWISE;
+                move = new MoveImplementation(face, direction, width);
+                toRet.add(move);
+                continue;
+            }
+            if(next.charAt(0)=='2'){
+                direction = Direction.DOUBLE;
+                move = new MoveImplementation(face, direction, width);
+                toRet.add(move);
+                continue;
+            }
+        }
+        return toRet;
     }
 
     public ArrayList<Move> generate() {

@@ -7,5 +7,6 @@ import java.util.ArrayList;
 public interface ScrambleGenerator {
     ArrayList<Move> generate();
     void setCubeType(CubeType cubeType);
-    String  scrambleToString(ArrayList<Move> list);
+    String scrambleToString(ArrayList<Move> list);
+    ArrayList<Move> fromString(String scramble);
 }

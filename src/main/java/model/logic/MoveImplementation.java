@@ -6,6 +6,7 @@ import model.enums.Direction;
 import model.enums.Face;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class MoveImplementation implements Move, Serializable {
     private Axis axis;
@@ -93,5 +94,21 @@ public class MoveImplementation implements Move, Serializable {
         }
 
         return string;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MoveImplementation that = (MoveImplementation) o;
+        return width == that.width &&
+                axis == that.axis &&
+                face == that.face &&
+                direction == that.direction;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(axis, face, direction, width, isTwoByTwo);
     }
 }
