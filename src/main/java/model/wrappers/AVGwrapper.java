@@ -20,6 +20,10 @@ public class AVGwrapper {
         isDNF=true;
     }
 
+    public void setAverage(Timestamp average) {
+        this.average = average;
+    }
+
     public int getID(){
         return ID;
     }
@@ -45,6 +49,9 @@ public class AVGwrapper {
         average = avg;
         isDNF = temp;
         isNotEnoughTimes=false;
+    }
+    public AVGwrapper(){
+
     }
     public String toString(){
         String toStr = "";

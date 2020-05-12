@@ -5,40 +5,34 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import javafx.util.Duration;
-import model.conn.ClientRequest;
 import model.conn.Room;
 import model.conn.ServerService;
 import model.conn.User;
-import model.enums.ClientRequestType;
 import model.enums.CubeType;
 import model.enums.State;
 import model.logic.*;
 import model.wrappers.AVGwrapper;
-import model.wrappers.ObservableWrapper;
 import view.TimeList.AvgConverter;
 import view.TimeList.SolveConverter;
 
-import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -106,6 +100,26 @@ public class RoomWindow extends Application {
     ChoiceBox stateChoiceBox;
     @FXML
     Button leaveButton;
+    @FXML
+    Text ao5Text0;
+    @FXML
+    Text ao5Text1;
+    @FXML
+    Text ao5Text2;
+    @FXML
+    Text ao5Text3;
+    @FXML
+    Text ao5Text4;
+    @FXML
+    Text ao12Text0;
+    @FXML
+    Text ao12Text1;
+    @FXML
+    Text ao12Text2;
+    @FXML
+    Text ao12Text3;
+    @FXML
+    Text ao12Text4;
 
     Stage classStage = new Stage();
     ServerService jez;
@@ -118,6 +132,8 @@ public class RoomWindow extends Application {
     Timeline timeline;
     Solve currentSolve;
     boolean hasBeenSent = false;
+    ArrayList<Text> avgs5;
+    ArrayList<Text> avgs12;
 
     void setName(String name) {
         this.name = name;
@@ -205,6 +221,18 @@ public class RoomWindow extends Application {
         });
         stateChoiceBox.setItems(FXCollections.observableArrayList(State.CORRECT, State.TWOSECPENALTY, State.DNF));
         stateChoiceBox.setValue(State.CORRECT);
+        avgs5 = new ArrayList<>();
+        avgs5.add(ao5Text0);
+        avgs5.add(ao5Text1);
+        avgs5.add(ao5Text2);
+        avgs5.add(ao5Text3);
+        avgs5.add(ao5Text4);
+        avgs12 = new ArrayList<>();
+        avgs12.add(ao12Text0);
+        avgs12.add(ao12Text1);
+        avgs12.add(ao12Text2);
+        avgs12.add(ao12Text3);
+        avgs12.add(ao12Text4);
     }
 
     void startCounting() {
@@ -291,23 +319,153 @@ public class RoomWindow extends Application {
 
     private void hideLists() {
         for (int i = 0; i < 5; i++) {
-            getList(i).setVisible(false);
+            //getList(i).setVisible(false);
             getText(i).setVisible(false);
+            avgs5.get(i).setVisible(false);
+            avgs12.get(i).setVisible(false);
         }
     }
 
     public void renderTimes(ConcurrentHashMap<User, ArrayList<Solve>> merlin) {
         hideLists();
+        noBestTime();
         ArrayList<User> userList = new ArrayList<>(merlin.keySet());
         Collections.sort(userList, Comparator.comparing(User::getName));
+        AVGwrapper bestao5 = null;
+        AVGwrapper bestao12 = null;
+        int bestao5Ind = 0;
+        int bestao12Ind = 0;
         int i = 0;
+        AvgConverter converter = new AvgConverter();
         for (User user : userList) {
             getList(i).getItems().setAll(merlin.get(user));
             getList(i).setVisible(true);
+            getList(i).scrollTo(Integer.MAX_VALUE);
             getText(i).setText(user.getName());
             getText(i).setVisible(true);
+            avgs5.get(i).setVisible(true);
+            avgs12.get(i).setVisible(true);
+            AVGwrapper avg = getAvg(merlin.get(user), 5);
+            AVGwrapper avg2 = getAvg(merlin.get(user), 12);
+            avgs5.get(i).setText(converter.toString(avg));
+            avgs12.get(i).setText(converter.toString(avg2));
+            if(!avg.isDNF() && !avg.isNET()){
+                if(bestao5==null){
+                    bestao5 = avg;
+                    bestao5Ind = i;
+                }else{
+                    if(bestao5.getAVG().getTime()>avg.getAVG().getTime()){
+                        bestao5 = avg;
+                        bestao5Ind = i;
+                    }
+                }
+            }
+            if(!avg2.isDNF() && !avg2.isNET()){
+                if(bestao12==null){
+                    bestao12 = avg;
+                    bestao12Ind = i;
+                }else{
+                    if(bestao12.getAVG().getTime()>avg2.getAVG().getTime()){
+                        bestao12 = avg;
+                        bestao12Ind = i;
+                    }
+                }
+            }
+            if(bestao5!=null){
+                avgs5.get(bestao5Ind).setFill(Color.GREEN);
+            }
+            if(bestao12!=null){
+                avgs12.get(bestao5Ind).setFill(Color.GREEN);
+            }
             i++;
         }
+    }
+
+    private void noBestTime() {
+        for(Text text: avgs5){
+            text.setFill(Color.BLACK);
+        }
+        for(Text text: avgs12){
+            text.setFill(Color.BLACK);
+        }
+    }
+
+    private AVGwrapper getAvg(ArrayList<Solve> solves, int amount) {
+        AVGwrapper toRet = new AVGwrapper();
+        if (solves.size() < amount - 1) {
+            toRet.setNET();
+            return toRet;
+        }
+        if (solves.size() == amount - 1) {
+            for (int i = 0; i < amount - 1; i++) {
+                if (solves.get(i).getState().equals(State.DNF)) {
+                    toRet.setDNF();
+                    return toRet;
+                }
+            }
+            long best = -1;
+            long avg = 0;
+            for (int i = 0; i < amount - 1; i++) {
+                if (solves.get(i).getTime().getTime() < best) {
+                    best = solves.get(i).getTime().getTime();
+                }
+                avg += solves.get(i).getTime().getTime();
+            }
+            avg -= best;
+            avg = avg / (amount - 2);
+            toRet.setAverage(new Timestamp(avg));
+            return toRet;
+        }
+        //size is at least 5 now
+        int dnfCounter = 0;
+        for (int i = solves.size() - amount; i < solves.size(); i++) {
+            if (solves.get(i).getState().equals(State.DNF)) {
+                dnfCounter++;
+            }
+        }
+        if (dnfCounter >= 2) {
+            toRet.setDNF();
+            return toRet;
+        }
+        if (dnfCounter == 1) {
+            long best = 999999999;
+            long avg = 0;
+            for (int i = solves.size() - amount; i < solves.size(); i++) {
+                if (solves.get(i).getState().equals(State.DNF)) {
+                    continue;
+                }
+                if (solves.get(i).getTime().getTime() < best) {
+                    best = solves.get(i).getTime().getTime();
+                }
+                avg += solves.get(i).getTime().getTime();
+            }
+            avg -= best;
+            avg = avg / (amount - 2);
+            toRet.setAverage(new Timestamp(avg));
+            return toRet;
+        }
+
+        long worst = -1;
+        long best = 99999999;
+        long avg = 0;
+        for (int i = solves.size() - amount; i < solves.size(); i++) {
+            if (solves.get(i).getState().equals(State.DNF)) {
+                continue;
+            }
+            if (solves.get(i).getTime().getTime() < best) {
+                best = solves.get(i).getTime().getTime();
+            }
+            if (solves.get(i).getTime().getTime() > worst) {
+                worst = solves.get(i).getTime().getTime();
+            }
+            avg += solves.get(i).getTime().getTime();
+        }
+        avg -= best;
+        avg -= worst;
+        avg = avg / (amount - 2);
+        toRet.setAverage(new Timestamp(avg));
+        return toRet;
+
     }
 
     @FXML
@@ -370,7 +528,7 @@ public class RoomWindow extends Application {
     }
 
     @FXML
-    public void leaveRoom(){
+    public void leaveRoom() {
         System.out.println("close");
         jez.leaveRoom(room);
         Client client = new Client();
