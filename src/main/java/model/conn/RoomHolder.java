@@ -12,15 +12,19 @@ public class RoomHolder {
     ConcurrentMap<Room, ArrayList<ObjectOutputStream>> streamHolder;
     private ConcurrentMap<User, ObjectOutputStream> users;
     int roomCounter;
-    int id;
     private int scrambleCounter;
+    private int getFreeId() {
+        for(int i = 0; i < roomCounter; i++) {
+            if(!rooms.containsKey(i)) return i;
+        }
+        return roomCounter+1;
+    }
     public RoomHolder(){
         passwords = new ConcurrentHashMap<>();
         rooms = new ConcurrentHashMap<>();
         streamHolder = new ConcurrentHashMap<>();
         users=new ConcurrentHashMap<>();
         roomCounter = 0;
-        id=0;
     }
     public boolean hasFreeRoom(){
         if(roomCounter<=20){
@@ -31,7 +35,7 @@ public class RoomHolder {
     public Room requestRoom(User user){
         if(!user.isInRoom()){
             roomCounter++;
-            rooms.put(roomCounter, new Room(id++));
+            rooms.put(roomCounter, new Room(getFreeId()));
             rooms.get(roomCounter).setHost(user);
             streamHolder.put(rooms.get(roomCounter), new ArrayList<>());
             user.setInRoom(true);
@@ -48,14 +52,8 @@ public class RoomHolder {
     }
     public void removeRoom(Room room) {
         streamHolder.remove(room);
-        //give new roomCounters
-        ConcurrentMap<Integer, Room> newRooms = new ConcurrentHashMap<>();
-        roomCounter=0;
-        for(int i = 1; i <= rooms.size(); i++) {
-            if(rooms.get(i)==room) continue;
-            newRooms.put(++roomCounter, rooms.get(i));
-        }
-        rooms=newRooms;
+        roomCounter--;
+        rooms.remove(room.getID());
         passwords.remove(room);
     }
     public void joinRoom(User user, Room room, ObjectOutputStream oos) {
