@@ -35,11 +35,12 @@ public class RoomHolder {
     public Room requestRoom(User user){
         if(!user.isInRoom()){
             roomCounter++;
-            rooms.put(roomCounter, new Room(getFreeId()));
-            rooms.get(roomCounter).setHost(user);
-            streamHolder.put(rooms.get(roomCounter), new ArrayList<>());
+            int id = getFreeId();
+            rooms.put(id, new Room(id));
+            rooms.get(id).setHost(user);
+            streamHolder.put(rooms.get(id), new ArrayList<>());
             user.setInRoom(true);
-            user.setRoom(rooms.get(roomCounter));
+            user.setRoom(rooms.get(id));
             return user.getRoom();
         }
         return null;

@@ -158,6 +158,7 @@ public class Server {
                             }
                             break;
                         case LEAVEROOM:
+                            System.out.println("leab");
                             Room verona = holder.getRoom(request.getRoom().getID());
                             //remove user from verona
                             holder.removeUser(user, verona);

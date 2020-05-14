@@ -135,6 +135,8 @@ public class RoomWindow extends Application {
     ArrayList<Text> avgs5;
     ArrayList<Text> avgs12;
 
+    Stage clientStage;
+
     void setName(String name) {
         this.name = name;
     }
@@ -380,7 +382,6 @@ public class RoomWindow extends Application {
             i++;
         }
     }
-
     private void noBestTime() {
         for(Text text: avgs5){
             text.setFill(Color.BLACK);
@@ -482,6 +483,7 @@ public class RoomWindow extends Application {
             System.out.println("close");
             jez.leaveRoom(room);
             jez.close();
+            clientStage.show();
         });
         stage.show();
     }
@@ -531,14 +533,16 @@ public class RoomWindow extends Application {
     public void leaveRoom() {
         System.out.println("close");
         jez.leaveRoom(room);
-        Client client = new Client();
+        //Client client = new Client();
         Stage stage = (Stage) Scramble.getScene().getWindow();
-        stage.close();
+
         try {
-            client.start(classStage);
+            System.out.println("open xd");
+            clientStage.show();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        stage.close();
     }
 
 }

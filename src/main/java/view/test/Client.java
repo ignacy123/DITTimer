@@ -46,6 +46,7 @@ public class Client extends Application {
 
     @FXML
     void initialize(){
+        System.out.println("init");
         passwordCheckBox.selectedProperty().addListener(observable -> {
             if(passwordCheckBox.isSelected()){
                 passwordField.setVisible(true);
@@ -148,10 +149,14 @@ public class Client extends Application {
         }
         System.out.println("I requested a room and it has been created ="+room+ ". A new view should start now.");
         RoomWindow roomWindow = new RoomWindow(conn, room);
+
         conn.setWindow(roomWindow);
         try {
             Stage stage = (Stage) roomsListView.getScene().getWindow();
-            stage.close();
+            roomWindow.clientStage=stage;
+            roomWindow.classStage.initOwner(stage);
+            stage.hide();
+            //stage.close();
             roomWindow.start(roomWindow.classStage);
             roomWindow.getHostPermissions();
         } catch (Exception e) {
@@ -168,7 +173,9 @@ public class Client extends Application {
             roomWindow.setName(String.valueOf(nameField.getCharacters()));
             try {
                 Stage stage = (Stage) roomsListView.getScene().getWindow();
-                stage.close();
+                roomWindow.classStage.initOwner(stage);
+                roomWindow.clientStage=stage;
+                stage.hide();//hide this window
                 roomWindow.start(roomWindow.classStage);
             } catch (Exception e) {
                 e.printStackTrace();
