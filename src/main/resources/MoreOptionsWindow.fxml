@@ -36,7 +36,7 @@
             <Button fx:id="ExportButton" mnemonicParsing="false" onAction="#ExportLocal" prefHeight="60.0" prefWidth="213.0" text="Export Local" GridPane.rowIndex="1" />
             <Button fx:id="ImportServerButton" mnemonicParsing="false" onAction="#ImportServer" prefHeight="60.0" prefWidth="221.0" text="Import from server" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Button fx:id="ExportServerButton" mnemonicParsing="false" onAction="#ExportServer" prefHeight="60.0" prefWidth="209.0" text="Export to server" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button mnemonicParsing="false" onAction="#exit" prefHeight="60.0" prefWidth="204.0" text="Exit" GridPane.rowIndex="2" />
+            <Button fx:id="GoOnlineButton" mnemonicParsing="false" onAction="#Online" prefHeight="60.0" prefWidth="204.0" text="Go online!" GridPane.rowIndex="2" />
          </children>
       </GridPane>
    </children>

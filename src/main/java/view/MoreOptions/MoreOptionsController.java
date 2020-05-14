@@ -48,7 +48,8 @@ public class MoreOptionsController {
 
     @FXML
     private Button ImportServerButton;
-
+    @FXML
+    private Button GoOnlineButton;
     @FXML
     private Button ExportServerButton;
     @FXML
@@ -61,6 +62,11 @@ public class MoreOptionsController {
     void ExportLocal(ActionEvent event) throws IOException {
         File selectedFile = fileChooser.showOpenDialog(stage);
         if(selectedFile!=null) ss.exportToFile(selectedFile);
+    }
+    @FXML
+    void Online(ActionEvent event) throws Exception {
+        Client client=new Client();
+        client.start(new Stage());
     }
 
     @FXML
