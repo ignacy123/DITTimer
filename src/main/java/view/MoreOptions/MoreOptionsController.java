@@ -35,10 +35,10 @@ public class MoreOptionsController {
     private ObservableWrapper ow = null;
     ServerService conn;
     CubeType type = CubeType.THREEBYTHREE;
-    Stage stage=new Stage();
+    Stage stage = new Stage();
     FileChooser fileChooser = new FileChooser();
-    Stage StageFromOutside=null;
-    Client client=null;
+    Stage StageFromOutside = null;
+    Client client = null;
     @FXML
     private Button ImportButton;
     @FXML
@@ -54,35 +54,39 @@ public class MoreOptionsController {
     private Button ExportServerButton;
     @FXML
     private Button Exit;
+
     @FXML
-    void exit(ActionEvent event){
-       System.out.println("exit");
+    void exit(ActionEvent event) {
+        System.out.println("exit");
     }
+
     @FXML
     void ExportLocal(ActionEvent event) throws IOException {
         File selectedFile = fileChooser.showSaveDialog(stage);
-        if(selectedFile!=null) ss.exportToFile(selectedFile);
+        if (selectedFile != null) ss.exportToFile(selectedFile);
     }
+
     @FXML
     void Online(ActionEvent event) throws Exception {
-        Client client=new Client();
+        Client client = new Client();
         client.start(new Stage());
     }
 
     @FXML
     void Play(ActionEvent event) throws Exception {
-        WeirdCube game=new WeirdCube();
+        WeirdCube game = new WeirdCube();
         game.start(new Stage());
     }
 
     @FXML
     void ImportLocal(ActionEvent event) {
         File selectedFile = fileChooser.showOpenDialog(stage);
-        if(selectedFile!=null) ss.importFromFile(selectedFile);
+        if (selectedFile != null) ss.importFromFile(selectedFile);
     }
+
     @FXML
     void ImportServer(ActionEvent event) throws IOException {
-        String key=null;
+        String key = null;
         Dialog<String> KeyDialog = new Dialog<>();
         KeyDialog.setTitle("Key");
         KeyDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
@@ -99,17 +103,18 @@ public class MoreOptionsController {
             return null;
         });
         Optional<String> pass = KeyDialog.showAndWait();
-        if(pass.isPresent()){
+        if (pass.isPresent()) {
             key = pass.get();
         }
-        KeyFile toSend=new KeyFile(key);
-        if(conn==null){
-            conn=new ServerServiceImplementation(ss);
+        KeyFile toSend = new KeyFile(key);
+        if (conn == null) {
+            conn = new ServerServiceImplementation(ss);
             conn.start();
         }
         conn.setKey(toSend);
         conn.sendKey();
     }
+
     @FXML
     void ExportServer(ActionEvent event) throws IOException {
         File automatic = new File("src/main/resources/Generated");
@@ -123,27 +128,35 @@ public class MoreOptionsController {
         conn.sendFile();
     }
 
-    public void ReceivedCodePrinter(KeyFile code){
-        Stage stage=new Stage();
+    public void ReceivedCodePrinter(KeyFile code) {
+        Stage stage = new Stage();
         stage.setTitle("This is your code!");
-        StackPane root=new StackPane();
+        StackPane root = new StackPane();
         Text text = new Text(code.getKey());
         text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
         root.getChildren().add(text);
-        Scene scene=new Scene(root,200,200);
+        Scene scene = new Scene(root, 200, 200);
         stage.setScene(scene);
         stage.show();
         conn.close();
-        conn=null;
+        conn = null;
     }
-    public void setSSAndOw(StatisticServer ss, ObservableWrapper ow){
+
+    public void setSSAndOw(StatisticServer ss, ObservableWrapper ow) {
         this.ss = ss;
         this.ow = ow;
         ow.getCubeCurrType().addListener((ListChangeListener<CubeType>) change -> {
             type = ow.getCubeCurrType().get(0);
         });
     }
-    public void setStage(Stage stage){
-        this.StageFromOutside=stage;
+
+    public void setStage(Stage stage) {
+        this.StageFromOutside = stage;
+        stage.setOnCloseRequest(windowEvent -> {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                }
+        );
     }
 }
