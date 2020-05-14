@@ -1,9 +1,11 @@
 package model.conn;
 
 import model.enums.ServerResponseType;
+import model.logic.KeyFile;
 import model.logic.Move;
 import model.logic.Solve;
 
+import java.io.File;
 import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -12,6 +14,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServerResponse implements Serializable {
     private ServerResponseType type;
     private ArrayList<Room> rooms;
+    private File myFile;
+    private KeyFile myKey;
     private Room room;
     private ConcurrentHashMap<User, ArrayList<Solve>> solves;
     private ArrayList<User> users;
@@ -21,7 +25,10 @@ public class ServerResponse implements Serializable {
     public ServerResponse(ServerResponseType type) {
         this.type = type;
     }
-
+    public File getFile(){return myFile;}
+    public void setFile(File file){myFile=file;}
+    public void setKey(KeyFile keyFile){myKey=keyFile;}
+    public KeyFile getKey(){return myKey;}
     public ServerResponseType getType() {
         return type;
     }

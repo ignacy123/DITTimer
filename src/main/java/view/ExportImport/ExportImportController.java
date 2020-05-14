@@ -19,7 +19,7 @@ public class ExportImportController {
     CubeType type = CubeType.THREEBYTHREE;
     Stage stage=new Stage();
     FileChooser fileChooser = new FileChooser();
-    File selectedFile;
+
     @FXML
     private Button ImportButton;
     @FXML

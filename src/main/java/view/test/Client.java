@@ -53,7 +53,7 @@ public class Client extends Application {
                 passwordField.setVisible(false);
             }
         });
-        conn = new ServerServiceImplementation(this);
+        conn = new ServerServiceImplementation(this, null);
         conn.start();
         rooms = FXCollections.observableArrayList();
         cubeTypeChoiceBox.setItems(FXCollections.observableArrayList(CubeType.TWOBYTWO, CubeType.THREEBYTHREE, CubeType.FOURBYFOUR));

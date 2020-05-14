@@ -82,6 +82,8 @@ public class SolveImplementation implements Solve, Serializable {
     @Override
     public void setState(State state) {
         whatState=state;
+        if(state==State.TWOSECPENALTY)
+            timeOfSolution.setTime(timeOfSolution.getTime()+2000);
     }
 
     @Override

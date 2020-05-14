@@ -1,25 +1,23 @@
 package view.mainScreen;
 
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.input.InputEvent;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.SS.StatisticServer;
-import model.enums.CubeType;
 import model.enums.Running;
 import model.wrappers.ObservableWrapper;
-import view.ExportImport.ExportImportController;
 import view.Metronome.MetronomeController;
+import view.MoreOptions.MoreOptionsController;
 import view.StateSetter.StateSetterController;
 import view.TimeList.TimeListController;
 import view.Timer.Controller;
@@ -44,9 +42,13 @@ public class MainScreen extends Stage {
     @FXML
     Pane pane6;
     @FXML
-    Pane pane7;
+    private Button MoreOptionsButton;
+    @FXML
+    void GiveMeMoreOptions(ActionEvent event) {
+        MOstage.show();
+    }
+    MoreOptionsController MOC=null;
     private Text scramble;
-
     DrawScramble drawer;
 
     FXMLLoader listLoader = null;
@@ -54,9 +56,24 @@ public class MainScreen extends Stage {
     FXMLLoader timerLoader = null;
     FXMLLoader metronomeLoader=null;
     FXMLLoader StateSetterLoader=null;
-    FXMLLoader FileLoader=null;
+    FXMLLoader MoreOptionsLoader=null;
+
+    Scene MoreOptionsScene;
+    Stage MOstage;
+    Pane MOpane;
+
     @FXML
     void initialize() throws IOException {
+
+        MoreOptionsLoader=new FXMLLoader(getClass().getClassLoader().getResource("MoreOptionsWindow.fxml"));
+        MOpane = MoreOptionsLoader.load();
+        MOC=MoreOptionsLoader.getController();
+        MoreOptionsScene =new Scene(MOpane);
+        MOstage =new Stage();
+        MOstage.setScene(MoreOptionsScene);
+        MOC.setStage(MOstage);
+        // more init for MoreOptions button
+
         listLoader = new FXMLLoader(getClass().getClassLoader().getResource("TimeList.fxml"));
         Node node = listLoader.load();
         pane.getChildren().setAll(node);
@@ -78,12 +95,7 @@ public class MainScreen extends Stage {
         StateSetterLoader=new FXMLLoader(getClass().getClassLoader().getResource("StateSetter.fxml"));
         Node node5 = StateSetterLoader.load();
         pane5.getChildren().setAll(node5);
-        FileLoader=new FXMLLoader(getClass().getClassLoader().getResource("FileService.fxml"));
-        Node node7 = FileLoader.load();
-        pane7.getChildren().setAll(node7);
-
         drawer=new DrawScramble();
-
         pane6.getChildren().add(drawer.getPane());
         //pane6.setMaxSize(600, 300);
         EventHandler handler = new EventHandler<InputEvent>() {
@@ -108,8 +120,7 @@ public class MainScreen extends Stage {
         StateSetterController controllerSet = StateSetterLoader.getController();
         controllerSet.setSSAndOw(ss,ow);
         controllerSet.init();
-        ExportImportController FileController = FileLoader.getController();
-        FileController.setSSAndOw(ss,ow);
+        MOC.setSSAndOw(ss,ow); // conn not set
         drawer.setOw(ow);
         ow.getRunning().addListener(new ListChangeListener<Running>() {
             @Override
@@ -120,8 +131,8 @@ public class MainScreen extends Stage {
                     pane3.setVisible(false);
                     pane5.setVisible(false);
                     pane6.setVisible(false);
-                    pane7.setVisible(false);
                     scramble.setVisible(false);
+                    MoreOptionsButton.setVisible(false);
 
                 }else{
                     pane.setVisible(true);
@@ -129,8 +140,8 @@ public class MainScreen extends Stage {
                     pane3.setVisible(true);
                     pane5.setVisible(true);
                     pane6.setVisible(true);
-                    pane7.setVisible(true);
                     scramble.setVisible(true);
+                    MoreOptionsButton.setVisible(true);
                 }
             }
         });

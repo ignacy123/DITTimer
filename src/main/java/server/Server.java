@@ -1,9 +1,14 @@
 package server;
 
+import javafx.application.Platform;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
+import javafx.scene.layout.HBox;
 import model.conn.*;
 import model.enums.ClientRequestType;
 import model.enums.CubeType;
 import model.enums.ServerResponseType;
+import model.logic.KeyFile;
 import model.logic.Move;
 import model.logic.ScrambleGenerator;
 import model.logic.ScrambleGeneratorImplementation;
@@ -12,8 +17,12 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
+    static Map<String,File>myMap=new ConcurrentHashMap<>();
     public static void main(String[] args) {
         RoomHolder holder;
         int counter = 1;
@@ -25,7 +34,7 @@ public class Server {
             while (true) {
                 Socket socket = serverSocket.accept();
                 System.out.println("A new wild client has appeared.");
-                new ClientHandler(socket, counter++, holder).start();
+                new ClientHandler(socket, counter++, holder, myMap).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,6 +42,7 @@ public class Server {
     }
 
     public static class ClientHandler extends Thread {
+        Map<String,File>myMap;
         private Socket socket;
         private User user;
         private RoomHolder holder;
@@ -40,7 +50,8 @@ public class Server {
         private ScrambleGenerator gen3 = new ScrambleGeneratorImplementation(CubeType.THREEBYTHREE);
         private ScrambleGenerator gen4 = new ScrambleGeneratorImplementation(CubeType.FOURBYFOUR);
 
-        ClientHandler(Socket socket, int id, RoomHolder holder) {
+        ClientHandler(Socket socket, int id, RoomHolder holder,Map<String,File>map ) {
+            this.myMap=map;
             this.socket = socket;
             user = new User(id);
             //user.setSocket(socket);
@@ -60,6 +71,23 @@ public class Server {
 
                     ServerResponse sr;
                     switch (request.getType()) {
+                        case FILE:
+                            String key;
+                            int code= (int) (Math.random()*10000);
+                            key=Integer.toString(code);
+                            myMap.put(key,request.getFile());
+                            sr=new ServerResponse(ServerResponseType.FILERECEIVED);
+                            KeyFile kf=new KeyFile(key);
+                            sr.setKey(kf);
+                            outputStream.writeObject(sr);
+                            break;
+                        case GIVEMEFILE:
+                            File toBeSent=myMap.get(request.getKey().getKey());
+                            sr=new ServerResponse(ServerResponseType.FILE);
+                            sr.setFile(toBeSent);
+                            myMap.remove(request.getKey().getKey());
+                            outputStream.writeObject(sr);
+                            break;
                         case REQUESTROOMS:
                             sr = new ServerResponse(ServerResponseType.SENDINGROOMS);
                             sr.setRooms(holder.getAvailableRooms());
@@ -108,7 +136,7 @@ public class Server {
                             }
                             if (request.getType() == ClientRequestType.SENDTIME)
                                 sienna.addSolve(user, request.getSolve());
-                                sr.setSolves(sienna.getSolves());
+                            sr.setSolves(sienna.getSolves());
                             //for every user in room
                             for (ObjectOutputStream mike : holder.getStreams(sienna)) {
                                 mike.reset();

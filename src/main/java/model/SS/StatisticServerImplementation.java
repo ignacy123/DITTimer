@@ -194,9 +194,7 @@ public class StatisticServerImplementation implements StatisticServer {
             somethingWrong = true;
         }
         if (!somethingWrong){
-            System.out.println("nothing");
             temp.add(new AVGwrapper(source.size(), average, false));
-            System.out.println(temp.get(temp.size()-1));
         }
 
         return average;
@@ -370,7 +368,6 @@ public class StatisticServerImplementation implements StatisticServer {
             if(temp.isEmpty()) return;
             if(state==State.TWOSECPENALTY){
                 Solve solve=temp.get(temp.size()-1);
-                solve.getTime().setTime(solve.getTime().getTime()+2000);
                 solve.setState(State.TWOSECPENALTY);
                 DeleteLast(WhatModel);
                 insertSolve(solve);

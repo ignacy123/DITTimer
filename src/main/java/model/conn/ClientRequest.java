@@ -2,13 +2,17 @@ package model.conn;
 
 import model.enums.ClientRequestType;
 import model.enums.CubeType;
+import model.logic.KeyFile;
 import model.logic.Solve;
 
+import java.io.File;
 import java.io.Serializable;
 import java.sql.Time;
 
 public class ClientRequest implements Serializable {
     private ClientRequestType type;
+    private File myfile;
+    private KeyFile keyFile;
     private CubeType cubeType;
     private String userName;
     private Room room;
@@ -23,10 +27,26 @@ public class ClientRequest implements Serializable {
         this.type = type;
         this.room = room;
     }
+    public ClientRequest(File file){
+        this.type = ClientRequestType.FILE;
+        myfile=file;
+    }
+    public void setKey(KeyFile kf) {
+        this.keyFile=kf;
+    }
+    public KeyFile getKey() {
+        return this.keyFile;
+    }
+
     public ClientRequestType getType() {
         return type;
     }
-
+    public void setFile(File file) {
+        this.myfile=file;
+    }
+    public File getFile(){
+        return myfile;
+    }
     public CubeType getCubeType() {
         return cubeType;
     }
