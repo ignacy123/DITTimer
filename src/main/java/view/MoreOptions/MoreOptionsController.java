@@ -60,7 +60,7 @@ public class MoreOptionsController {
     }
     @FXML
     void ExportLocal(ActionEvent event) throws IOException {
-        File selectedFile = fileChooser.showOpenDialog(stage);
+        File selectedFile = fileChooser.showSaveDialog(stage);
         if(selectedFile!=null) ss.exportToFile(selectedFile);
     }
     @FXML
@@ -78,7 +78,7 @@ public class MoreOptionsController {
     @FXML
     void ImportLocal(ActionEvent event) {
         File selectedFile = fileChooser.showOpenDialog(stage);
-        ss.importFromFile(selectedFile);
+        if(selectedFile!=null) ss.importFromFile(selectedFile);
     }
     @FXML
     void ImportServer(ActionEvent event) throws IOException {
@@ -112,17 +112,15 @@ public class MoreOptionsController {
     }
     @FXML
     void ExportServer(ActionEvent event) throws IOException {
-        File selectedFile = fileChooser.showSaveDialog(stage);
-        if(!(selectedFile==null)){
-            ss.exportToFile(selectedFile);
-            if(conn==null){
-                conn=new ServerServiceImplementation(ss);
-                conn.start();
-            }
-            conn.setFile(selectedFile);
-            conn.setMOC(this);
-            conn.sendFile();
+        File automatic = new File("src/main/resources/Generated");
+        ss.exportToFile(automatic);
+        if (conn == null) {
+            conn = new ServerServiceImplementation(ss);
+            conn.start();
         }
+        conn.setFile(automatic);
+        conn.setMOC(this);
+        conn.sendFile();
     }
 
     public void ReceivedCodePrinter(KeyFile code){

@@ -280,7 +280,10 @@ public class ServerServiceImplementation implements ServerService {
                                         Scene scene = new Scene(root, 500, 150);
                                         stage.setScene(scene);
                                         stage.show();
-                                    } else ss.importFromFile(file);
+                                    } else {
+                                        ss.importFromFile(file);
+                                        file.delete();
+                                    }
                                 });
                                 break;
                             case SENDINGROOMS:
