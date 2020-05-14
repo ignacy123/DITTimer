@@ -138,12 +138,14 @@ public class WeirdCube extends Application {
         }
         return null;
     }
-    ArrayList<Integer> getN(int n) { //3 different than n
+    ArrayList<Integer> getN(int n, ArrayList<Character> pref) { //3 different than n
         ArrayList<Integer> holder= new ArrayList<>();
         while(holder.size() < 3) {
             Integer l = rand.nextInt(cases.size());
-            if(l.equals(n) || holder.contains(l)) continue;
+            String al= (String) cases.keySet().toArray()[l];
+            if(l.equals(n) || holder.contains(l) || (al.length() > 1 && pref.contains(al.charAt(0)))) continue;
             holder.add(l);
+            if(al.length() > 1) pref.add(al.charAt(0));
         }
         return holder;
     }
@@ -161,8 +163,10 @@ public class WeirdCube extends Application {
         doRev(right);
         int okButton=rand.nextInt(4);
         correct=okButton;
+        ArrayList<Character> prefs = new ArrayList<>();
+        prefs.add(right.charAt(0));
         //get 3 random different algs
-        ArrayList<Integer> algs = getN(id);
+        ArrayList<Integer> algs = getN(id, prefs);
 
         //fill other buttons
         for(int i = 0; i < 4; i++) {
@@ -241,8 +245,8 @@ public class WeirdCube extends Application {
         cases.put("Ua", "R2 U' R' U' R U R U R U' R");
         //Ub
         cases.put("Ub", "R' U R' U' R' U' R' U R U R2");
-        //V
-        cases.put("V", "R' U R' d' R' F' R2 U' R' U R' F R F");
+        //V ????
+        cases.put("V", "R U2 R' D R U' R U' R U R2 D R' U' R D2");
         //Y
         cases.put("Y", "F R U' R' U' R U R' F' R U R' U' R' F R F'");
         //Z
