@@ -272,12 +272,12 @@ public class ServerServiceImplementation implements ServerService {
                                 Platform.runLater(() -> {
                                     if (file == null) {
                                         Stage stage = new Stage();
-                                        stage.setTitle("To dumb bitch");
+                                        stage.setTitle("Wrong key");
                                         StackPane root = new StackPane();
-                                        Text text = new Text("Wrong key you dumb BITCH");
+                                        Text text = new Text("Wrong key");
                                         text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 30));
                                         root.getChildren().add(text);
-                                        Scene scene = new Scene(root, 500, 150);
+                                        Scene scene = new Scene(root, 200, 150);
                                         stage.setScene(scene);
                                         stage.show();
                                     } else {

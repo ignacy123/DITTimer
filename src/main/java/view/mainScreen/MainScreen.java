@@ -46,10 +46,14 @@ public class MainScreen extends Stage {
     @FXML
     void GiveMeMoreOptions(ActionEvent event) {
         MOstage.show();
+
     }
     MoreOptionsController MOC=null;
     private Text scramble;
     DrawScramble drawer;
+    public void giveStage(Stage stage){
+        MOC.GiveStage(stage, MOstage);
+    }
 
     FXMLLoader listLoader = null;
     FXMLLoader statsLoader = null;
