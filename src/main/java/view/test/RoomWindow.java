@@ -482,7 +482,7 @@ public class RoomWindow extends Application {
         stage.setOnCloseRequest(windowEvent -> {
             System.out.println("close");
             jez.leaveRoom(room);
-            jez.close();
+            //jez.close();
             clientStage.show();
         });
         stage.show();

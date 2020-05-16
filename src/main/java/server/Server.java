@@ -246,9 +246,7 @@ public class Server {
                             }
                     }
                 }
-            } catch (EOFException e) {
-                //reached EOF
-            } catch (Exception e) {
+            }  catch (Exception e) {
                 e.printStackTrace();
                 e.printStackTrace();
                 //user disconnected, he might still be in some room?
