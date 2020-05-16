@@ -24,7 +24,7 @@ public class OfflineTimer extends Application {
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         stage.show();
-
+        controller.giveStage(stage); // to close if go online
         stage.addEventFilter(KeyEvent.KEY_PRESSED, k -> {
             if (k.getCode() == KeyCode.SPACE) {
                 k.consume();

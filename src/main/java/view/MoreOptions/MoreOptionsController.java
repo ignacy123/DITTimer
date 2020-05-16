@@ -34,6 +34,8 @@ public class MoreOptionsController {
     private StatisticServer ss = null;
     private ObservableWrapper ow = null;
     ServerService conn;
+    Stage toHide=null;
+    Stage me=null;
     CubeType type = CubeType.THREEBYTHREE;
     Stage stage = new Stage();
     FileChooser fileChooser = new FileChooser();
@@ -70,6 +72,8 @@ public class MoreOptionsController {
     void Online(ActionEvent event) throws Exception {
         Client client = new Client();
         client.start(new Stage());
+        toHide.close();
+        me.close();
     }
 
     @FXML
@@ -114,7 +118,10 @@ public class MoreOptionsController {
         conn.setKey(toSend);
         conn.sendKey();
     }
-
+    public void GiveStage(Stage stage, Stage stage2){
+        toHide=stage;
+        me=stage2;
+    }
     @FXML
     void ExportServer(ActionEvent event) throws IOException {
         File automatic = new File("src/main/resources/Generated");
