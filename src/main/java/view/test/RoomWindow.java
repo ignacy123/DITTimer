@@ -381,6 +381,9 @@ public class RoomWindow extends Application {
             }
             i++;
         }
+        for(int j = userList.size(); j < 5; j++) {
+            getList(i).getItems().clear();
+        }
     }
     private void noBestTime() {
         for(Text text: avgs5){

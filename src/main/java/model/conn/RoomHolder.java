@@ -50,6 +50,7 @@ public class RoomHolder {
         room.removeUser(user);
         users.remove(user);
         user.setRoom(null);
+        user.setInRoom(false);
     }
     public void removeRoom(Room room) {
         streamHolder.remove(room);

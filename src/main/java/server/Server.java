@@ -247,12 +247,12 @@ public class Server {
                     }
                 }
             }  catch (Exception e) {
-                e.printStackTrace();
-                e.printStackTrace();
+                //e.printStackTrace();
+                //e.printStackTrace();
                 //user disconnected, he might still be in some room?
                 if (user.getRoom() != null) {
                     Room room = user.getRoom();
-                    user.getRoom().removeUser(user);
+                    holder.removeUser(user, room);
                     if (room.getUsers().isEmpty()) {
                         holder.removeRoom(room);
                     }

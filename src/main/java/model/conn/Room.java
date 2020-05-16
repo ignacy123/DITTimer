@@ -30,6 +30,7 @@ public class Room implements Serializable {
         users.remove(user);
         solves.remove(user);
         user.setInRoom(false);
+        user.setRoom(null);
     }
     public User getHost() {
         return host;
