@@ -162,11 +162,20 @@ public class Server {
                             Room verona = holder.getRoom(request.getRoom().getID());
                             //remove user from verona
                             holder.removeUser(user, verona);
+                            ArrayList<ObjectOutputStream> streams = holder.getStreams(verona);
+                            if(verona.getHost().equals(user)){
+                                System.out.println("host is leaving");
+                                if(streams.size()>0){
+                                    verona.setHost(verona.getUsers().get(0));
+                                }
+                                streams.get(0).reset();
+                                streams.get(0).writeObject(new ServerResponse(ServerResponseType.HOSTGRANTED));
+                            }
                             sr = new ServerResponse(ServerResponseType.USERSCHANGED);
                             sr.setUsers(verona.getUsers());
                             ServerResponse dt = new ServerResponse(ServerResponseType.TIMESCHANGED);
                             dt.setSolves(verona.getSolves());
-                            for (ObjectOutputStream marcel : holder.getStreams(verona)) {
+                            for (ObjectOutputStream marcel : streams) {
                                 System.out.println("sending update to");
                                 marcel.reset();
                                 marcel.writeObject(sr);
@@ -253,6 +262,19 @@ public class Server {
                 if (user.getRoom() != null) {
                     Room room = user.getRoom();
                     holder.removeUser(user, room);
+                    ArrayList<ObjectOutputStream> streams = holder.getStreams(room);
+                    if(room.getHost().equals(user)){
+                        System.out.println("host is leaving");
+                        if(streams.size()>0){
+                            room.setHost(room.getUsers().get(0));
+                        }
+                        try {
+                            streams.get(0).reset();
+                            streams.get(0).writeObject(new ServerResponse(ServerResponseType.HOSTGRANTED));
+                        } catch (IOException ex) {
+
+                        }
+                    }
                     if (room.getUsers().isEmpty()) {
                         holder.removeRoom(room);
                     }

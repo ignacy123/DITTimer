@@ -285,6 +285,9 @@ public class RoomWindow extends Application {
         if (hasBeenSent) {
             return;
         }
+        if(currentSolve==null){
+            return;
+        }
         currentSolve.setState((State) stateChoiceBox.getSelectionModel().getSelectedItem());
         jez.sendTime(room, currentSolve);
         hasBeenSent = true;
