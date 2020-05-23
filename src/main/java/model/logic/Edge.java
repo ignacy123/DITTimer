@@ -2,6 +2,8 @@ package model.logic;
 
 import javafx.util.Pair;
 
+import java.util.Objects;
+
 public class Edge {
     Pair<Integer, Integer> first;
     Pair<Integer, Integer> second;
@@ -16,5 +18,19 @@ public class Edge {
 
     public Pair<Integer, Integer> getSecond() {
         return second;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Edge edge = (Edge) o;
+        return Objects.equals(first, edge.first) &&
+                Objects.equals(second, edge.second);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(first, second);
     }
 }

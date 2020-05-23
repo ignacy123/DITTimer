@@ -130,7 +130,6 @@ public class TimeListController extends Stage {
         }
         d.setTitle("Solve Info");
         d.setHeaderText("");
-        d.setResizable(true);
         d.setContentText(toStr);
         d.show();
     }
