@@ -1,10 +1,13 @@
 package view.drawing;
 
+import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -22,12 +25,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class ClickDrawer extends DrawScramble {
+public class ClickDrawer extends Application {
 
     Color[][] cube;
     GridPane rubics;
     ChoiceBox<String> curCol;
-    @Override
     public GridPane draw() {
         int hw = 3;
         GridPane gridPane = new GridPane();
@@ -44,17 +46,12 @@ public class ClickDrawer extends DrawScramble {
                     Rectangle field = new Rectangle(40, 40);
                     field.setFill(cube[((j - j%hw)/hw + (i - i%4)/4 * hw)][j%hw + (i % 4)*hw]);
                     curr.add(field, j%hw, (j - j%hw)/hw);
-                    field.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                        @Override
-                        public void handle(MouseEvent mouseEvent) {
-                            try {
-                                Color newCol = (Color) Color.class.getField(curCol.getValue().toUpperCase()).get(null);
-                                field.setFill(newCol);
-                            } catch (IllegalAccessException | NoSuchFieldException e) {
-                                e.printStackTrace();
-                            }
-                            //Color newCol = (Color) Color.class.getField(colorNames.get((Integer) ne).toUpperCase()).get(null);
-                            //field.setFill();
+                    field.setOnMouseClicked(mouseEvent -> {
+                        try {
+                            Color newCol = (Color) Color.class.getField(curCol.getValue().toUpperCase()).get(null);
+                            field.setFill(newCol);
+                        } catch (IllegalAccessException | NoSuchFieldException e) {
+                            e.printStackTrace();
                         }
                     });
                 }
@@ -67,8 +64,22 @@ public class ClickDrawer extends DrawScramble {
         return gridPane;
     }
 
-    public void doMagic() {
-        Stage stage = new Stage();
+    public ClickDrawer() {
+        cube = new Color[3*3][4*3];
+        for(int i = 0; i < 3*3; i++) {
+            for(int j = 0; j < 4*3; j++) {
+                cube[i][j] = Color.LIGHTSKYBLUE;
+            }
+        }
+    }
+
+    boolean validate() {
+        //aaaaa
+        return true;
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
         stage.setResizable(false);
         BorderPane layout = new BorderPane();
         stage.setScene(new Scene(layout, 1000, 800));
@@ -81,14 +92,12 @@ public class ClickDrawer extends DrawScramble {
         curCol.getItems().addAll(colorNames);
         curCol.setValue(colorNames.get(0));
         layout.setTop(curCol);
+        Button val = new Button();
+        val.setOnMouseClicked(mouseEvent -> {
+            System.out.println(validate());
+        });
+        val.setText("aaaaaa");
+        layout.setRight(val);
         stage.show();
-    }
-    ClickDrawer() {
-        cube = new Color[3*3][4*3];
-        for(int i = 0; i < 3*3; i++) {
-            for(int j = 0; j < 4*3; j++) {
-                cube[i][j] = Color.LIGHTSKYBLUE;
-            }
-        }
     }
 }
