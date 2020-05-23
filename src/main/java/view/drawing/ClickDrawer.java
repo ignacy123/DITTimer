@@ -1,10 +1,7 @@
 package view.drawing;
 
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
+
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,14 +12,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import model.enums.CubeType;
 
 import javax.swing.event.ChangeEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 
 public class ClickDrawer extends Application {
@@ -44,12 +40,18 @@ public class ClickDrawer extends Application {
                 curr.setStyle("-fx-background-color: black ; -fx-vgap: 1; -fx-hgap: 1; -fx-padding: 1;");
                 for(int j = 0; j < hw*hw; j++) {
                     Rectangle field = new Rectangle(40, 40);
+                    ArrayList<Integer> ids=new ArrayList<>();
+                    ids.add(i); ids.add(j);
+                    field.setUserData(ids);
                     field.setFill(cube[((j - j%hw)/hw + (i - i%4)/4 * hw)][j%hw + (i % 4)*hw]);
                     curr.add(field, j%hw, (j - j%hw)/hw);
                     field.setOnMouseClicked(mouseEvent -> {
                         try {
                             Color newCol = (Color) Color.class.getField(curCol.getValue().toUpperCase()).get(null);
                             field.setFill(newCol);
+                            ArrayList<Integer> xd = ((ArrayList<Integer>)field.getUserData());
+                            cube[xd.get(0)][xd.get(1)]=newCol;
+                            //cube[i][j]=newCol;
                         } catch (IllegalAccessException | NoSuchFieldException e) {
                             e.printStackTrace();
                         }
@@ -80,7 +82,6 @@ public class ClickDrawer extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setResizable(false);
         BorderPane layout = new BorderPane();
         stage.setScene(new Scene(layout, 1000, 800));
         GridPane rubics = draw();
