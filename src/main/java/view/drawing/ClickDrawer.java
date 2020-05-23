@@ -18,7 +18,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import model.enums.CubeType;
+import model.logic.Edge;
 
 import javax.swing.event.ChangeEvent;
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import java.util.Comparator;
 public class ClickDrawer extends Application {
 
     Color[][] cube;
+    ArrayList<Edge> edges;
     GridPane rubics;
     ChoiceBox<String> curCol;
     public GridPane draw() {
@@ -74,13 +77,145 @@ public class ClickDrawer extends Application {
     }
 
     boolean validate() {
-        //aaaaa
-        return true;
+        int oriented = 0;
+        int test;
+        test = findEdge(Color.WHITE, Color.BLUE);
+        if(test==-1){
+            System.out.println("couldnt find edge: +Color.WHITE+Color.BLUE");
+            return false;
+        }
+        oriented+=test;
+        test = findEdge(Color.WHITE, Color.GREEN);
+        if(test==-1){
+            System.out.println("couldnt find edge: +Color.WHITE+Color.GREEN");
+            return false;
+        }
+        oriented+=test;
+        test = findEdge(Color.WHITE, Color.RED);
+        if(test==-1){
+            System.out.println("couldnt find edge: +Color.WHITE+Color.RED");
+            return false;
+        }
+        oriented+=test;
+        test = findEdge(Color.WHITE, Color.ORANGE);
+        if(test==-1){
+            System.out.println("couldnt find edge: +Color.WHITE+Color.ORANGE");
+            return false;
+        }
+        test = findEdge(Color.YELLOW, Color.BLUE);
+        if(test==-1){
+            System.out.println("couldnt find edge: +Color.YELLOW+Color.BLUE");
+            return false;
+        }
+        oriented+=test;
+        test = findEdge(Color.YELLOW, Color.GREEN);
+        if(test==-1){
+            System.out.println("couldnt find edge: +Color.YELLOW+Color.GREEN");
+            return false;
+        }
+        oriented+=test;
+        test = findEdge(Color.YELLOW, Color.RED);
+        if(test==-1){
+            System.out.println("couldnt find edge: +Color.YELLOW+Color.RED");
+            return false;
+        }
+        oriented+=test;
+        test = findEdge(Color.YELLOW, Color.ORANGE);
+        if(test==-1){
+            System.out.println("couldnt find edge: +Color.YELLOW+Color.ORANGE");
+            return false;
+        }
+        test = findEdge(Color.RED, Color.BLUE);
+        if(test==-1){
+            System.out.println("couldnt find edge: +Color.RED+Color.BLUE");
+            return false;
+        }
+        oriented+=test;
+        test = findEdge(Color.RED, Color.GREEN);
+        if(test==-1){
+            System.out.println("couldnt find edge: +Color.RED+Color.GREEN");
+            return false;
+        }
+        test = findEdge(Color.ORANGE, Color.BLUE);
+        if(test==-1){
+            System.out.println("couldnt find edge: +Color.ORANGE+Color.BLUE");
+            return false;
+        }
+        oriented+=test;
+        test = findEdge(Color.ORANGE, Color.GREEN);
+        if(test==-1){
+            System.out.println("couldnt find edge: +Color.ORANGE+Color.GREEN");
+            return false;
+        }
+        if(oriented%2==0){
+            return true;
+        }
+        System.out.println("Edge misoriented");
+        return false;
     }
 
+    int findEdge(Color one, Color two){
+        for(Edge e: edges){
+            Color firstColor = cube[e.getFirst().getKey()][e.getFirst().getValue()];
+            Color secondColor = cube[e.getSecond().getKey()][e.getSecond().getValue()];
+            if(firstColor.equals(one) && secondColor.equals(two)){
+                if(one.equals(Color.WHITE) || one.equals(Color.YELLOW)){
+                    if(e.getFirst().getKey()<=2 || e.getFirst().getKey()>=6){
+                        return 1;
+                    }
+                    if(e.getFirst().getKey()==4 && e.getFirst().getValue()>=3 && e.getFirst().getValue()<=5){
+                        return 1;
+                    }
+                    if(e.getFirst().getKey()==4 && e.getFirst().getValue()>=9 && e.getFirst().getValue()<=11){
+                        return 1;
+                    }
+                    return 0;
+                }
+                if(two.equals(Color.WHITE) || two.equals(Color.YELLOW)){
+                    if(e.getSecond().getKey()<=2 || e.getSecond().getKey()>=6){
+                        return 1;
+                    }
+                    if(e.getSecond().getKey()==4 && e.getSecond().getValue()>=3 && e.getSecond().getValue()<=5){
+                        return 1;
+                    }
+                    if(e.getSecond().getKey()==4 && e.getSecond().getValue()>=9 && e.getSecond().getValue()<=11){
+                        return 1;
+                    }
+                    return 0;
+                }
+                //doesnt have yellow or white, must have blue or green
+                if(one.equals(Color.GREEN) || one.equals(Color.BLUE)){
+                    if(e.getFirst().getKey()<=2 || e.getFirst().getKey()>=6){
+                        return 1;
+                    }
+                    if(e.getFirst().getKey()==4 && e.getFirst().getValue()>=3 && e.getFirst().getValue()<=5){
+                        return 1;
+                    }
+                    if(e.getFirst().getKey()==4 && e.getFirst().getValue()>=9 && e.getFirst().getValue()<=11){
+                        return 1;
+                    }
+                    return 0;
+                }
+                if(two.equals(Color.GREEN) || two.equals(Color.BLUE)){
+                    if(e.getSecond().getKey()<=2 || e.getSecond().getKey()>=6){
+                        return 1;
+                    }
+                    if(e.getSecond().getKey()==4 && e.getSecond().getValue()>=3 && e.getSecond().getValue()<=5){
+                        return 1;
+                    }
+                    if(e.getSecond().getKey()==4 && e.getSecond().getValue()>=9 && e.getSecond().getValue()<=11){
+                        return 1;
+                    }
+                    return 0;
+                }
+                return 0;
+            }
+        }
+        return -1;
+    }
     @Override
     public void start(Stage stage) throws Exception {
-        stage.setResizable(false);
+        stage.setResizable(true);
         BorderPane layout = new BorderPane();
         stage.setScene(new Scene(layout, 1000, 800));
         GridPane rubics = draw();
@@ -88,6 +223,19 @@ public class ClickDrawer extends Application {
         layout.setCenter(rubics);
         curCol = new ChoiceBox<>();
         ArrayList<String> colorNames = new ArrayList<>(Arrays.asList("Blue", "Green", "Red", "Orange", "White", "Yellow"));
+        edges = new ArrayList<>();
+        edges.add(new Edge(new Pair(1, 3), new Pair(3, 1)));
+        edges.add(new Edge(new Pair(0, 4), new Pair(3, 10)));
+        edges.add(new Edge(new Pair(1, 5), new Pair(3, 7)));
+        edges.add(new Edge(new Pair(2, 4), new Pair(3, 4)));
+        edges.add(new Edge(new Pair(4, 0), new Pair(4, 11)));
+        edges.add(new Edge(new Pair(5, 1), new Pair(7, 3)));
+        edges.add(new Edge(new Pair(4, 2), new Pair(4, 3)));
+        edges.add(new Edge(new Pair(5, 4), new Pair(6, 4)));
+        edges.add(new Edge(new Pair(4, 5), new Pair(4, 6)));
+        edges.add(new Edge(new Pair(5, 7), new Pair(7, 5)));
+        edges.add(new Edge(new Pair(4, 8), new Pair(4, 9)));
+        edges.add(new Edge(new Pair(5, 10), new Pair(8, 4)));
         colorNames.sort(Comparator.comparing(String::toString));
         curCol.getItems().addAll(colorNames);
         curCol.setValue(colorNames.get(0));
