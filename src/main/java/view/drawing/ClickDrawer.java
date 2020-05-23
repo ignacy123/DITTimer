@@ -18,7 +18,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 import model.enums.CubeType;
+import model.logic.Edge;
 
 import javax.swing.event.ChangeEvent;
 import java.util.ArrayList;
@@ -46,7 +48,7 @@ public class ClickDrawer extends Application {
                 for(int j = 0; j < hw*hw; j++) {
                     Rectangle field = new Rectangle(40, 40);
                     ArrayList<Integer> ids=new ArrayList<>();
-                    ids.add(i); ids.add(j);
+                    ids.add(((j - j%hw)/hw + (i - i%4)/4 * hw)); ids.add(j%hw + (i % 4)*hw);
                     field.setUserData(ids);
                     field.setFill(cube[((j - j%hw)/hw + (i - i%4)/4 * hw)][j%hw + (i % 4)*hw]);
                     curr.add(field, j%hw, (j - j%hw)/hw);
@@ -56,6 +58,7 @@ public class ClickDrawer extends Application {
                             field.setFill(newCol);
                             ArrayList<Integer> xd = ((ArrayList<Integer>)field.getUserData());
                             cube[xd.get(0)][xd.get(1)]=newCol;
+                            //System.out.println(cube[xd.get(0)][xd.get(1)]);
                             //cube[i][j]=newCol;
                         } catch (IllegalAccessException | NoSuchFieldException e) {
                             e.printStackTrace();
