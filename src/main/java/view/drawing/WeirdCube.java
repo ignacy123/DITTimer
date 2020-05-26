@@ -30,6 +30,7 @@ import model.logic.MoveImplementation;
 import model.logic.ScrambleGeneratorImplementation;
 import model.logic.Solve;
 
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -105,8 +106,8 @@ public class WeirdCube extends Application {
         transformButtons(true);
     }
 
-    public void doRev(String wh) {
-        ArrayList<Move> mvs = new ScrambleGeneratorImplementation(CubeType.THREEBYTHREE).fromString(cases.get(wh));
+    public void doRev(String wh, boolean ran) {
+        ArrayList<Move> mvs = new ScrambleGeneratorImplementation(CubeType.THREEBYTHREE).fromString(wh);
         Collections.reverse(mvs);
         ArrayList<Move> rdy=new ArrayList<>();
         for(Move cello: mvs) {
@@ -116,10 +117,13 @@ public class WeirdCube extends Application {
             //fc, dir, width
             rdy.add(new MoveImplementation(cello.getFace(), dr, cello.getWidth()));
         }
-        int upt=rand.nextInt(4);
-        for(int i = 0; i < upt; i++) {
-            rdy.add(new MoveImplementation(Face.U, Direction.CLOCKWISE, 1));
+        if(ran) {
+            int upt=rand.nextInt(4);
+            for(int i = 0; i < upt; i++) {
+                rdy.add(new MoveImplementation(Face.U, Direction.CLOCKWISE, 1));
+            }
         }
+
         rotator3.executeMoves(rdy);
         update();
     }
@@ -160,7 +164,7 @@ public class WeirdCube extends Application {
         //set random id
         int id= rand.nextInt(cases.size());//id of right alg
         String right = (String) cases.keySet().toArray()[id];
-        doRev(right);
+        doRev(cases.get(right), true);
         int okButton=rand.nextInt(4);
         correct=okButton;
         ArrayList<Character> prefs = new ArrayList<>();
@@ -204,55 +208,7 @@ public class WeirdCube extends Application {
         }
         transformButtons(true);
     }
-    @Override
-    public void start(Stage stage) throws Exception {
-
-
-        //gen for cases
-        //Aa
-        cases.put("Aa", "R' F R' B2 R F' R' B2 R2");
-        //Ab ??
-        cases.put("Ab", "R2 B2 R F R' B2 R F' R");
-        //E
-        cases.put("E", "R2 U R2 U D R2 U' R2 U R2 U' D' R2 U R2 U2 R2");
-        //F
-        cases.put("F", "R' U R U' R2 F' U' F U R F R' F' R2");
-        //Ga
-        cases.put("Ga", "D' R2 U R' U R' U' R U' R2 U' D R' U R");
-        //Gb
-        cases.put("Gb", "R' U' R U D' R2 U R' U R U' R U' R2 D");
-        //Gc
-        cases.put("Gc", "R2 U' R U' R U R' U R2 D' U R U' R' D");
-        //Gd
-        cases.put("Gd", "D' R U R' U' D R2 U' R U' R' U R' U R2");
-        //H
-        cases.put("H", "R2 U2 R U2 R2 U2 R2 U2 R U2 R2");
-        //Ja
-        cases.put("Ja", "L' U' L F L' U' L U L F' L2 U L");
-        //Jb
-        cases.put("Jb", "R U R' F' R U R' U' R' F R2 U' R'");
-        //Na
-        cases.put("Na", "L U' R U2 L' U R' L U' R U2 L' U R'");
-        //Nb
-        cases.put("Nb", "R' U L' U2 R U' L R' U L' U2 R U' L");
-        //Ra
-        cases.put("Ra","L U2 L' U2 L F' L' U' L U L F L2");
-        //Rb
-        cases.put("Rb", "R' U2 R U2 R' F R U R' U' R' F' R2");
-        //T
-        cases.put("T", "R U R' U' R' F R2 U' R' U' R U R' F'");
-        //Ua
-        cases.put("Ua", "R2 U' R' U' R U R U R U' R");
-        //Ub
-        cases.put("Ub", "R' U R' U' R' U' R' U R U R2");
-        //V ????
-        cases.put("V", "R U2 R' D R U' R U' R U R2 D R' U' R D2");
-        //Y
-        cases.put("Y", "F R U' R' U' R U R' F' R U R' U' R' F R F'");
-        //Z
-        cases.put("Z", "R U R' U R' U' R' U R U' R' U' R2 U R");
-        GridPane layout = new GridPane();
-        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("WeirdCube.fxml"));
+    void inito(FXMLLoader loader,Stage stage, GridPane layout) throws IOException {
         loader.setController(this);
         Pane root = loader.load();
         root.getChildren().add(layout);
@@ -331,6 +287,57 @@ public class WeirdCube extends Application {
         }
         update();
         stage.show();
+    }
+    @Override
+    public void start(Stage stage) throws Exception {
+
+
+        //gen for cases
+        //Aa
+        cases.put("Aa", "R' F R' B2 R F' R' B2 R2");
+        //Ab ??
+        cases.put("Ab", "R2 B2 R F R' B2 R F' R");
+        //E
+        cases.put("E", "R2 U R2 U D R2 U' R2 U R2 U' D' R2 U R2 U2 R2");
+        //F
+        cases.put("F", "R' U R U' R2 F' U' F U R F R' F' R2");
+        //Ga
+        cases.put("Ga", "D' R2 U R' U R' U' R U' R2 U' D R' U R");
+        //Gb
+        cases.put("Gb", "R' U' R U D' R2 U R' U R U' R U' R2 D");
+        //Gc
+        cases.put("Gc", "R2 U' R U' R U R' U R2 D' U R U' R' D");
+        //Gd
+        cases.put("Gd", "D' R U R' U' D R2 U' R U' R' U R' U R2");
+        //H
+        cases.put("H", "R2 U2 R U2 R2 U2 R2 U2 R U2 R2");
+        //Ja
+        cases.put("Ja", "L' U' L F L' U' L U L F' L2 U L");
+        //Jb
+        cases.put("Jb", "R U R' F' R U R' U' R' F R2 U' R'");
+        //Na
+        cases.put("Na", "L U' R U2 L' U R' L U' R U2 L' U R'");
+        //Nb
+        cases.put("Nb", "R' U L' U2 R U' L R' U L' U2 R U' L");
+        //Ra
+        cases.put("Ra","L U2 L' U2 L F' L' U' L U L F L2");
+        //Rb
+        cases.put("Rb", "R' U2 R U2 R' F R U R' U' R' F' R2");
+        //T
+        cases.put("T", "R U R' U' R' F R2 U' R' U' R U R' F'");
+        //Ua
+        cases.put("Ua", "R2 U' R' U' R U R U R U' R");
+        //Ub
+        cases.put("Ub", "R' U R' U' R' U' R' U R U R2");
+        //V ????
+        cases.put("V", "R U2 R' D R U' R U' R U R2 D R' U' R D2");
+        //Y
+        cases.put("Y", "F R U' R' U' R U R' F' R U R' U' R' F R F'");
+        //Z
+        cases.put("Z", "R U R' U R' U' R' U R U' R' U' R2 U R");
+        GridPane layout = new GridPane();
+        FXMLLoader loader=new FXMLLoader(getClass().getClassLoader().getResource("WeirdCube.fxml"));
+        inito(loader, stage, layout);
         for(int i = 0; i < 4; i++) {
             getButton(i).getTransforms().add(new Translate(0, 200));
         }
