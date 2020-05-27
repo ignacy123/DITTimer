@@ -31,6 +31,7 @@ import model.logic.*;
 import model.wrappers.AVGwrapper;
 import view.TimeList.AvgConverter;
 import view.TimeList.SolveConverter;
+import view.drawing.DrawScramble;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -120,8 +121,13 @@ public class RoomWindow extends Application {
     Text ao12Text3;
     @FXML
     Text ao12Text4;
+    @FXML
+    Pane DrawerPane;
+    DrawScramble drawer=null;
+
 
     Stage classStage = new Stage();
+
     ServerService jez;
     Room room;
     String name = "";
@@ -235,6 +241,11 @@ public class RoomWindow extends Application {
         avgs12.add(ao12Text2);
         avgs12.add(ao12Text3);
         avgs12.add(ao12Text4);
+
+        drawer=new DrawScramble();
+        DrawerPane.getChildren().add(drawer.getPane());
+        DrawerPane.setVisible(false);
+
     }
 
     void startCounting() {
@@ -296,6 +307,7 @@ public class RoomWindow extends Application {
     public RoomWindow(ServerService conn, Room room) {
         jez = conn;
         this.room = room;
+
     }
 
     public void renderUsers(ArrayList<User> users) {
@@ -524,8 +536,11 @@ public class RoomWindow extends Application {
 
     @FXML
     public void getScramble(ArrayList<Move> scramble) {
+        DrawerPane.setVisible(true);
+        drawer.setTypePernament(room.getType());
         Scramble.setText(generator.scrambleToString(scramble));
         Scramble.setVisible(true);
+        drawer.setScramble(scramble);
         mins = secs = millis = 0;
         canRun = true;
     }

@@ -103,6 +103,7 @@ public class RoomHolder {
     }
     public void setPassword(Room room, String password){
         passwords.put(room, password);
+        System.out.println(password);
     }
     public String getPassword(Room room){
         return passwords.get(room);

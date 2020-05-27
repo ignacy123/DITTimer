@@ -15,6 +15,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import model.enums.CubeType;
+import model.logic.ArraySerializable;
 import model.logic.Move;
 import model.wrappers.ObservableWrapper;
 
@@ -80,6 +81,12 @@ public class DrawScramble extends Stage {
         outSide.getChildren().add(this.rubics);
         return outSide;
     }
+
+
+    public void setTypePernament(CubeType type){
+        this.type=type;
+    }
+
     public void setOw(ObservableWrapper ow) {
         plaszczka = ow;
         ow.getCurrentScramble().addListener(new ListChangeListener<Move>() {
@@ -113,6 +120,18 @@ public class DrawScramble extends Stage {
         outSide.getChildren().setAll(rubics);
 
     }
+
+
+    public void setScramble(ArrayList<Move> scramble){
+        populateStandard();
+        Rotator rotator = rotator4;
+        if(type==CubeType.THREEBYTHREE) rotator = rotator3;
+        else if(type == CubeType.TWOBYTWO) rotator = rotator2;
+        rotator.executeMoves(scramble);
+        rubics=draw();
+        outSide.getChildren().setAll(rubics);
+    }
+
     public void populateStandard() {
         int n = 4;
         if(type == CubeType.THREEBYTHREE) n = 3;

@@ -19,7 +19,7 @@ import model.conn.Room;
 import model.conn.ServerService;
 import model.conn.ServerServiceImplementation;
 import model.enums.CubeType;
-
+import model.logic.AES;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -119,7 +119,11 @@ public class Client extends Application {
                 password = pass.get();
             }
         }
-        conn.joinRoom(room, String.valueOf(nameField.getCharacters()), password);
+        String encryptedPass=null;
+        if(password!=null){
+            encryptedPass=AES.encrypt(password, "59929") ;
+        }
+        conn.joinRoom(room, String.valueOf(nameField.getCharacters()), encryptedPass);
     }
     @FXML
     public void sendRooms(ArrayList<Room> rooms){
@@ -133,7 +137,11 @@ public class Client extends Application {
         if(passwordCheckBox.isSelected()){
             password = String.valueOf(passwordField.getCharacters());
         }
-        conn.createRoom((CubeType)cubeTypeChoiceBox.getValue(), String.valueOf(nameField.getCharacters()), passwordCheckBox.isSelected(), password);
+        String encryptedPass=null;
+        if(password!=null){
+            encryptedPass=AES.encrypt(password, "59929") ;
+        }
+        conn.createRoom((CubeType)cubeTypeChoiceBox.getValue(), String.valueOf(nameField.getCharacters()), passwordCheckBox.isSelected(), encryptedPass);
     }
 
     @FXML
