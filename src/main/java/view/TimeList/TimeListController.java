@@ -84,18 +84,23 @@ public class TimeListController extends Stage {
         });
         currentType = CubeType.THREEBYTHREE;
 
+        listView.setFocusTraversable(false);
         listView.setCellFactory(listView1 -> {
             TextFieldListCell<Solve> cell = new TextFieldListCell<>();
             cell.setConverter(new SolveConverter());
             return cell;
         });
         listView.scrollTo(Integer.MAX_VALUE);
+
+        listView2.setFocusTraversable(false);
         listView2.setCellFactory(listView1 -> {
             TextFieldListCell<AVGwrapper> cell = new TextFieldListCell<>();
             cell.setConverter(new AvgConverter());
             return cell;
         });
         listView2.scrollTo(Integer.MAX_VALUE);
+
+        listView3.setFocusTraversable(false);
         listView3.setCellFactory(listView1 -> {
             TextFieldListCell<AVGwrapper> cell = new TextFieldListCell<>();
             cell.setConverter(new AvgConverter());

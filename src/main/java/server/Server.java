@@ -167,9 +167,9 @@ public class Server {
                                 System.out.println("host is leaving");
                                 if(streams.size()>0){
                                     verona.setHost(verona.getUsers().get(0));
+                                    streams.get(0).reset();
+                                    streams.get(0).writeObject(new ServerResponse(ServerResponseType.HOSTGRANTED));
                                 }
-                                streams.get(0).reset();
-                                streams.get(0).writeObject(new ServerResponse(ServerResponseType.HOSTGRANTED));
                             }
                             sr = new ServerResponse(ServerResponseType.USERSCHANGED);
                             sr.setUsers(verona.getUsers());
@@ -267,29 +267,30 @@ public class Server {
                         System.out.println("host is leaving");
                         if(streams.size()>0){
                             room.setHost(room.getUsers().get(0));
-                        }
-                        try {
-                            streams.get(0).reset();
-                            streams.get(0).writeObject(new ServerResponse(ServerResponseType.HOSTGRANTED));
-                        } catch (IOException ex) {
+                            try {
+                                streams.get(0).reset();
+                                streams.get(0).writeObject(new ServerResponse(ServerResponseType.HOSTGRANTED));
+                            } catch (IOException ex) {
 
+                            }
                         }
                     }
                     if (room.getUsers().isEmpty()) {
                         holder.removeRoom(room);
-                    }
-                    ServerResponse pol = new ServerResponse(ServerResponseType.USERSCHANGED);
-                    pol.setUsers(room.getUsers());
-                    ServerResponse rubio = new ServerResponse(ServerResponseType.TIMESCHANGED);
-                    rubio.setSolves(room.getSolves());
-                    //update for other users?
-                    for (ObjectOutputStream oth : holder.getStreams(room)) {
-                        try {
-                            oth.reset();
-                            oth.writeObject(pol);
-                            oth.writeObject(rubio);
-                        } catch (IOException ioException) {
-                            ioException.printStackTrace();
+                    }else{
+                        ServerResponse pol = new ServerResponse(ServerResponseType.USERSCHANGED);
+                        pol.setUsers(room.getUsers());
+                        ServerResponse rubio = new ServerResponse(ServerResponseType.TIMESCHANGED);
+                        rubio.setSolves(room.getSolves());
+                        //update for other users?
+                        for (ObjectOutputStream oth : holder.getStreams(room)) {
+                            try {
+                                oth.reset();
+                                oth.writeObject(pol);
+                                oth.writeObject(rubio);
+                            } catch (IOException ioException) {
+                                ioException.printStackTrace();
+                            }
                         }
                     }
                 }

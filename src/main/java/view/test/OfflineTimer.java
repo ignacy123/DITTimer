@@ -20,8 +20,8 @@ public class OfflineTimer extends Application {
         StatisticServer ss = new StatisticServerImplementation(ow);
         Pane pane = loader.load();
         MainScreen controller = loader.getController();
-
         Scene scene = new Scene(pane);
+        
         stage.setScene(scene);
         stage.show();
         controller.giveStage(stage); // to close if go online

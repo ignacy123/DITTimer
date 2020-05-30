@@ -22,6 +22,8 @@ import model.enums.CubeType;
 import model.logic.ArraySerializable;
 import model.logic.KeyFile;
 import model.wrappers.ObservableWrapper;
+import view.drawing.ClickDrawer;
+import view.drawing.CubeTraining;
 import view.drawing.WeirdCube;
 import view.test.Client;
 
@@ -34,8 +36,8 @@ public class MoreOptionsController {
     private StatisticServer ss = null;
     private ObservableWrapper ow = null;
     ServerService conn;
-    Stage toHide=null;
-    Stage me=null;
+    Stage toHide = null;
+    Stage me = null;
     CubeType type = CubeType.THREEBYTHREE;
     Stage stage = new Stage();
     FileChooser fileChooser = new FileChooser();
@@ -54,6 +56,10 @@ public class MoreOptionsController {
     private Button GoOnlineButton;
     @FXML
     private Button ExportServerButton;
+    @FXML
+    private Button stateButton;
+    @FXML
+    private Button wvButton;
     @FXML
     private Button Exit;
 
@@ -82,6 +88,16 @@ public class MoreOptionsController {
         game.start(new Stage());
     }
 
+    @FXML
+    void stateChecker() throws Exception {
+        ClickDrawer drawer = new ClickDrawer();
+        drawer.start(new Stage());
+    }
+    @FXML
+    void wvPractice() throws Exception {
+        CubeTraining wv = new CubeTraining();
+        wv.start(new Stage());
+    }
     @FXML
     void ImportLocal(ActionEvent event) {
         File selectedFile = fileChooser.showOpenDialog(stage);
@@ -118,10 +134,12 @@ public class MoreOptionsController {
         conn.setKey(toSend);
         conn.sendKey();
     }
-    public void GiveStage(Stage stage, Stage stage2){
-        toHide=stage;
-        me=stage2;
+
+    public void GiveStage(Stage stage, Stage stage2) {
+        toHide = stage;
+        me = stage2;
     }
+
     @FXML
     void ExportServer(ActionEvent event) throws IOException {
         File automatic = new File("src/main/resources/Generated");
