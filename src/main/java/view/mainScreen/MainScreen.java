@@ -150,9 +150,11 @@ public class MainScreen extends Stage {
             }
         });
     }
+    public void KillMetronome(){
+        MetronomeController controllerMet = metronomeLoader.getController();
+        controllerMet.OFFbutton.fire();
+    }
     public MainScreen() {
 
     }
-
-
 }
