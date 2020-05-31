@@ -41,5 +41,8 @@ public class OfflineTimer extends Application {
             }
         });
         controller.setSSAndOw(ss, ow);
+        stage.setOnCloseRequest(event -> {
+            controller.KillMetronome();
+        });
     }
 }

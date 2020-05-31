@@ -66,47 +66,23 @@ public class StatisticServerImplementation implements StatisticServer {
         A50Four = OW.getListAvg(CubeType.FOURBYFOUR, AVG.Ao50);
         A100Four = OW.getListAvg(CubeType.FOURBYFOUR, AVG.Ao100);
 
-        initializeHistory(A5Two, TwoByTwo, 5);
-        initializeHistory(A12Two, TwoByTwo, 12);
-        initializeHistory(A50Two, TwoByTwo, 50);
-        initializeHistory(A100Two, TwoByTwo, 100);
+        initializeHistory(A5Two, TwoByTwo, AVG.Ao5);
+        initializeHistory(A12Two, TwoByTwo, AVG.Ao12);
+        initializeHistory(A50Two, TwoByTwo, AVG.Ao50);
+        initializeHistory(A100Two, TwoByTwo, AVG.Ao100);
 
-        initializeHistory(A5Tree, TreeByTree, 5);
-        initializeHistory(A12Tree, TreeByTree, 12);
-        initializeHistory(A50Tree, TreeByTree, 50);
-        initializeHistory(A100Tree, TreeByTree, 100);
+        initializeHistory(A5Tree, TreeByTree, AVG.Ao5);
+        initializeHistory(A12Tree, TreeByTree, AVG.Ao12);
+        initializeHistory(A50Tree, TreeByTree, AVG.Ao50);
+        initializeHistory(A100Tree, TreeByTree, AVG.Ao100);
 
-        initializeHistory(A5Four, FourByFour, 5);
-        initializeHistory(A12Four, FourByFour, 12); // initialize those lists with data from db
-        initializeHistory(A50Four, FourByFour, 50);
-        initializeHistory(A100Four, FourByFour, 100);
+        initializeHistory(A5Four, FourByFour, AVG.Ao5);
+        initializeHistory(A12Four, FourByFour, AVG.Ao12); // initialize those lists with data from db
+        initializeHistory(A50Four, FourByFour, AVG.Ao50);
+        initializeHistory(A100Four, FourByFour, AVG.Ao100);
     }
-    /* private void initializeHistory(ObservableList<AVGwrapper> ToFill, ObservableList<Solve> source, int k){
-         if(source.size()<k) return;
-         long value=0;
-         int ID=0;
-         int i;
-         for(i=0;i<k;i++) value+=source.get(i).getTime().getTime();
-         value=value/k;
-         ToFill.add(new AVGwrapper(ID,new Timestamp(value),false));
-         ID++;
-         i++;
-         while (i<source.size()) {
-             value = value * k;
-             if (source.get(i).getState() == State.DNF)
-                 value += 0;
-             else value += source.get(i).getTime().getTime();
-             if (source.get(i-k).getState() == State.DNF)
-                 value -= 0;
-             else value -= source.get(i-k).getTime().getTime();
-             value = value / k;
-             ToFill.add(new AVGwrapper(ID, new Timestamp(value), false));
-             ID++;
-             i++;
-         }
-     } first version */
-
-    private void initializeHistory(ObservableList<AVGwrapper> ToFill, ObservableList<Solve> source, int k) {
+    private void initializeHistory(ObservableList<AVGwrapper> ToFill, ObservableList<Solve> source, AVG avg) {
+        int k=giveMeSize(avg);
         int helper;
         int DNFcounter;
         long value;
@@ -121,16 +97,38 @@ public class StatisticServerImplementation implements StatisticServer {
                 ToFill.add(new AVGwrapper(j + 1, new Timestamp(0), false));
                 ToFill.get(ToFill.size() - 1).setNET();
             }
+
             for (i = k - 1; i < source.size(); i++) {
                 helper = k;
                 value = 0;
                 DNFcounter = 0;
+                long best=999999999;
+                long worst=-1;
                 for (int j = i; helper > 0; j--, helper--) {
                     if (source.get(j).getState() == State.DNF) {
                         DNFcounter++;
-                    } else value += source.get(j).getTime().getTime();
+                        if(DNFcounter==2) break;
+                    }
+                    if (source.get(j).getTime().getTime() < best && source.get(j).getState()!=State.DNF) {
+                        best = source.get(j).getTime().getTime();
+                    }
+                    if(source.get(j).getTime().getTime() > worst){
+                        worst= source.get(j).getTime().getTime();
+                    }
+                    value += source.get(j).getTime().getTime();
                 }
-                value = value / k;
+                helper = k;
+                if(DNFcounter<2){
+                    for (int j = i; helper > 0; j--, helper--) {
+                        if (source.get(j).getState() == State.DNF) {
+                            worst=source.get(j).getTime().getTime();
+                        }
+                    }
+                }
+                value-=best;
+                value-=worst;
+                value = value / (k-2);
+
                 if (DNFcounter < 2)
                     ToFill.add(new AVGwrapper(i + 1, new Timestamp(value), false));
                 else ToFill.add(new AVGwrapper(i + 1, new Timestamp(value), true));
@@ -212,32 +210,83 @@ public class StatisticServerImplementation implements StatisticServer {
     @Override
     public Timestamp CreateAverage(AVG WhatAverage, CubeType WhatModel) throws DNF, NotEnoughTimes {
         ObservableList<Solve> temp=returnSOLVElist(WhatModel);
-        int IntAVG=giveMeSize(WhatAverage);;
-        long best = 999999999;
-        long worst=0;
+        int IntAVG=giveMeSize(WhatAverage);
         if (temp.size() < IntAVG) {
             throw new NotEnoughTimes();
         }
-        else {
-            int helper = IntAVG;
-            long  value = 0;
-            int amountOfDNF = 0;
-            for (int i = temp.size() - 1; helper > 0; i--, helper--) {
-                if (temp.get(i).getState() == State.DNF) {
-                    amountOfDNF++;
-                    if (amountOfDNF == 2) break;
-                } else {
-                    value += temp.get(i).getTime().getTime(); // unfortunate
-                   // if(temp.get(i).getTime().getTime()<best) best=temp.get(i).getTime().getTime();
-                    //if(temp.get(i).getTime().getTime()>worst) worst=temp.get(i).getTime().getTime();
+        if (temp.size() == IntAVG) {
+            int HowManyDnf=0;
+            for (int i = 0; i < IntAVG; i++) {
+                if (temp.get(i).getState().equals(State.DNF)) {
+                    HowManyDnf++;
                 }
             }
-            if (amountOfDNF >= 2) throw new DNF();
-            else {
-                //value=value-best-worst;
-                return new Timestamp(value / (IntAVG));
+            if(HowManyDnf>=2) throw new DNF();
+
+            long best = 999999999;
+            long worst=-1;
+            long avg = 0;
+            for (int i = 0; i < IntAVG; i++) {
+                if (temp.get(i).getTime().getTime() < best && temp.get(i).getState()!=State.DNF) {
+                    best = temp.get(i).getTime().getTime();
+                }
+                if(temp.get(i).getTime().getTime() > worst){
+                    worst= temp.get(i).getTime().getTime();
+                }
+                avg += temp.get(i).getTime().getTime();
+            }
+            for (int i = 0; i < IntAVG; i++) {
+                if(temp.get(i).getState() ==State.DNF){
+                    worst= temp.get(i).getTime().getTime();
+                }
+            }
+            avg -= best;
+            avg -= worst;
+            avg = avg / (IntAVG - 2);
+            return new Timestamp(avg);
+        }
+        int dnfCounter = 0;
+        for (int i = temp.size() - IntAVG+1; i < temp.size(); i++) {
+            if (temp.get(i).getState().equals(State.DNF)) {
+                dnfCounter++;
             }
         }
+        if (dnfCounter >= 2) {
+            throw new DNF();
+        }
+
+        if (dnfCounter == 1) {
+            long best = 999999999;
+            long avg = 0;
+            for (int i = temp.size() - IntAVG; i < temp.size(); i++) {
+                if (temp.get(i).getState().equals(State.DNF)) {
+                    continue;
+                }
+                if (temp.get(i).getTime().getTime() < best) {
+                    best = temp.get(i).getTime().getTime();
+                }
+                avg += temp.get(i).getTime().getTime();
+            }
+            avg -= best;
+            avg = avg / (IntAVG - 2);
+            return new Timestamp(avg);
+        }
+        long worst = -1;
+        long best = 99999999;
+        long avg = 0;
+        for (int i = temp.size() - IntAVG; i < temp.size(); i++) {
+            if (temp.get(i).getTime().getTime() < best) {
+                best = temp.get(i).getTime().getTime();
+            }
+            if (temp.get(i).getTime().getTime() > worst) {
+                worst = temp.get(i).getTime().getTime();
+            }
+            avg += temp.get(i).getTime().getTime();
+        }
+        avg -= best;
+        avg -= worst;
+        avg = avg / (IntAVG - 2);
+        return  new Timestamp(avg);
     }
 
     @Override
