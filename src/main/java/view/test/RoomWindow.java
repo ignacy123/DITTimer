@@ -388,11 +388,12 @@ public class RoomWindow extends Application {
                     }
                 }
             }
+            noBestTime();
             if(bestao5!=null){
                 avgs5.get(bestao5Ind).setFill(Color.GREEN);
             }
             if(bestao12!=null){
-                avgs12.get(bestao5Ind).setFill(Color.GREEN);
+                avgs12.get(bestao12Ind).setFill(Color.GREEN);
             }
             i++;
         }

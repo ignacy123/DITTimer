@@ -21,7 +21,7 @@ public class OfflineTimer extends Application {
         Pane pane = loader.load();
         MainScreen controller = loader.getController();
         Scene scene = new Scene(pane);
-
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("css0.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
         controller.giveStage(stage); // to close if go online
