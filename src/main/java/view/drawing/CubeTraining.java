@@ -1,23 +1,19 @@
 package view.drawing;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Scale;
-import javafx.scene.transform.Shear;
-import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
 public class CubeTraining extends WeirdCube {
     int old;
@@ -47,10 +43,6 @@ public class CubeTraining extends WeirdCube {
         algName.setText(name);
         populateStandard();
         String toExecute= alg.get(name).get(0);
-        if(cases.containsKey(name)) {
-            System.out.println(cases.get(name));
-            toExecute += ' '+cases.get(name);
-        }
         doRev(toExecute, false);
         list.getItems().clear();
         list.getItems().setAll(alg.get(name));
