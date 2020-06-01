@@ -246,7 +246,7 @@ public class StatisticServerImplementation implements StatisticServer {
             return new Timestamp(avg);
         }
         int dnfCounter = 0;
-        for (int i = temp.size() - IntAVG+1; i < temp.size(); i++) {
+        for (int i = temp.size() - IntAVG; i < temp.size(); i++) {
             if (temp.get(i).getState().equals(State.DNF)) {
                 dnfCounter++;
             }

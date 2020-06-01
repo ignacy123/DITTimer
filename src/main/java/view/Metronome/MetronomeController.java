@@ -38,7 +38,7 @@ public class MetronomeController {
     private Button SetBmp;
     @FXML
     void SetIT(ActionEvent event) {
-        BMPline.setValue(bmpChooser.getValue());
+        if(bmpChooser.getValue()!=null) BMPline.setValue(bmpChooser.getValue());
     }
     ObservableList<Integer> list= FXCollections.observableArrayList(
       250,500,750,1000

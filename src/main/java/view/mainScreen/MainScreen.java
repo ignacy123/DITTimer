@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -23,7 +24,7 @@ import view.TimeList.TimeListController;
 import view.Timer.Controller;
 import view.drawing.DrawScramble;
 import view.drawing.StatsWindow;
-
+import javafx.scene.image.Image;
 import java.io.IOException;
 
 public class MainScreen extends Stage {
@@ -43,6 +44,8 @@ public class MainScreen extends Stage {
     Pane pane6;
     @FXML
     private Button MoreOptionsButton;
+    @FXML
+    private Pane logoPane;
     @FXML
     void GiveMeMoreOptions(ActionEvent event) {
         MOstage.show();
@@ -68,7 +71,8 @@ public class MainScreen extends Stage {
 
     @FXML
     void initialize() throws IOException {
-
+        Image logo=new Image("file:src/main/resources/logo.png");
+        logoPane.getChildren().add(new ImageView(logo));
         MoreOptionsLoader=new FXMLLoader(getClass().getClassLoader().getResource("MoreOptionsWindow.fxml"));
         MOpane = MoreOptionsLoader.load();
         MOC=MoreOptionsLoader.getController();
