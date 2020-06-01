@@ -93,11 +93,13 @@ public class MoreOptionsController {
         ClickDrawer drawer = new ClickDrawer();
         drawer.start(new Stage());
     }
+
     @FXML
     void wvPractice() throws Exception {
         CubeTraining wv = new CubeTraining();
         wv.start(new Stage());
     }
+
     @FXML
     void ImportLocal(ActionEvent event) {
         File selectedFile = fileChooser.showOpenDialog(stage);
@@ -110,6 +112,7 @@ public class MoreOptionsController {
         Dialog<String> KeyDialog = new Dialog<>();
         KeyDialog.setTitle("Key");
         KeyDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        KeyDialog.setResizable(true);
         TextField pwd = new TextField();
         HBox content = new HBox();
         content.setAlignment(Pos.CENTER_LEFT);
@@ -180,6 +183,7 @@ public class MoreOptionsController {
         stage.setOnCloseRequest(windowEvent -> {
                     if (conn != null) {
                         conn.close();
+                        conn = null;
                     }
                 }
         );

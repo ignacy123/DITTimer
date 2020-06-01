@@ -74,6 +74,7 @@ public class Client extends Application {
         loader.setController(this);
         Pane pane = loader.load();
         Scene scene = new Scene(pane);
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("css0.css").toExternalForm());
         stage.setScene(scene);
         stage.setOnCloseRequest((windowEvent) -> {
             System.out.println("Closing client");

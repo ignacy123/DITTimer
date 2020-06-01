@@ -214,6 +214,7 @@ public class WeirdCube extends Application {
         root.getChildren().add(layout);
         this.layout=layout;
         Scene scene = new Scene(root, 700, 700);
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("css0.css").toExternalForm());
         stage.setScene(scene);
         layout.setLayoutY(200);
         layout.setLayoutX(100);

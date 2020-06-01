@@ -495,6 +495,7 @@ public class RoomWindow extends Application {
         loader.setController(this);
         Pane pane = loader.load();
         Scene scene = new Scene(pane);
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("css0.css").toExternalForm());
         stage.setScene(scene);
         jez.getPlayers(room);
         jez.getTimes(room);

@@ -22,7 +22,8 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
-    static Map<String,File>myMap=new ConcurrentHashMap<>();
+    static Map<String, File> myMap = new ConcurrentHashMap<>();
+
     public static void main(String[] args) {
         RoomHolder holder;
         int counter = 1;
@@ -42,7 +43,7 @@ public class Server {
     }
 
     public static class ClientHandler extends Thread {
-        Map<String,File>myMap;
+        Map<String, File> myMap;
         private Socket socket;
         private User user;
         private RoomHolder holder;
@@ -50,8 +51,8 @@ public class Server {
         private ScrambleGenerator gen3 = new ScrambleGeneratorImplementation(CubeType.THREEBYTHREE);
         private ScrambleGenerator gen4 = new ScrambleGeneratorImplementation(CubeType.FOURBYFOUR);
 
-        ClientHandler(Socket socket, int id, RoomHolder holder,Map<String,File>map ) {
-            this.myMap=map;
+        ClientHandler(Socket socket, int id, RoomHolder holder, Map<String, File> map) {
+            this.myMap = map;
             this.socket = socket;
             user = new User(id);
             //user.setSocket(socket);
@@ -73,20 +74,22 @@ public class Server {
                     switch (request.getType()) {
                         case FILE:
                             String key;
-                            int code= (int) (Math.random()*10000);
-                            key=Integer.toString(code);
-                            myMap.put(key,request.getFile());
-                            sr=new ServerResponse(ServerResponseType.FILERECEIVED);
-                            KeyFile kf=new KeyFile(key);
+                            int code = (int) (Math.random() * 10000);
+                            key = Integer.toString(code);
+                            myMap.put(key, request.getFile());
+                            sr = new ServerResponse(ServerResponseType.FILERECEIVED);
+                            KeyFile kf = new KeyFile(key);
                             sr.setKey(kf);
                             outputStream.writeObject(sr);
                             break;
                         case GIVEMEFILE:
-                            File toBeSent=myMap.get(request.getKey().getKey());
-                            sr=new ServerResponse(ServerResponseType.FILE);
-                            sr.setFile(toBeSent);
-                            myMap.remove(request.getKey().getKey());
-                            outputStream.writeObject(sr);
+                            if (request.getKey().getKey() != null) {
+                                File toBeSent = myMap.get(request.getKey().getKey());
+                                sr = new ServerResponse(ServerResponseType.FILE);
+                                sr.setFile(toBeSent);
+                                myMap.remove(request.getKey().getKey());
+                                outputStream.writeObject(sr);
+                            }
                             break;
                         case REQUESTROOMS:
                             sr = new ServerResponse(ServerResponseType.SENDINGROOMS);
@@ -143,7 +146,7 @@ public class Server {
                                 mike.writeObject(sr);
                             }
                             user.setReadyForNext(true);
-                            if(holder.isRoomReady(sienna)){
+                            if (holder.isRoomReady(sienna)) {
                                 room = holder.getRoom(request.getRoom().getID());
                                 sr = new ServerResponse(ServerResponseType.SCRAMBLERECEIVED);
                                 CubeType type = room.getType();
@@ -152,7 +155,7 @@ public class Server {
                                     nycz.reset();
                                     nycz.writeObject(sr);
                                 }
-                                for(User user: room.getUsers()){
+                                for (User user : room.getUsers()) {
                                     user.setReadyForNext(false);
                                 }
                             }
@@ -163,9 +166,9 @@ public class Server {
                             //remove user from verona
                             holder.removeUser(user, verona);
                             ArrayList<ObjectOutputStream> streams = holder.getStreams(verona);
-                            if(verona.getHost().equals(user)){
+                            if (verona.getHost().equals(user)) {
                                 System.out.println("host is leaving");
-                                if(streams.size()>0){
+                                if (streams.size() > 0) {
                                     verona.setHost(verona.getUsers().get(0));
                                     streams.get(0).reset();
                                     streams.get(0).writeObject(new ServerResponse(ServerResponseType.HOSTGRANTED));
@@ -196,7 +199,7 @@ public class Server {
                                 nycz.reset();
                                 nycz.writeObject(sr);
                             }
-                            for(User user: room.getUsers()){
+                            for (User user : room.getUsers()) {
                                 user.setReadyForNext(false);
                             }
                             break;
@@ -255,7 +258,7 @@ public class Server {
                             }
                     }
                 }
-            }  catch (Exception e) {
+            } catch (Exception e) {
                 //e.printStackTrace();
                 //e.printStackTrace();
                 //user disconnected, he might still be in some room?
@@ -263,9 +266,9 @@ public class Server {
                     Room room = user.getRoom();
                     holder.removeUser(user, room);
                     ArrayList<ObjectOutputStream> streams = holder.getStreams(room);
-                    if(room.getHost().equals(user)){
+                    if (room.getHost().equals(user)) {
                         System.out.println("host is leaving");
-                        if(streams.size()>0){
+                        if (streams.size() > 0) {
                             room.setHost(room.getUsers().get(0));
                             try {
                                 streams.get(0).reset();
@@ -277,7 +280,7 @@ public class Server {
                     }
                     if (room.getUsers().isEmpty()) {
                         holder.removeRoom(room);
-                    }else{
+                    } else {
                         ServerResponse pol = new ServerResponse(ServerResponseType.USERSCHANGED);
                         pol.setUsers(room.getUsers());
                         ServerResponse rubio = new ServerResponse(ServerResponseType.TIMESCHANGED);

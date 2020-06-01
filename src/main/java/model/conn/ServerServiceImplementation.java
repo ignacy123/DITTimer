@@ -222,7 +222,6 @@ public class ServerServiceImplementation implements ServerService {
 
     @Override
     public void sendFile() { // catch in future
-
         ClientRequest toSend = new ClientRequest(ClientRequestType.FILE);   // zmien podejscie daj mu setFile
         toSend.setFile(myFile);
         try {

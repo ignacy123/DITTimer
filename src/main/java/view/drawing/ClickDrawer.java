@@ -618,7 +618,9 @@ public class ClickDrawer extends Application {
     public void start(Stage stage) throws Exception {
         stage.setResizable(true);
         BorderPane layout = new BorderPane();
-        stage.setScene(new Scene(layout, 1000, 800));
+        Scene scene = new Scene(layout, 1000, 800);
+        scene.getStylesheets().add(getClass().getClassLoader().getResource("css0.css").toExternalForm());
+        stage.setScene(scene);
         this.layout = layout;
         GridPane rubics = draw();
         this.rubics = rubics;
@@ -727,12 +729,14 @@ public class ClickDrawer extends Application {
         reset.setOnMouseClicked(mouseEvent -> {
             reset();
         });
-        val.setText("aaaaaa");
-        clean.setText("clean");
-        reset.setText("reset");
+        val.setText("Check!");
+        clean.setText("Clean!");
+        reset.setText("Reset!");
         VBox vb = new VBox();
         vb.getChildren().addAll(val, clean, reset);
+        BorderPane.setAlignment(vb, Pos.TOP_CENTER);
         layout.setRight(vb);
+        layout.rightProperty();
         stage.show();
     }
 }

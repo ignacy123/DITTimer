@@ -78,6 +78,7 @@ public class MainScreen extends Stage {
         MOC=MoreOptionsLoader.getController();
         MoreOptionsScene =new Scene(MOpane);
         MOstage =new Stage();
+        MoreOptionsScene.getStylesheets().add(getClass().getClassLoader().getResource("css0.css").toExternalForm());
         MOstage.setScene(MoreOptionsScene);
         MOC.setStage(MOstage);
         // more init for MoreOptions button
@@ -141,6 +142,7 @@ public class MainScreen extends Stage {
                     pane6.setVisible(false);
                     scramble.setVisible(false);
                     MoreOptionsButton.setVisible(false);
+                    logoPane.setVisible(false);
 
                 }else{
                     pane.setVisible(true);
@@ -150,6 +152,7 @@ public class MainScreen extends Stage {
                     pane6.setVisible(true);
                     scramble.setVisible(true);
                     MoreOptionsButton.setVisible(true);
+                    logoPane.setVisible(true);
                 }
             }
         });
