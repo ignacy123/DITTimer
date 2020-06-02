@@ -27,5 +27,4 @@ public interface Solve {
     String toString();
 
     void rejectSolution(); // changes stato to REJ
-    void Penalty(); // modifies time of solution
 }

@@ -38,9 +38,13 @@ public class testSS {
         System.out.println("TEST1 BEGINS=====================================");
         Timestamp[] times=new Timestamp[50];
         Solve[] solves=new SolveImplementation[50];
+        long max=-1;
+        long min=999999999;
         long value=0;
         for(int i=0;i<50;i++){
             times[i]=new Timestamp(random.nextInt(9999999));
+            if(times[i].getTime()>max) max=times[i].getTime();
+            if(times[i].getTime()<min) min=times[i].getTime();
             solves[i]=new SolveImplementation();
             solves[i].setTime(times[i]);
             value+=times[i].getTime();
@@ -50,7 +54,10 @@ public class testSS {
             SS.insertSolve(solves[i]);
         } // inserting to SS
 
-        Time average=new Time(value/50);
+        Time average=new Time((value-max-min)/(50-2));
+        System.out.println(average.getTime());
+        System.out.println(SS.GiveMeAverage(AVG.Ao50,CubeType.THREEBYTHREE).getTime());
+
         assertEquals(SS.GiveMeAverage(AVG.Ao50,CubeType.THREEBYTHREE).getTime(),average.getTime());
         // generated 50-average correctly from 50 times
         System.out.println("Computed 20-average correctly");
@@ -69,6 +76,8 @@ public class testSS {
         db.dropDatabase();
         db.start();
         System.out.println("TEST2 BEGINS=====================================");
+        long min=999999999;
+        long max=-1;
         Timestamp[] times=new Timestamp[5];
         Solve[] solves=new SolveImplementation[5];
         long value=0;
@@ -77,6 +86,8 @@ public class testSS {
             times[i]=new Timestamp(random.nextInt(99999));
             solves[i]=new SolveImplementation();
             solves[i].setTime(times[i]);
+            if(times[i].getTime()>max) max=times[i].getTime();
+            if(times[i].getTime()<min) min=times[i].getTime();
             value+=times[i].getTime();
         }  // generates Times
 
@@ -86,7 +97,7 @@ public class testSS {
         for(int i=0;i<5;i++){
            System.out.println(times[i]);
         }
-        Time average=new Time(value/5);
+        Time average=new Time((value-max-min)/(5-2));
         assertEquals(SS.GiveMeAverage(AVG.Ao5,CubeType.THREEBYTHREE).getTime(),average.getTime());
         System.out.println("Computed static: " + average);
         System.out.println("Computed by SS: " + SS.GiveMeAverage(AVG.Ao5,CubeType.THREEBYTHREE));
@@ -106,6 +117,8 @@ public class testSS {
         db.start();
         SS.delete(CubeType.THREEBYTHREE);
         Random random=new Random();
+        long min=999999999;
+        long max=-1;
         Timestamp[] times=new Timestamp[5];
         Solve[] solves=new SolveImplementation[5];
         long value=0;
@@ -113,23 +126,27 @@ public class testSS {
             times[i]=new Timestamp(random.nextInt(99999));
             solves[i]=new SolveImplementation();
             solves[i].setTime(times[i]);
+            if(times[i].getTime()>max) max=times[i].getTime();
+            if(times[i].getTime()<min) min=times[i].getTime();
             SS.insertSolve(solves[i]);
             value+=times[i].getTime();
         }  // generates Times
         solves[2].setState(State.DNF);
-        value=value-times[2].getTime();
+        max=solves[2].getTime().getTime();
         try {
-            assertEquals(value/5,SS.GiveMeAverage(AVG.Ao5,CubeType.THREEBYTHREE).getTime());
+            assertEquals((value-max-min)/(5-2),SS.GiveMeAverage(AVG.Ao5,CubeType.THREEBYTHREE).getTime());
         } catch (StatisticServerImplementation.NotEnoughTimes | StatisticServerImplementation.DNF notEnoughTimes) {
             notEnoughTimes.printStackTrace();
         }
         System.out.println("SS computed correctly average when one of times was set to DNF");
 
 
-        value+=times[2].getTime();
-        solves[2].setState(State.CORRECT);
 
-        System.out.println("Deleting last");
+        solves[2].setState(State.CORRECT);
+        for(int i=0;i<5;i++){
+            if(solves[i].getTime().getTime()>max) max=solves[i].getTime().getTime();
+        }
+
         SS.DeleteLast(CubeType.THREEBYTHREE);
         try {
             SS.CreateAverage(AVG.Ao50,CubeType.THREEBYTHREE);
@@ -140,9 +157,9 @@ public class testSS {
         }
 
         SS.insertSolve(solves[4]);
-        System.out.println("Back to normal");
+
         try {
-            assertEquals(value/5,SS.GiveMeAverage(AVG.Ao5,CubeType.THREEBYTHREE).getTime());
+            assertEquals((value-max-min)/(5-2),SS.GiveMeAverage(AVG.Ao5,CubeType.THREEBYTHREE).getTime());
         } catch (StatisticServerImplementation.NotEnoughTimes | StatisticServerImplementation.DNF notEnoughTimes) {
             System.out.println("Not enough times was thrown as expected");
         }

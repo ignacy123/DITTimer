@@ -1,7 +1,6 @@
 package model.conn;
 
 import javafx.application.Platform;
-import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
@@ -12,19 +11,14 @@ import javafx.stage.Stage;
 import model.SS.StatisticServer;
 import model.enums.ClientRequestType;
 import model.enums.CubeType;
-import model.enums.ServerResponseType;
-import model.logic.ArraySerializable;
 import model.logic.KeyFile;
 import model.logic.Solve;
-import model.logic.SolveImplementation;
 import view.MoreOptions.MoreOptionsController;
 import view.test.Client;
 import view.test.RoomWindow;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Files;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Random;
 
