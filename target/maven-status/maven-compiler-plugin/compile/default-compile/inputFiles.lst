@@ -3,7 +3,6 @@
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/model/logic/Move.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/view/start/RoomWindow.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/view/drawing/Rotator3.java
-/home/ignacy/IdeaProjects/DITTimer/src/main/java/view/CommentWindow/TextFieldLimited.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/view/drawing/DrawScramble.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/model/SS/StatisticServerImplementation.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/model/logic/OrientationLessCorner.java
@@ -19,7 +18,6 @@
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/model/conn/ServerService.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/model/enums/ServerResponseType.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/model/conn/ServerResponse.java
-/home/ignacy/IdeaProjects/DITTimer/src/main/java/view/drawing/Controller.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/view/Timer/Controller.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/view/drawing/StatsWindow.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/view/start/Client.java
@@ -40,7 +38,6 @@
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/model/logic/AES.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/server/Server.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/model/conn/RoomHolder.java
-/home/ignacy/IdeaProjects/DITTimer/src/main/java/view/drawing/Main.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/model/logic/ScrambleGeneratorImplementation.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/view/start/OfflineTimer.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/model/conn/ServerServiceImplementation.java

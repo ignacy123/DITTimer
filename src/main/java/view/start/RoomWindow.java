@@ -187,6 +187,10 @@ public class RoomWindow extends Application {
         EventHandler handler = new EventHandler<InputEvent>() {
             public void handle(InputEvent event) {
                 if (!msgField.isFocused()) {
+                    if(((KeyEvent) event).getCode()!= KeyCode.K){
+                        event.consume();
+                        return;
+                    }
                     stopCounting();
                 }
                 event.consume();
@@ -196,6 +200,10 @@ public class RoomWindow extends Application {
         EventHandler handler2 = new EventHandler<InputEvent>() {
             public void handle(InputEvent event) {
                 if (!msgField.isFocused()) {
+                    if(((KeyEvent) event).getCode()!= KeyCode.K){
+                        event.consume();
+                        return;
+                    }
                     startCounting();
                 }
                 event.consume();
@@ -207,8 +215,8 @@ public class RoomWindow extends Application {
         mainPane.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent t) {
-                if (t.getCode() == KeyCode.SPACE) {
-                    stopCounting();
+                if (t.getCode() == KeyCode.SPACE) { KeyEvent k2 = new KeyEvent(KeyEvent.KEY_PRESSED, "k", null, KeyCode.K, false, false, false, false);
+                    KeyEvent.fireEvent(mainPane, k2);
                     t.consume();
                 }
 
@@ -218,7 +226,8 @@ public class RoomWindow extends Application {
             @Override
             public void handle(KeyEvent t) {
                 if (t.getCode() == KeyCode.SPACE) {
-                    startCounting();
+                    KeyEvent k2 = new KeyEvent(KeyEvent.KEY_RELEASED, "k", null, KeyCode.K, false, false, false, false);
+                    KeyEvent.fireEvent(mainPane, k2);
                     t.consume();
                 }
                 if (t.getCode() == KeyCode.ENTER) {

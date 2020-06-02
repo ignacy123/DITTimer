@@ -8,6 +8,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 
 import javafx.scene.input.InputEvent;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -131,6 +133,10 @@ public class Controller {
         assert timePassed != null : "fx:id=\"timePassed\" was not injected: check your FXML file 'timersample.fxml'.";
         EventHandler handler = new EventHandler<InputEvent>() {
             public void handle(InputEvent event) {
+                if(((KeyEvent) event).getCode()!= KeyCode.K){
+                    event.consume();
+                    return;
+                }
                 try {
                     ResetAndGetReady();
                 } catch (InterruptedException e) {
@@ -142,6 +148,10 @@ public class Controller {
         };
         EventHandler handler2 = new EventHandler<InputEvent>() {
             public void handle(InputEvent event) {
+                if(((KeyEvent) event).getCode()!= KeyCode.K){
+                    event.consume();
+                    return;
+                }
                 StartTimer();
                 event.consume();
             }

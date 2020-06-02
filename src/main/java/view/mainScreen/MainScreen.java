@@ -71,7 +71,7 @@ public class MainScreen extends Stage {
 
     @FXML
     void initialize() throws IOException {
-        Image logo=new Image("file:src/main/resources/logo.png");
+        Image logo=new Image(getClass().getClassLoader().getResource("logo.png").toString());
         logoPane.getChildren().add(new ImageView(logo));
         MoreOptionsLoader=new FXMLLoader(getClass().getClassLoader().getResource("MoreOptionsWindow.fxml"));
         MOpane = MoreOptionsLoader.load();

@@ -82,12 +82,9 @@ public class MetronomeController {
     }
     @FXML
     void initialize() {
-        try {
-            metronomeSound = new Media(new File(getClass().getClassLoader().getResource("metronome.wav").getFile()).toURI().toURL().toString());
+            getClass().getResourceAsStream("metronome.wav");
+            metronomeSound = new Media(getClass().getClassLoader().getResource("metronome.wav").toString());
             mediaPlayer = new MediaPlayer(metronomeSound);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
         bmpChooser.setItems(list);
     }
 
