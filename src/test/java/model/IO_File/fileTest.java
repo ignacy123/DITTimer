@@ -10,7 +10,7 @@ public class fileTest {
     @Test
     public void testFound(){
         try {
-            Scanner scanner = new Scanner(new File("src/main/resources/mySolves"));
+            Scanner scanner = new Scanner(new File("src/main/resources/testIOFILE"));
             scanner.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -19,7 +19,7 @@ public class fileTest {
     @Test
     public void testRead(){
         try {
-            Scanner scanner = new Scanner(new File("src/main/resources/mySolves"));
+            Scanner scanner = new Scanner(new File("src/main/resources/testIOFILE"));
             while (scanner.hasNextLine()) {
                 System.out.println(scanner.nextLine());
             }
@@ -31,7 +31,7 @@ public class fileTest {
     @Test
     public void ParseToSolve(){
         try {
-            Scanner scanner = new Scanner(new File("src/main/resources/mySolves"));
+            Scanner scanner = new Scanner(new File("src/main/resources/testIOFILE"));
             while (scanner.hasNextLine()) {
                 String[] array=scanner.nextLine().split(":");
                 for(String a : array) System.out.println(a);

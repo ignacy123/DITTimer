@@ -116,7 +116,4 @@ public class SolveImplementation implements Solve, Serializable {
     public void rejectSolution() {
         whatState=State.REJ;
     }
-    @Override
-    public void Penalty() {
-    }
 }

@@ -9,8 +9,6 @@ import model.logic.Solve;
 import model.logic.SolveImplementation;
 import model.wrappers.AVGwrapper;
 import model.wrappers.ObservableWrapper;
-
-import java.awt.*;
 import java.io.*;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -386,17 +384,6 @@ public class StatisticServerImplementation implements StatisticServer {
                 min = a.getTime();
         }
         return min;
-    }
-
-    @Override
-    public AVGwrapper GiveMeMaxAVG(CubeType WhatModel, AVG whatAvg) {
-        ObservableList<AVGwrapper> temp=returnAVGlist(whatAvg,WhatModel);
-        AVGwrapper max = new AVGwrapper(-1,new Timestamp(0), false);
-        for (AVGwrapper a : temp) {
-            if (a.getAVG().getTime() > max.getAVG().getTime() && !a.isDNF()) // unfortunate
-                max = a;
-        }
-        return max;
     }
 
 
