@@ -22,9 +22,11 @@ public class MetronomeController {
     private StatisticServer ss = null;
     private ObservableWrapper ow = null;
     Thread thread;
-    boolean wasDone=false;
-    enum POWER{ON,OFF}
-    POWER state= POWER.OFF;
+    boolean wasDone = false;
+
+    enum POWER {ON, OFF}
+
+    POWER state = POWER.OFF;
     Media metronomeSound = null;
     MediaPlayer mediaPlayer = null;
     @FXML
@@ -35,21 +37,25 @@ public class MetronomeController {
     private ComboBox<Integer> bmpChooser;
     @FXML
     private Button SetBmp;
+
     @FXML
     void SetIT(ActionEvent event) {
-        if(bmpChooser.getValue()!=null) BMPline.setValue(bmpChooser.getValue());
+        if (bmpChooser.getValue() != null) BMPline.setValue(bmpChooser.getValue());
     }
-    ObservableList<Integer> list= FXCollections.observableArrayList(
-      250,500,750,1000
+
+    ObservableList<Integer> list = FXCollections.observableArrayList(
+            250, 500, 750, 1000
     );
     @FXML
     private Slider BMPline;
-    private static final double INIT_VALUE=0;
+    private static final double INIT_VALUE = 0;
+
     @FXML
     void getValue(MouseEvent event) {
-        if(BMPline.valueProperty()==null)
+        if (BMPline.valueProperty() == null)
             bmpChooser.setValue(1000);
     }
+
     @FXML
     synchronized void PowerON(ActionEvent event) {
         state = POWER.ON;
@@ -68,23 +74,25 @@ public class MetronomeController {
                     if (state == POWER.OFF) break;
                 }
             });
-            wasDone=true;
+            wasDone = true;
             thread.start();
         }
     }
+
     @FXML
     void PowerOFF(ActionEvent event) {
-        if(state== POWER.ON){
-            state= POWER.OFF;
+        if (state == POWER.ON) {
+            state = POWER.OFF;
             thread.interrupt();
         }
 
     }
+
     @FXML
     void initialize() {
-            getClass().getResourceAsStream("metronome.wav");
-            metronomeSound = new Media(getClass().getClassLoader().getResource("metronome.wav").toString());
-            mediaPlayer = new MediaPlayer(metronomeSound);
+        getClass().getResourceAsStream("metronome.wav");
+        metronomeSound = new Media(getClass().getClassLoader().getResource("metronome.wav").toString());
+        mediaPlayer = new MediaPlayer(metronomeSound);
         bmpChooser.setItems(list);
     }
 

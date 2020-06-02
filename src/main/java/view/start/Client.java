@@ -81,6 +81,7 @@ public class Client extends Application {
             if(conn!=null){
                 conn.close();
             }
+            System.exit(0);
         });
         stage.show();
     }

@@ -431,7 +431,7 @@ public class RoomWindow extends Application {
                     return toRet;
                 }
             }
-            long best = -1;
+            long best = 999999999;
             long avg = 0;
             for (int i = 0; i < amount - 1; i++) {
                 if (solves.get(i).getTime().getTime() < best) {
@@ -564,9 +564,7 @@ public class RoomWindow extends Application {
     public void leaveRoom() {
         System.out.println("close");
         jez.leaveRoom(room);
-        //Client client = new Client();
         Stage stage = (Stage) Scramble.getScene().getWindow();
-
         try {
             System.out.println("open xd");
             clientStage.show();

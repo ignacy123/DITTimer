@@ -20,12 +20,14 @@ import model.conn.ServerServiceImplementation;
 import model.enums.CubeType;
 import model.logic.KeyFile;
 import model.wrappers.ObservableWrapper;
+import org.apache.commons.io.FileUtils;
 import view.drawing.ClickDrawer;
 import view.drawing.CubeTraining;
 import view.drawing.WeirdCube;
 import view.start.Client;
 
 import java.io.*;
+import java.net.URISyntaxException;
 import java.util.Optional;
 
 public class MoreOptionsController {
@@ -141,7 +143,8 @@ public class MoreOptionsController {
 
     @FXML
     void ExportServer(ActionEvent event) throws IOException {
-        File automatic = new File("src/main/resources/Generated");
+        File automatic = new File("Generated");
+        FileUtils.copyInputStreamToFile(getClass().getClassLoader().getResourceAsStream("Generated"), automatic);
         ss.exportToFile(automatic);
         if (conn == null) {
             conn = new ServerServiceImplementation(ss);
