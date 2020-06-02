@@ -5,7 +5,6 @@ import model.enums.Direction;
 import model.enums.Face;
 import model.logic.Move;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 public class Rotator4 implements Rotator {

@@ -2,37 +2,30 @@ package view.drawing;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Scale;
 import javafx.scene.transform.Shear;
 import javafx.scene.transform.Translate;
 import javafx.stage.Stage;
-import javafx.scene.paint.Color;
-
 import model.enums.CubeType;
 import model.enums.Direction;
 import model.enums.Face;
 import model.logic.Move;
 import model.logic.MoveImplementation;
 import model.logic.ScrambleGeneratorImplementation;
-import model.logic.Solve;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Random;
 
 public class WeirdCube extends Application {
     Random rand = new Random();
