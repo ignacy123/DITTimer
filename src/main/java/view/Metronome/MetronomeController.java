@@ -19,15 +19,14 @@ import java.net.MalformedURLException;
 
 
 public class MetronomeController {
-    public MetronomeController() throws MalformedURLException {}
     private StatisticServer ss = null;
     private ObservableWrapper ow = null;
     Thread thread;
     boolean wasDone=false;
     enum POWER{ON,OFF}
     POWER state= POWER.OFF;
-    Media metronomeSound = new Media(new File("src/main/resources/metronome.wav").toURI().toURL().toString());
-    MediaPlayer mediaPlayer = new MediaPlayer(metronomeSound);
+    Media metronomeSound = null;
+    MediaPlayer mediaPlayer = null;
     @FXML
     public Button OFFbutton;
     @FXML
@@ -83,6 +82,12 @@ public class MetronomeController {
     }
     @FXML
     void initialize() {
+        try {
+            metronomeSound = new Media(new File(getClass().getClassLoader().getResource("metronome.wav").getFile()).toURI().toURL().toString());
+            mediaPlayer = new MediaPlayer(metronomeSound);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         bmpChooser.setItems(list);
     }
 

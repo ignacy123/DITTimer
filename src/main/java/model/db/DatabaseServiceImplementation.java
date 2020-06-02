@@ -190,6 +190,8 @@ public class DatabaseServiceImplementation implements DatabaseService {
                         break;
                     case 1:
                         solve.setState(State.TWOSECPENALTY);
+                        Timestamp time = new Timestamp(solve.getTime().getTime()-2000);
+                        solve.setTime(time);
                         break;
                     case 2:
                         solve.setState(State.DNF);

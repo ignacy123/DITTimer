@@ -56,9 +56,9 @@ public class DbTest {
         Date date = new Date();
         Solve solve = new SolveImplementation();
         solve.setType(CubeType.FOURBYFOUR);
-        solve.setState(State.TWOSECPENALTY);
         solve.setDate(date);
         solve.setTime(new Timestamp(1000));
+        solve.setState(State.TWOSECPENALTY);
         solve.setComment("test");
         solve.setScramble(scramble);
         db.insert(solve);
@@ -66,7 +66,7 @@ public class DbTest {
         assertEquals(1, list.size());
         Solve pulledSolve = list.get(0);
         assertEquals(pulledSolve.getID(), 1);
-        assertEquals(pulledSolve.getTime(), new Timestamp(1000));
+        assertEquals(pulledSolve.getTime(), new Timestamp(3000));
         assertEquals(pulledSolve.getState(), State.TWOSECPENALTY);
         assertEquals("test", pulledSolve.getComment().trim());
         assertEquals(pulledSolve.getScramble(), scramble);
@@ -208,9 +208,9 @@ public class DbTest {
         Date date = new Date();
         Solve solve = new SolveImplementation();
         solve.setType(CubeType.FOURBYFOUR);
-        solve.setState(State.TWOSECPENALTY);
         solve.setDate(date);
         solve.setTime(new Timestamp(100000));
+        solve.setState(State.TWOSECPENALTY);
         solve.setComment("test2");
         solve.setScramble(scramble);
         solve.setType(CubeType.FOURBYFOUR);

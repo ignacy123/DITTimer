@@ -1,4 +1,4 @@
-package view.test;
+package view.start;
 
 import javafx.util.StringConverter;
 import model.conn.Room;

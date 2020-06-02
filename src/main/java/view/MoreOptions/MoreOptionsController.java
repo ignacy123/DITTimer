@@ -14,23 +14,19 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import model.SS.StatisticServer;
 import model.conn.ServerService;
 import model.conn.ServerServiceImplementation;
 import model.enums.CubeType;
-import model.logic.ArraySerializable;
 import model.logic.KeyFile;
 import model.wrappers.ObservableWrapper;
 import view.drawing.ClickDrawer;
 import view.drawing.CubeTraining;
 import view.drawing.WeirdCube;
-import view.test.Client;
+import view.start.Client;
 
 import java.io.*;
-import java.util.Map;
 import java.util.Optional;
-import java.util.Scanner;
 
 public class MoreOptionsController {
     private StatisticServer ss = null;

@@ -1,4 +1,4 @@
-package view.test;
+package view.start;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -15,7 +15,6 @@ import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
