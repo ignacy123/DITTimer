@@ -494,12 +494,15 @@ public class StatisticServerImplementation implements StatisticServer {
     @Override
     public void addComment(CubeType WhatModel, String string) {
         if (WhatModel == CubeType.TWOBYTWO) {
+            if(TwoByTwo.size()==0) return;
            TwoByTwo.get(TwoByTwo.size()-1).setComment(string);
             myDataBase.updateLast(TwoByTwo.get(TwoByTwo.size()-1));
         } else if (WhatModel == CubeType.THREEBYTHREE) {
+            if(TreeByTree.size()==0) return;
             TreeByTree.get(TreeByTree.size()-1).setComment(string);
             myDataBase.updateLast(TreeByTree.get(TreeByTree.size()-1));
         } else {
+            if(FourByFour.size()==0) return;
             FourByFour.get(FourByFour.size()-1).setComment(string);
             myDataBase.updateLast(FourByFour.get(FourByFour.size()-1));
         }

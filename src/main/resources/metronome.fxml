@@ -9,9 +9,8 @@
    <children>
       <Slider fx:id="BMPline" blockIncrement="100.0" layoutX="228.0" layoutY="81.0" majorTickUnit="100.0" max="1000.0" minorTickCount="100" onMouseClicked="#getValue" prefHeight="33.0" prefWidth="358.0" showTickLabels="true" />
       <ComboBox fx:id="bmpChooser" layoutX="14.0" layoutY="76.0" prefHeight="26.0" prefWidth="83.0" promptText="BMP" />
-      <ComboBox layoutX="14.0" layoutY="31.0" prefWidth="150.0" promptText="Sound Effect" />
-      <Button fx:id="startButton" layoutX="200.0" layoutY="31.0" mnemonicParsing="false" onAction="#PowerON" text="ON" />
-      <Button fx:id="OFFbutton" layoutX="269.0" layoutY="31.0" mnemonicParsing="false" onAction="#PowerOFF" text="OFF" />
+      <Button fx:id="startButton" layoutX="14.0" layoutY="24.0" mnemonicParsing="false" onAction="#PowerON" text="ON" />
+      <Button fx:id="OFFbutton" layoutX="117.0" layoutY="24.0" mnemonicParsing="false" onAction="#PowerOFF" text="OFF" />
       <Button fx:id="SetBmp" layoutX="118.0" layoutY="76.0" mnemonicParsing="false" onAction="#SetIT" text="SET" />
    </children>
 </Pane>
