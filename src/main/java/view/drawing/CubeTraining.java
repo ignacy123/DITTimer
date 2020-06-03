@@ -9,11 +9,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.enums.CubeType;
+import model.logic.Move;
+import model.logic.ScrambleGeneratorImplementation;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class CubeTraining extends WeirdCube {
     int old;
@@ -29,6 +29,10 @@ public class CubeTraining extends WeirdCube {
 
     @FXML
     private ListView<String> list;
+
+    @FXML
+    private Text executed;
+
     @FXML
     private Text algName;
     @FXML
@@ -43,7 +47,8 @@ public class CubeTraining extends WeirdCube {
         algName.setText(name);
         populateStandard();
         String toExecute= alg.get(name).get(0);
-        doRev(toExecute, false);
+        ArrayList<Move> to = doRev(toExecute, false);
+        executed.setText(new ScrambleGeneratorImplementation(CubeType.THREEBYTHREE).scrambleToString(to));
         list.getItems().clear();
         list.getItems().setAll(alg.get(name));
         update();

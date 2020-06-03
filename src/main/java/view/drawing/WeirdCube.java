@@ -99,7 +99,7 @@ public class WeirdCube extends Application {
         transformButtons(true);
     }
 
-    public void doRev(String wh, boolean ran) {
+    public ArrayList<Move> doRev(String wh, boolean ran) {
         ArrayList<Move> mvs = new ScrambleGeneratorImplementation(CubeType.THREEBYTHREE).fromString(wh);
         Collections.reverse(mvs);
         ArrayList<Move> rdy=new ArrayList<>();
@@ -119,6 +119,7 @@ public class WeirdCube extends Application {
 
         rotator3.executeMoves(rdy);
         update();
+        return rdy;
     }
     void transformButtons(boolean disable) {//true for disable
         for(int i = 0; i < 4; i++) {
