@@ -43,7 +43,7 @@ public class CubeTraining extends WeirdCube {
         }
         old=rando;
         String name = "WV "+rando;
-        System.out.println(name);
+        //System.out.println(name);
         algName.setText(name);
         populateStandard();
         String toExecute= alg.get(name).get(0);
