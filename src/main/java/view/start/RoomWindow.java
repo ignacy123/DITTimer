@@ -257,7 +257,9 @@ public class RoomWindow extends Application {
     }
 
     void startCounting() {
+        nextScramble.setDisable(true);
         if (!canRun) {
+            nextScramble.setDisable(false);
             return;
         }
         if (isRunning) {
