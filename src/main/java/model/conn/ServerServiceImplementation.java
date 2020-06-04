@@ -58,7 +58,7 @@ public class ServerServiceImplementation implements ServerService {
             responseHandler.start();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            System.exit(0);
         }
     }
 

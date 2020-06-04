@@ -520,11 +520,12 @@ public class RoomWindow extends Application {
 
     @FXML
     public void sendMessage(KeyEvent event) {
+        String msg = String.valueOf(msgField.getCharacters());
         if (event.getEventType() == KeyEvent.KEY_PRESSED && event.getCode() == KeyCode.ENTER) {
-            String msg = String.valueOf(msgField.getCharacters());
             if (msg.equals("")) {
                 return;
             }
+            msg = msg.substring(0, 100);
             System.out.println("sending message: " + msg);
             jez.sendChat(room, msg);
             msgField.clear();
