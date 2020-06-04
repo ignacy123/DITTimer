@@ -1,9 +1,5 @@
 package server;
 
-import javafx.application.Platform;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import model.conn.*;
 import model.enums.ClientRequestType;
 import model.enums.CubeType;
@@ -18,7 +14,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
