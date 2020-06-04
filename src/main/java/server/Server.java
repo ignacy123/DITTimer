@@ -126,6 +126,7 @@ public class Server {
                             break;
                         case GETTIMES:
                         case SENDTIME:
+                            System.out.println("Time received");
                             sr = new ServerResponse(ServerResponseType.TIMESCHANGED);
                             Room sienna = holder.getRoom(request.getRoom().getID());
                             if (sienna == null) {
