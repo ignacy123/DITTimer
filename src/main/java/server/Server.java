@@ -8,6 +8,8 @@ import model.logic.KeyFile;
 import model.logic.Move;
 import model.logic.ScrambleGenerator;
 import model.logic.ScrambleGeneratorImplementation;
+import model.logic.Solve;
+import model.logic.SolveImplementation;
 
 import java.io.*;
 import java.net.ServerSocket;

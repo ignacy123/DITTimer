@@ -50,8 +50,8 @@ public class ServerServiceImplementation implements ServerService {
 
     public void start() {
         try {
-//            socket = new Socket("13.79.145.215", 8000);
-            socket = new Socket("localhost", 8000);
+            socket = new Socket("13.79.145.215", 8000);
+//            socket = new Socket("localhost", 8000);
             inputStream = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             responseHandler = new ServerResponseHandler(inputStream, client, ss);
@@ -300,7 +300,7 @@ public class ServerServiceImplementation implements ServerService {
                                 break;
                             case TIMESCHANGED:
                                 if (window == null) break;
-                                System.out.println("TImes upd");
+                                System.out.println("Times upd");
                                 Platform.runLater(() -> {
                                     window.renderTimes(sr.getSolves());
                                 });
