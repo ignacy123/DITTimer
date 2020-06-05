@@ -57,7 +57,7 @@ The second functionality is a "last resort" button - if someone joins the lobby 
 Two weird rows below lists of times - they just show average of 5 (up) and average of 12 (down). The best one has a green colour (to support slight competition between users).
 
 
-###Explanation why things are the way they are:
+### Explanation why things are the way they are:
 
 Metronome - why does it run only when time is on? Speedsolving of rubik's cube consists of two crucial abilities
 recognition and execution. We have a natural tendency to focus on execution only
