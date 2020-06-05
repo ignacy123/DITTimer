@@ -1,42 +1,42 @@
 # DITTimer
-###To run:
+### To run:
 enter /target and execute:
 
 java --module-path <path to javafx-sdk/lib> --add-modules=javafx.controls,javafx.base,javafx.fxml,javafx.media -jar DITTimer-1.0-SNAPSHOT-jar-with-dependencies.jar
 
 
-###Grading:
+### Grading:
 
 Since project is using HSQLDB database in non read-only mode running multiple instances of application is not recommended. We are aware that for grading purposes there should be a way to enter an online room with multiple clients from one machine and we decided to create a Client class in Server/view/start. It goes directly to room choosing menu skipping all db related code. Same goes for server - 'final' server is set up on azure and application connects with it automatically. If you wish to run server locally it is in main/java/server package. You also need to uncomment the line in ServerServiceImplementation in main/java/conn/
 in method start which is connecting to localhost rather than azure server (it's quite obvious which one). However, we want to stress that these classes are part of a bigger whole in final project and such access is left purely for grading purposes.
 
 
-###IMPORTANT:
+### IMPORTANT:
 All averages in application are counted without the best and the worst time (average of 5 is really an average of the middle 3 solves)
 
 DNF stands for Did Not Finish and the time is automatically counted as the worst..
 
-###All features:
+### All features:
 As some features are not apparent I will briefly describe what application is capable of:
 
-####Offline mode:
+#### Offline mode:
 Counting time - space to start/stop. Buttons below are quite self-explanatory
 
 Time list - first column are single times, second columns are averages of 5 (i-th row is average of i-4-th, i-3-rd, i-2-nd, i-1-st and i-th solve), and the third column show averages of 12 You can double click a cell to see more info.
 
-#####Metronome
+##### Metronome
 
 When you press ON, it's not going to run immediataly. It just beeps when the time is counting (a more detailed explanation why it's like that will be down below).
 The slider is self-explanatory.
 
-#####Graphs
+##### Graphs
 They just show the line for single times, averages of 5 and averages of 12.
 
-#####A big cube scheme in top-right corner.
+##### A big cube scheme in top-right corner.
 
 It shows what the cube should look like after performing the scrambling algorithm which is above time counter. Used to prevent so-called "misscrambles".
-
-#####More...
+ 
+##### More...
 
 Importing/exporting the times both locally and to the server do exactly what they say. User just chooses which one he wants to use depending whether he has internet connection or not.
 
