@@ -525,7 +525,9 @@ public class RoomWindow extends Application {
             if (msg.equals("")) {
                 return;
             }
-            msg = msg.substring(0, 100);
+            if(msg.length()>100){
+                msg = msg.substring(0, 100);
+            }
             System.out.println("sending message: " + msg);
             jez.sendChat(room, msg);
             msgField.clear();
