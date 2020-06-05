@@ -1,0 +1,18 @@
+/*C2*/SET SCHEMA PUBLIC
+INSERT INTO THREEBYTHREE VALUES(314,'1970-01-01 01:00:00.900000',0,'                                                  ','F2 L D2 F'' L D B'' F2 L2 U'' B'' R D2 F'' L D B2 F R2 D2                                                                                                                                                    ','2020-06-05 10:46:45.732000')
+COMMIT
+INSERT INTO THREEBYTHREE VALUES(315,'1970-01-01 01:00:01.493000',0,'                                                  ','L'' B'' D2 R'' L'' U'' D2 F L'' D'' B L U D F R2 L2 F2 D'' R2                                                                                                                                                   ','2020-06-05 10:46:45.770000')
+COMMIT
+INSERT INTO THREEBYTHREE VALUES(316,'1970-01-01 01:00:00.900000',0,'                                                  ','F2 L D2 F'' L D B'' F2 L2 U'' B'' R D2 F'' L D B2 F R2 D2                                                                                                                                                    ','2020-06-05 10:46:45.789000')
+COMMIT
+INSERT INTO THREEBYTHREE VALUES(317,'1970-01-01 01:00:01.493000',0,'                                                  ','L'' B'' D2 R'' L'' U'' D2 F L'' D'' B L U D F R2 L2 F2 D'' R2                                                                                                                                                   ','2020-06-05 10:46:45.806000')
+COMMIT
+DELETE FROM THREEBYTHREE WHERE ID=310
+DELETE FROM THREEBYTHREE WHERE ID=311
+DELETE FROM THREEBYTHREE WHERE ID=312
+DELETE FROM THREEBYTHREE WHERE ID=313
+DELETE FROM THREEBYTHREE WHERE ID=314
+DELETE FROM THREEBYTHREE WHERE ID=315
+DELETE FROM THREEBYTHREE WHERE ID=316
+DELETE FROM THREEBYTHREE WHERE ID=317
+COMMIT

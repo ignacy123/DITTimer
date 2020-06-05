@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.effect.SepiaTone?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="393.0" prefWidth="680.0" stylesheets="StatsWindow.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.drawing.StatsWindow">
+   <children>
+      <LineChart id="lkk" fx:id="chart" layoutX="26.0" layoutY="29.0" prefHeight="379.0" prefWidth="675.0" styleClass="chart-series-line" stylesheets="@StatsWindow.css">
+        <xAxis>
+          <CategoryAxis side="BOTTOM" fx:id="xAxis" />
+        </xAxis>
+        <yAxis>
+          <NumberAxis fx:id="yAxis" side="LEFT" />
+        </yAxis>
+         <effect>
+            <SepiaTone />
+         </effect>
+      </LineChart>
+   </children>
+</AnchorPane>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button fx:id="playButton" layoutX="65.0" layoutY="317.0" mnemonicParsing="false" onAction="#game" text="Next!" />
+      <ListView fx:id="list" layoutX="372.0" layoutY="42.0" prefHeight="120.0" prefWidth="201.0" />
+      <Text fx:id="algName" layoutX="300.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="57.13671875" />
+      <Text fx:id="executed" layoutX="39.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="162.13671875" />
+   </children>
+</AnchorPane>

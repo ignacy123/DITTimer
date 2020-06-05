@@ -1,0 +1,53 @@
+public static class FileSender extends Thread{
+        Map<String, byte[]> myMap;
+        ObjectOutputStream myOOS;
+        String key;
+        public FileSender(String key, Map<String,byte[]> myMap,ObjectOutputStream OOS) {
+            this.key=key;
+            this.myMap=myMap;
+            myOOS=OOS;
+        }
+        @Override
+        public void run() {
+            ArraySerializable toSend=new ArraySerializable(myMap.get(key));
+            try {
+                myOOS.writeObject(toSend);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static class myFileHandler extends Thread{
+        byte [] myFile;
+        Map<String, byte[]> myMap;
+        String key=null;
+        public myFileHandler(byte[] myFile, Map<String,byte[]> myMap) {
+            this.myFile=myFile;
+            this.myMap=myMap;
+        }
+        @Override
+        public void run() {
+            System.out.println("Please insert key: ");
+            key="1234";
+            /*Dialog<String> insertKey = new Dialog<>();
+            insertKey.setTitle("Key");
+            insertKey.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+            TextField myKey = new TextField();
+            HBox content = new HBox();
+            content.setAlignment(Pos.CENTER_LEFT);
+            content.setSpacing(10);
+            content.getChildren().addAll(new Label("Please insert key: "), myKey);
+            insertKey.getDialogPane().setContent(content);
+            insertKey.setResultConverter(dialogButton -> {
+                if (dialogButton == ButtonType.OK) {
+                    return myKey.getText();
+                }
+                return null;
+            });
+            Optional<String> pass = insertKey.showAndWait();
+            pass.ifPresent(s -> key = s);*/
+            myMap.put(key, myFile);
+            System.out.println(myMap.keySet());
+        }
+    }
