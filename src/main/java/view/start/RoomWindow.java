@@ -389,11 +389,11 @@ public class RoomWindow extends Application {
             }
             if(!avg2.isDNF() && !avg2.isNET()){
                 if(bestao12==null){
-                    bestao12 = avg;
+                    bestao12 = avg2;
                     bestao12Ind = i;
                 }else{
                     if(bestao12.getAVG().getTime()>avg2.getAVG().getTime()){
-                        bestao12 = avg;
+                        bestao12 = avg2;
                         bestao12Ind = i;
                     }
                 }

@@ -27,7 +27,6 @@ import view.drawing.WeirdCube;
 import view.start.Client;
 
 import java.io.*;
-import java.net.URISyntaxException;
 import java.util.Optional;
 
 public class MoreOptionsController {
@@ -165,7 +164,9 @@ public class MoreOptionsController {
         Scene scene = new Scene(root, 200, 200);
         stage.setScene(scene);
         stage.show();
-        conn.close();
+        if(conn!=null){
+            conn.close();
+        }
         conn = null;
     }
 

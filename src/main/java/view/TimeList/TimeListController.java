@@ -114,6 +114,9 @@ public class TimeListController extends Stage {
 
 
     public void handle(MouseEvent event) {
+        if(listView.getSelectionModel().getSelectedItems().size()==0){
+            return;
+        }
         if (!event.getButton().equals(MouseButton.PRIMARY)) {
             return;
         }
@@ -140,6 +143,9 @@ public class TimeListController extends Stage {
     }
 
     public void handle2(MouseEvent event) {
+        if(listView2.getSelectionModel().getSelectedItems().size()==0){
+            return;
+        }
         if (!event.getButton().equals(MouseButton.PRIMARY)) {
             return;
         }
@@ -182,6 +188,9 @@ public class TimeListController extends Stage {
     }
 
     public void handle3(MouseEvent event) {
+        if(listView3.getSelectionModel().getSelectedItems().size()==0){
+            return;
+        }
         if (!event.getButton().equals(MouseButton.PRIMARY)) {
             return;
         }
