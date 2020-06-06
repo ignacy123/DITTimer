@@ -1,6 +1,13 @@
 package model.SS;
 
 import javafx.collections.ObservableList;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import model.db.DatabaseServiceImplementation;
 import model.enums.AVG;
 import model.enums.CubeType;
@@ -295,11 +302,25 @@ public class StatisticServerImplementation implements StatisticServer {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        while (scanner.hasNextLine()) {
-           parseLineToSolve(scanner.nextLine());
+        try{
+            while (scanner.hasNextLine()) {
+                parseLineToSolve(scanner.nextLine());
+            }
+        } catch (Exception e) {
+            Stage stage = new Stage();
+            stage.setTitle("Wrong file!");
+            StackPane root = new StackPane();
+            Text text = new Text("Wrong file!");
+            text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 30));
+            root.getChildren().add(text);
+            Scene scene = new Scene(root, 200, 150);
+            stage.setScene(scene);
+            stage.show();
+        }finally {
+            scanner.close();
         }
-        scanner.close();
+
+
     }
 
     @Override
