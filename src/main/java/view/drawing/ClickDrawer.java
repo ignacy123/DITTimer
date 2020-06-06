@@ -182,6 +182,7 @@ public class ClickDrawer extends Application {
             msg = "There is no WHITE-ORANGE edge";
             works = false;
         }
+        oriented+=test;
         test = findEdge(Color.YELLOW, Color.BLUE);
         if (test == -1) {
             msg = "There is no YELLOW-BLUE edge";
@@ -205,6 +206,7 @@ public class ClickDrawer extends Application {
             msg = "There is no YELLOW-ORANGE edge";
             works = false;
         }
+        oriented+=test;
         test = findEdge(Color.RED, Color.BLUE);
         if (test == -1) {
             msg = "There is no RED-BLUE edge";
@@ -216,6 +218,7 @@ public class ClickDrawer extends Application {
             msg = "There is no RED-GREEn edge";
             works = false;
         }
+        oriented+=test;
         test = findEdge(Color.ORANGE, Color.BLUE);
         if (test == -1) {
             msg = "There is no ORANGE-BLUE edge";
@@ -227,6 +230,7 @@ public class ClickDrawer extends Application {
             msg = "There is no ORANGE-GREEN edge";
             works = false;
         }
+        oriented+=test;
         if (!works) {
             Dialog d = new Dialog();
             Window window = d.getDialogPane().getScene().getWindow();
@@ -288,6 +292,7 @@ public class ClickDrawer extends Application {
             msg = "There is no YELLOW-ORANGE-BLUE corner";
             works = false;
         }
+        oriented+=test;
         if (!works) {
             Dialog d = new Dialog();
             Window window = d.getDialogPane().getScene().getWindow();
@@ -297,7 +302,6 @@ public class ClickDrawer extends Application {
             d.show();
             return false;
         }
-        oriented += test;
         if (oriented % 3 != 0) {
             msg = "Rotate a corner.";
             works = false;
@@ -493,7 +497,7 @@ public class ClickDrawer extends Application {
                     return 1;
                 }
                 if (top == 2 && yellow == 1) {
-                    return 2;
+                    return 1;
                 }
                 if (top == 3 && yellow == 2) {
                     return 1;
@@ -528,16 +532,16 @@ public class ClickDrawer extends Application {
                 }
                 //lewo - 1 prawo 2
                 if (top == 1 && yellow == 2) {
-                    return 1;
+                    return 2;
                 }
                 if (top == 1 && yellow == 3) {
-                    return 2;
-                }
-                if (top == 2 && yellow == 3) {
                     return 1;
                 }
-                if (top == 2 && yellow == 1) {
+                if (top == 2 && yellow == 3) {
                     return 2;
+                }
+                if (top == 2 && yellow == 1) {
+                    return 1;
                 }
                 if (top == 3 && yellow == 2) {
                     return 1;
@@ -573,10 +577,10 @@ public class ClickDrawer extends Application {
                 }
                 //lewo - 1 prawo 2
                 if (top == 1 && yellow == 2) {
-                    return 1;
+                    return 2;
                 }
                 if (top == 1 && yellow == 3) {
-                    return 2;
+                    return 1;
                 }
                 if (top == 2 && yellow == 3) {
                     return 1;
