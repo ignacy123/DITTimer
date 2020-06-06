@@ -34,7 +34,6 @@
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/model/wrappers/AVGwrapper.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/model/SS/StatisticServer.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/model/logic/SolveImplementation.java
-/home/ignacy/IdeaProjects/DITTimer/src/main/java/view/ExportImport/ExportImportController.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/model/logic/AES.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/server/Server.java
 /home/ignacy/IdeaProjects/DITTimer/src/main/java/model/conn/RoomHolder.java
