@@ -515,6 +515,15 @@ public class StatisticServerImplementation implements StatisticServer {
     @Override
     public void addComment(CubeType WhatModel, String string) {
         if(string.length()>=25) {
+            Stage stage = new Stage();
+            stage.setTitle("Comment too long!");
+            StackPane root = new StackPane();
+            Text text = new Text("Comment too long!");
+            text.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 30));
+            root.getChildren().add(text);
+            Scene scene = new Scene(root, 340, 150);
+            stage.setScene(scene);
+            stage.show();
             return;
         }
         if (WhatModel == CubeType.TWOBYTWO) {
