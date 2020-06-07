@@ -11,11 +11,11 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane fx:id="mainPane" prefHeight="1080.0" prefWidth="1920.0" stylesheets="Room.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <Button fx:id="addTime" layoutX="652.0" layoutY="917.0" mnemonicParsing="false" onAction="#sendTime" text="Send time" />
+   <Button fx:id="addTime" layoutX="1045.0" layoutY="917.0" mnemonicParsing="false" onAction="#sendTime" text="Send time" />
    <ListView fx:id="playerList" layoutX="9.0" layoutY="190.0" prefHeight="119.0" prefWidth="201.0" />
    <ListView fx:id="msgBox" layoutX="1425.0" layoutY="84.0" prefHeight="288.0" prefWidth="428.0" />
    <TextField fx:id="msgField" layoutX="1425.0" layoutY="372.0" onKeyPressed="#sendMessage" prefHeight="28.0" prefWidth="428.0" promptText="Enter message..." />
-   <HBox fx:id="timesHolder" layoutX="434.0" layoutY="454.0" prefHeight="200.0" prefWidth="850.0">
+   <HBox fx:id="timesHolder" layoutX="490.0" layoutY="454.0" prefHeight="200.0" prefWidth="850.0">
       <children>
          <ListView fx:id="timeList0" prefHeight="200.0" prefWidth="170.0" />
          <ListView fx:id="timeList1" prefHeight="200.0" prefWidth="170.0" />
@@ -24,42 +24,42 @@
          <ListView fx:id="timeList4" prefHeight="200.0" prefWidth="170.0" />
       </children>
    </HBox>
-   <Text fx:id="user0" layoutX="436.0" layoutY="448.0" strokeType="OUTSIDE" strokeWidth="0.0" text="null" wrappingWidth="170.0">
+   <Text fx:id="user0" layoutX="490.0" layoutY="446.0" strokeType="OUTSIDE" strokeWidth="0.0" text="null" wrappingWidth="170.0">
       <font>
          <Font size="15.0" />
       </font>
    </Text>
-   <Text fx:id="user1" layoutX="606.0" layoutY="447.0" strokeType="OUTSIDE" strokeWidth="0.0" text="null" wrappingWidth="170.0">
+   <Text fx:id="user1" layoutX="660.0" layoutY="447.0" strokeType="OUTSIDE" strokeWidth="0.0" text="null" wrappingWidth="170.0">
       <font>
          <Font size="15.0" />
       </font>
    </Text>
-   <Text fx:id="user2" layoutX="774.0" layoutY="446.0" strokeType="OUTSIDE" strokeWidth="0.0" text="null" wrappingWidth="170.0">
+   <Text fx:id="user2" layoutX="830.0" layoutY="447.0" strokeType="OUTSIDE" strokeWidth="0.0" text="null" wrappingWidth="170.0">
       <font>
          <Font size="15.0" />
       </font>
    </Text>
-   <Text fx:id="user3" layoutX="944.0" layoutY="447.0" strokeType="OUTSIDE" strokeWidth="0.0" text="null" wrappingWidth="170.0">
+   <Text fx:id="user3" layoutX="1000.0" layoutY="447.0" strokeType="OUTSIDE" strokeWidth="0.0" text="null" wrappingWidth="170.0">
       <font>
          <Font size="15.0" />
       </font>
    </Text>
-   <Text fx:id="user4" layoutX="1114.0" layoutY="445.0" strokeType="OUTSIDE" strokeWidth="0.0" text="null" wrappingWidth="170.0">
+   <Text fx:id="user4" layoutX="1170.0" layoutY="445.0" strokeType="OUTSIDE" strokeWidth="0.0" text="null" wrappingWidth="170.0">
       <font>
          <Font size="15.0" />
       </font>
    </Text>
-   <Text fx:id="timePassed" layoutX="622.0" layoutY="827.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00:00:000" textAlignment="CENTER" wrappingWidth="474.7294921875">
+   <Text fx:id="timePassed" layoutX="678.0" layoutY="828.0" strokeType="OUTSIDE" strokeWidth="0.0" text="00:00:000" textAlignment="CENTER" wrappingWidth="474.7294921875">
       <font>
          <Font name="FontAwesome" size="78.0" />
       </font>
    </Text>
-   <Text fx:id="Scramble" layoutX="490.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scramble" textAlignment="CENTER" wrappingWidth="738.0">
+   <Text fx:id="Scramble" layoutX="546.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scramble" textAlignment="CENTER" wrappingWidth="738.0">
       <font>
          <Font size="20.0" />
       </font></Text>
    <Button fx:id="nextScramble" layoutX="80.0" layoutY="464.0" mnemonicParsing="false" onAction="#requestScramble" text="Next Scramble" />
-   <ChoiceBox fx:id="stateChoiceBox" layoutX="904.0" layoutY="917.0" prefWidth="150.0" />
+   <ChoiceBox fx:id="stateChoiceBox" layoutX="692.0" layoutY="917.0" prefWidth="150.0" />
    <Button fx:id="leaveButton" layoutX="88.0" layoutY="526.0" mnemonicParsing="false" onAction="#leaveRoom" text="Leave Room" />
    <Text fx:id="ao5Text0" layoutX="471.0" layoutY="683.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="100.0" />
    <Text fx:id="ao12Text0" layoutX="471.0" layoutY="712.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="100.0" />
@@ -72,5 +72,5 @@
    <Text fx:id="ao5Text4" layoutX="1149.0" layoutY="683.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="100.0" />
    <Text fx:id="ao12Text4" layoutX="1149.0" layoutY="712.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="100.0" />
    <Pane fx:id="DrawerPane" layoutX="1315.0" layoutY="621.0" prefHeight="322.0" prefWidth="562.0" />
-   <Pane fx:id="logoPane" layoutX="452.0" layoutY="-116.0" prefHeight="200.0" prefWidth="850.0" />
+   <Pane fx:id="logoPane" layoutX="434.0" layoutY="-116.0" prefHeight="200.0" prefWidth="850.0" />
 </AnchorPane>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="12" failures="0" name="model.db.DbTest" time="0.431" errors="0" skipped="0">
+<testsuite tests="12" failures="0" name="model.db.DbTest" time="0.459" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="11.0.6+8-b520.66"/>
@@ -61,16 +61,16 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="model.db.DbTest" name="insertAndPullSingle4x4Solve" time="0.34"/>
-  <testcase classname="model.db.DbTest" name="insertAndPullSingle2x2Solve" time="0.01"/>
-  <testcase classname="model.db.DbTest" name="deleteTwoByTwoTest" time="0.017"/>
-  <testcase classname="model.db.DbTest" name="clearsTable" time="0.008"/>
-  <testcase classname="model.db.DbTest" name="updateLast" time="0.016"/>
-  <testcase classname="model.db.DbTest" name="increasesId" time="0.009"/>
-  <testcase classname="model.db.DbTest" name="deleteFromEmpty" time="0.004"/>
+  <testcase classname="model.db.DbTest" name="insertAndPullSingle4x4Solve" time="0.371"/>
+  <testcase classname="model.db.DbTest" name="insertAndPullSingle2x2Solve" time="0.016"/>
+  <testcase classname="model.db.DbTest" name="deleteTwoByTwoTest" time="0.008"/>
+  <testcase classname="model.db.DbTest" name="clearsTable" time="0.007"/>
+  <testcase classname="model.db.DbTest" name="updateLast" time="0.018"/>
+  <testcase classname="model.db.DbTest" name="increasesId" time="0.008"/>
+  <testcase classname="model.db.DbTest" name="deleteFromEmpty" time="0.005"/>
   <testcase classname="model.db.DbTest" name="initiateDb" time="0.002"/>
-  <testcase classname="model.db.DbTest" name="insertAndPullSingle3x3Solve" time="0.006"/>
-  <testcase classname="model.db.DbTest" name="deleteFourByFourTest" time="0.006"/>
+  <testcase classname="model.db.DbTest" name="insertAndPullSingle3x3Solve" time="0.005"/>
+  <testcase classname="model.db.DbTest" name="deleteFourByFourTest" time="0.008"/>
   <testcase classname="model.db.DbTest" name="dealsWithEmptyComment" time="0.005"/>
-  <testcase classname="model.db.DbTest" name="deleteThreeByThreeTest" time="0.008"/>
+  <testcase classname="model.db.DbTest" name="deleteThreeByThreeTest" time="0.006"/>
 </testsuite>

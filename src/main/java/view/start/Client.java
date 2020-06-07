@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 import model.conn.Room;
 import model.conn.ServerService;
 import model.conn.ServerServiceImplementation;
@@ -95,6 +96,15 @@ public class Client extends Application {
             return;
         }
 
+        if(nameField.getCharacters().length()>20){
+            Dialog d = new Dialog();
+            d.setResizable(true);
+            Window window = d.getDialogPane().getScene().getWindow();
+            window.setOnCloseRequest(e -> window.hide());
+            d.setContentText("Name can't be longer than 20 characters");
+            d.show();
+            return;
+        }
         Room room = (Room)roomsListView.getSelectionModel().getSelectedItem();
         String password = null;
         if(room==null){
@@ -135,6 +145,15 @@ public class Client extends Application {
     @FXML
     public void createRoom(){
         System.out.println("xd");
+        if(nameField.getCharacters().length()>20){
+            Dialog d = new Dialog();
+            d.setResizable(true);
+            Window window = d.getDialogPane().getScene().getWindow();
+            window.setOnCloseRequest(e -> window.hide());
+            d.setContentText("Name can't be longer than 20 characters");
+            d.show();
+            return;
+        }
         String password = null;
         if(passwordCheckBox.isSelected()){
             password = String.valueOf(passwordField.getCharacters());
