@@ -310,6 +310,7 @@ public class RoomWindow extends Application {
             return;
         }
         currentSolve.setState((State) stateChoiceBox.getSelectionModel().getSelectedItem());
+        stateChoiceBox.getSelectionModel().select(0);
         jez.sendTime(room, currentSolve);
         hasBeenSent = true;
     }
