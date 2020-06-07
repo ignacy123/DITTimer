@@ -145,12 +145,12 @@ public class Client extends Application {
     @FXML
     public void createRoom(){
         System.out.println("xd");
-        if(nameField.getCharacters().length()>20){
+        if(nameField.getCharacters().length()>18){
             Dialog d = new Dialog();
             d.setResizable(true);
             Window window = d.getDialogPane().getScene().getWindow();
             window.setOnCloseRequest(e -> window.hide());
-            d.setContentText("Name can't be longer than 20 characters");
+            d.setContentText("Name can't be longer than 18 characters");
             d.show();
             return;
         }
