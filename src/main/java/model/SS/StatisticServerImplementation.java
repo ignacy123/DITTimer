@@ -514,6 +514,9 @@ public class StatisticServerImplementation implements StatisticServer {
 
     @Override
     public void addComment(CubeType WhatModel, String string) {
+        if(string.length()>=25) {
+            return;
+        }
         if (WhatModel == CubeType.TWOBYTWO) {
             if(TwoByTwo.size()==0) return;
            TwoByTwo.get(TwoByTwo.size()-1).setComment(string);

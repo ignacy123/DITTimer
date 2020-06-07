@@ -11,6 +11,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.TextFieldListCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -55,7 +57,8 @@ public class RoomWindow extends Application {
     private TextField msgField;
 
     private ObservableList<String> chat;
-
+    @FXML
+    private Pane logoPane;
     @FXML
     private HBox timesHolder;
 
@@ -148,6 +151,8 @@ public class RoomWindow extends Application {
 
     @FXML
     void initialize() {
+        Image logo=new Image(getClass().getClassLoader().getResource("logo.png").toString());
+        logoPane.getChildren().add(new ImageView(logo));
         timeList0.setCellFactory(listView1 -> {
             TextFieldListCell<Solve> cell = new TextFieldListCell<>();
             cell.setConverter(new SolveConverter());
