@@ -27,7 +27,7 @@ import java.util.ResourceBundle;
 
 public class StatsWindow implements Initializable {
 
-    Integer count = 30;
+    Integer count = 100;
     ObservableWrapper morszczuk;
     CubeType type = CubeType.THREEBYTHREE;
 
