@@ -1,6 +1,6 @@
 # DITTimer
 ### To run:
-enter /target and execute:
+enter /target and execute (or wherever the jar is, if you downloaded it without cloning the repo):
 
 java --module-path <path to javafx-sdk/lib> --add-modules=javafx.controls,javafx.base,javafx.fxml,javafx.media -jar DITTimer-1.0-SNAPSHOT-jar-with-dependencies.jar
 
@@ -8,7 +8,9 @@ java --module-path <path to javafx-sdk/lib> --add-modules=javafx.controls,javafx
 ### Grading:
 
 Since project is using HSQLDB database in non read-only mode running multiple instances of application is not recommended. We are aware that for grading purposes there should be a way to enter an online room with multiple clients from one machine and we decided to create a Client class in Server/view/start. It goes directly to room choosing menu skipping all db related code. Same goes for server - 'final' server is set up on azure and application connects with it automatically. If you wish to run server locally it is in main/java/server package. You also need to uncomment the line in ServerServiceImplementation in main/java/conn/
-in method start which is connecting to localhost rather than azure server (it's quite obvious which one). However, we want to stress that these classes are part of a bigger whole in final project and such access is left purely for grading purposes.
+in method start which is connecting to localhost rather than azure server (it's quite obvious which one). 
+As you need to modify the code to do this, you need to clone the repo first (in other case we would have generate multiple jars, and navigating through them would be confusing).
+However, we want to stress that these classes are part of a bigger whole in final project and such access is left purely for grading purposes.
 
 
 ### IMPORTANT:
@@ -83,3 +85,7 @@ helps you memorize these extra steps. They show a succession of moves
 to prepare a case, and then number of solutions to solve it - all in order
 to practice muscle memory. Winter variation is the name of this subset with
 special cases.
+
+Appending times when importing - it's done to allow user to merge times from two different machines. Deleting old times when uploading would be irreversible - now user has a choice if he wants to keep or remove old times.
+
+Turning off online client doesn't take you back to offline timer - done to support using multiple clients to grade and avoid running multiple non read-only connections to HSQLDB database which would cause an error.
