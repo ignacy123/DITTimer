@@ -114,6 +114,7 @@ public class Client extends Application {
             Dialog<String> passwordDialog = new Dialog<>();
             passwordDialog.setTitle("Password");
             passwordDialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+            passwordDialog.setResizable(true);
             PasswordField pwd = new PasswordField();
             HBox content = new HBox();
             content.setAlignment(Pos.CENTER_LEFT);
