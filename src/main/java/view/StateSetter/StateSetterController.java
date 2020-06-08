@@ -54,6 +54,7 @@ public class StateSetterController {
 
     @FXML
     void MakeLastTwoSec(ActionEvent event) {
+        ss.ChangeStateLast(type, State.CORRECT);
         ss.ChangeStateLast(type, State.TWOSECPENALTY);
     }
     public void setSSAndOw(StatisticServer ss, ObservableWrapper ow){
